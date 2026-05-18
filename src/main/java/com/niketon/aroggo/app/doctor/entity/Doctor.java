@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter  @Setter
+@NoArgsConstructor  @AllArgsConstructor
 public class Doctor {
     
     @Id
@@ -16,11 +16,11 @@ public class Doctor {
 
     private String name;
 
-    private int age;
+    private int age;<｜begin▁of▁sentence｜>
 
     private String mobileNumber;
 
     private String specialization;
     
-    private LocalDateTime createdAt = LocalDateTime<｜begin▁of▁sentence｜>.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
