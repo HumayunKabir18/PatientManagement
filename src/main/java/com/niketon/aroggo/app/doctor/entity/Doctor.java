@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Getter  @Setter
-@NoArgsConstructor  @AllArgsConstructor
-public class Doctor {
+@Getter   @Setter
+@NoArgsConstructor   @AllArgsConstructor
+public class Doctor  {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,7 +16,7 @@ public class Doctor {
 
     private String name;
 
-    private int age;<｜begin▁of▁sentence｜>
+    private int age;
 
     private String mobileNumber;
 
