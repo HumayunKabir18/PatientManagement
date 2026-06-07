@@ -3,40 +3,53 @@ package com.niketon.aroggo.app.patient.controller;
 import com.niketon.aroggo.app.patient.entity.Patient;
 import com.niketon.aroggo.app.patient.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
-
-@RestController
+@Controller
 @RequestMapping("/patients")
 public class PatientController  {
-    private final PatientService patientService;
-    
+
     @Autowired
-    public PatientController(PatientService patientService)  {
-        this.patientService = patientService;
+    PatientService patientService;
+
+    // LIST PAGE
+    @GetMapping("/list")
+    public String listPage(Model model){
+
+        model.addAttribute("patient", new Patient());
+
+        return "/patient/patientList";
     }
-    
-    @PostMapping
-    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient)  {
-        return ResponseEntity.ok(patientService.addPatient(patient));
+
+    // REGISTRATION PAGE
+    @GetMapping("/register")
+    public String registrationPage(Model model){
+
+        model.addAttribute("patient", new Patient());
+
+        return "/patient/patientRegistration";
     }
-    
-    @GetMapping
-    public ResponseEntity<List<Patient>> getAllPatients()  {
-        return ResponseEntity.ok(patientService.getAllPatients());
+
+    // SAVE PATIENT
+    @PostMapping("/save")
+    public String savePatient(@ModelAttribute Patient patient){
+
+        Patient savedPatient = patientService.save(patient);
+
+        return "redirect:/patients/details/" + savedPatient.getId();
     }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable UUID id) throws Exception  {
-        return ResponseEntity.ok(patientService.getPatientById(id));
+
+    // DETAILS PAGE
+    @GetMapping("/details/{id}")
+    public String patientDetails(@PathVariable Long id, Model model){
+
+        Patient patient = patientService.getPatientById(id);
+
+        model.addAttribute("patient", patient);
+
+        return "patient/patient-details";
     }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity deletePatient(@PathVariable UUID id)  {
-        patientService.deletePatient(id);
-        return ResponseEntity.noContent().build();
-    }
+
 }

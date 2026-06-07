@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="header">
+
+    <nav class="navbar navbar-custom px-3 main-card">
+
+        <!-- LEFT -->
+        <div class="d-flex align-items-center gap-3">
+            <h5 class="mb-0">Patient System</h5>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="d-flex align-items-center gap-3">
+
+            <button class="switch-btn" onclick="toggleTheme()">
+                <i class="bi bi-moon-stars-fill"></i>
+            </button>
+
+        </div>
+
+    </nav>
+
+</div>
+</body>
+</html>

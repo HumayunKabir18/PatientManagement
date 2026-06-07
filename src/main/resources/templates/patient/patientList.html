@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master}">
+
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid py-3"> <!-- Search Card -->
+        <div class="main-card">
+            <div class="d-flex justify-content-between align-items-center mb-4"><h4 class="section-title mb-0"><i
+                    class="bi bi-search me-2"></i> Patient Search </h4></div>
+            <div class="row g-3">
+                <div class="col-md-3"><label>Patient Name</label> <input type="text" id="patientName" maxlength="50"
+                                                                         class="form-control"
+                                                                         placeholder="Enter patient name"></div>
+                <div class="col-md-3"><label>Mobile Number</label> <input type="text" id="mobileNo" class="form-control"
+                                                                          placeholder="01XXXXXXXXX"></div>
+
+                <div th:replace="~{fragments/inputs :: bloodGroupSelect('bloodGroup','Blood Group','col-md-2','form-label')}"></div>
+
+                <div class="col-md-2"><label>Date Of Birth</label> <input type="date" id="dateOfBirth"
+                                                                          class="form-control"></div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button id="searchBtn" class="btn btn-primary-custom w-100"><i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div> <!-- Result Card -->
+        <div class="main-card">
+            <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="section-title mb-0"><i
+                    class="bi bi-people me-2"></i> Patient List </h4> <span class="badge-soft"> Total : <span
+                    id="totalPatients">0</span> </span></div>
+            <div id="loadingDiv" class="text-center py-4 d-none">
+                <div class="spinner-border text-primary"></div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient Name</th>
+                        <th>Mobile</th>
+                        <th>Blood Group</th>
+                        <th>Date Of Birth</th>
+                        <th width="120">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="patientTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

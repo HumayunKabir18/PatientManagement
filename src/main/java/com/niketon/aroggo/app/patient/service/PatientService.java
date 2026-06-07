@@ -2,6 +2,7 @@ package com.niketon.aroggo.app.patient.service;
 
 import com.niketon.aroggo.app.patient.entity.Patient;
 import com.niketon.aroggo.app.patient.repository.PatientRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,27 +10,30 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PatientService {
-    private final PatientRepository patientRepository;
-    
     @Autowired
-    public PatientService(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
-    
-    public Patient addPatient(Patient patient) {
+  PatientRepository patientRepository;
+
+    // SAVE
+    public Patient save(Patient patient){
         return patientRepository.save(patient);
     }
-    
-    public List<Patient> getAllPatients() {
+
+    // GET ALL
+    public List<Patient> getAllPatients(){
         return patientRepository.findAll();
     }
-    
-    public Patient getPatientById(UUID id) throws Exception{
-        return patientRepository.findById(id).orElseThrow(() -> new Exception("Patient not found"));
+
+    // GET BY ID
+    public Patient getPatientById(Long id){
+        return patientRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Patient Not Found"));
     }
-    
-    public void deletePatient(UUID id) {
+
+    // DELETE
+    public void deletePatient(Long id){
         patientRepository.deleteById(id);
     }
 }

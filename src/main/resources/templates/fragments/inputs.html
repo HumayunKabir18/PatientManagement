@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+
+<div th:fragment="bloodGroupSelect(fieldName, label, containerClass, labelClass)"
+     th:class="${containerClass}">
+
+        <label th:for="${name}"
+               th:text="${label}"
+               th:class="${labelClass}">
+        </label>
+
+        <select class="form-select"
+                th:id="${name}"
+                th:name="${name}">
+
+            <option value="">Select Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+    </div>
+</body>
+</html>
