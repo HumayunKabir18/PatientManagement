@@ -6,27 +6,43 @@
 <body>
 
 <div layout:fragment="content">
-    <div class="container-fluid py-3"> <!-- Search Card -->
+    <div class="col-md-2 d-flex align-items-end" style="margin-left: 1%">
+        <a th:href="@{/patients/register}"
+           class="btn btn-primary-custom w-80">
+            <img src="/icons/add.png" width="18" height="18" style="margin-right:6px;">
+            Add New Patient
+        </a>
+    </div>
+    <div class="container-fluid py-3"><!-- Search Card -->
         <div class="main-card">
             <div class="d-flex justify-content-between align-items-center mb-4"><h4 class="section-title mb-0"><i
                     class="bi bi-search me-2"></i> Patient Search </h4></div>
+            <form th:object="${patient}" method="get">
             <div class="row g-3">
+                <div class="col-md-3"><label>Patient id</label> <input type="text" id="patientId" maxlength="50"
+                                                                         class="form-control"
+                                                                         placeholder="Enter patient id"></div>
+                <div class="col-md-3"><label>Mobile Number</label> <input type="text" id="mobileNo" class="form-control"
+                                                                          placeholder="01XXXXXXXXX"></div>
                 <div class="col-md-3"><label>Patient Name</label> <input type="text" id="patientName" maxlength="50"
                                                                          class="form-control"
                                                                          placeholder="Enter patient name"></div>
-                <div class="col-md-3"><label>Mobile Number</label> <input type="text" id="mobileNo" class="form-control"
-                                                                          placeholder="01XXXXXXXXX"></div>
+                <div class="col-md-3"><label>Patient Father Name</label> <input type="text" id="patientFatherName" maxlength="50"
+                                                                         class="form-control"
+                                                                         placeholder="Enter patient father name"></div>
 
                 <div th:replace="~{fragments/inputs :: bloodGroupSelect('bloodGroup','Blood Group','col-md-2','form-label')}"></div>
-
-                <div class="col-md-2"><label>Date Of Birth</label> <input type="date" id="dateOfBirth"
-                                                                          class="form-control"></div>
-                <div class="col-md-2 d-flex align-items-end">
-                    <button id="searchBtn" class="btn btn-primary-custom w-100"><i class="bi bi-search me-1"></i> Search
-                    </button>
+                <div th:replace="~{fragments/inputs :: dateInput('dateOfBirth','Date of Birth','col-md-2','form-label')}"></div>
+            </div>
+            </form>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center mt-3">
+                    <button id="searchBtn" class="btn btn-primary-custom" style="min-width: 17%"> <i class="bi bi-search me-1"></i> Search</button>
                 </div>
             </div>
-        </div> <!-- Result Card -->
+        </div>
+
+    <!-- Result Card -->
         <div class="main-card">
             <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="section-title mb-0"><i
                     class="bi bi-people me-2"></i> Patient List </h4> <span class="badge-soft"> Total : <span
@@ -43,7 +59,7 @@
                         <th>Mobile</th>
                         <th>Blood Group</th>
                         <th>Date Of Birth</th>
-                        <th width="120">Action</th>
+                        <th width="120">Occupation</th>
                     </tr>
                     </thead>
                     <tbody id="patientTableBody"></tbody>
@@ -51,6 +67,70 @@
             </div>
         </div>
     </div>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+    <script>
+        var currentPage = 0;
+        $(document).ready(function() {
+            $("#searchBtn").click(function () {
+                currentPage = 0;
+                loadPatients();
+            });
+
+            $("#nextBtn").click(function () {
+                currentPage++;
+                loadPatients();
+            });
+
+            $("#prevBtn").click(function () {
+                if (currentPage > 0) {
+                    currentPage--;
+                    loadPatients();
+                }
+            });
+
+        });
+        function loadPatients() {
+
+            let request = {
+                patientName: $("#patientName").val(),
+                mobileNo: $("#mobileNo").val(),
+                bloodGroup: $("#bloodGroup").val(),
+                dateOfBirth: $("#dateOfBirth").val(),
+                page: currentPage,
+                size: 10
+            };
+            $.ajax({
+                url: "/patients/search",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(request),
+
+                success: function(res) {
+                    //
+                            $("#patientTableBody").empty();
+
+                            $("#totalPatients").text(res.totalElements);
+
+                            $.each(res.content, function(i, p) {
+                                $("#patientTableBody").append(`
+                        <tr>
+                            <td>${p.patientId}</td>
+                            <td><a href="/patients/details/${p.patientId}">${p.firstName} ${p.lastName}</a></td>
+                            <td>${p.mobile}</td>
+                            <td>${p.bloodGroup}</td>
+                            <td>${p.dateOfBirth}</td>
+                            <td>${p.occupation}</td>
+                        </tr>
+                    `);
+                            });
+                }
+            });
+        }
+    </script>
+
 </div>
 
 </body>

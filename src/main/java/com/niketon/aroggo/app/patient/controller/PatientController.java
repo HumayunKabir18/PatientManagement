@@ -1,8 +1,10 @@
 package com.niketon.aroggo.app.patient.controller;
 
 import com.niketon.aroggo.app.patient.entity.Patient;
+import com.niketon.aroggo.app.patient.entity.PatientSearchEntity;
 import com.niketon.aroggo.app.patient.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +40,7 @@ public class PatientController  {
 
         Patient savedPatient = patientService.save(patient);
 
-        return "redirect:/patients/details/" + savedPatient.getId();
+        return "redirect:/patients/list";
     }
 
     // DETAILS PAGE
@@ -49,7 +51,35 @@ public class PatientController  {
 
         model.addAttribute("patient", patient);
 
-        return "patient/patient-details";
+        return "patient/patientDetails";
+    }
+
+    @PostMapping("/search")
+    @ResponseBody
+    public Page<Patient> search(@RequestBody PatientSearchEntity req) {
+        String name =
+                (req.getPatientName() == null || req.getPatientName().isBlank())
+                        ? ""
+                        : req.getPatientName();
+
+        String mobile =
+                (req.getMobileNo() == null || req.getMobileNo().isBlank())
+                        ? ""
+                        : req.getMobileNo();
+
+        String bloodGroup =
+                (req.getBloodGroup() == null || req.getBloodGroup().isBlank())
+                        ? ""
+                        : req.getBloodGroup();
+
+        return patientService.searchPatients(
+                name,
+                mobile,
+                bloodGroup,
+                req.getDateOfBirth(),
+                req.getPage(),
+                req.getSize()
+        );
     }
 
 }
