@@ -18,9 +18,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PatientService {
     @Autowired
-  PatientRepository patientRepository;
+    PatientRepository patientRepository;
 
-    // SAVE
+    // SAVE / UPDATE
     public Patient save(Patient patient){
         return patientRepository.save(patient);
     }

@@ -11,10 +11,9 @@
 
         <div class="col-lg-12">
 
-            <form th:action="@{/patients/save}"
+            <form th:fragment="patientForm" th:action="@{/patients/save}"
                   th:object="${patient}"
-                  method="post"
-                  enctype="multipart/form-data">
+                  method="post">
 
                 <!-- BASIC INFO -->
                 <div class="main-card">
@@ -25,7 +24,7 @@
                     </div>
 
                     <div class="row g-4">
-
+                        <input type="hidden" th:field="*{patientId}">
                         <div class="col-md-4">
                             <label>First Name</label>
                             <input type="text"
@@ -152,139 +151,161 @@
                     <div class="checkbox-grid">
 
                         <div class="medical-box">
-                            <input type="checkbox"> Diabetes
+                            <input type="checkbox" th:field="*{diabetes}"> Diabetes
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Hypertension
+                            <input type="checkbox" th:field="*{hypertension}"> Hypertension
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Asthma
+                            <input type="checkbox" th:field="*{gastricProblem}"> Gastric Problem
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Migraine
+                            <input type="checkbox" th:field="*{asthma}"> Asthma
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Arthritis
+                            <input type="checkbox" th:field="*{arthritis}"> Arthritis
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Rheumatic Arthritis
+                            <input type="checkbox" th:field="*{migraine}"> Migraine
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Rheumatic  Fever
+                            <input type="checkbox" th:field="*{rheumaticArthritis}"> Rheumatic Arthritis
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Allergy
-                        </div>
-                        <div class="medical-box">
-                            <input type="checkbox"> Fever
+                            <input type="checkbox" th:field="*{rheumaticFever}"> Rheumatic  Fever
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Cough
+                            <input type="checkbox" th:field="*{allergy}"> Allergy
+                        </div>
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{fever}"> Fever
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Cold
+                            <input type="checkbox" th:field="*{cough}"> Cough
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Sinusitis
+                            <input type="checkbox" th:field="*{cold}"> Cold
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Eczema
+                            <input type="checkbox" th:field="*{sinusitis}"> Sinusitis
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Constipation
-                        </div>
-                        <div class="medical-box">
-                            <input type="checkbox"> Diarrhea
+                            <input type="checkbox" th:field="*{eczema}"> Eczema
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Insomnia
+                            <input type="checkbox" th:field="*{constipation}"> Constipation
+                        </div>
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{diarrhea}"> Diarrhea
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Anxiety
+                            <input type="checkbox" th:field="*{insomnia}"> Insomnia
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Depression
+                            <input type="checkbox" th:field="*{anxiety}"> Anxiety
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Obesity
+                            <input type="checkbox" th:field="*{depression}"> Depression
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> COPD
+                            <input type="checkbox" th:field="*{obesity}"> Obesity
                         </div>
+
+
                         <div class="medical-box">
-                            <input type="checkbox"> GERD
+                            <input type="checkbox" th:field="*{tumor}"> Tumor
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Bronchitis
+                            <input type="checkbox" th:field="*{lipomasTumor}"> Lipomas Tumor
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Dengue
+                            <input type="checkbox" th:field="*{bronchitis}"> Bronchitis
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Typhoid
+                            <input type="checkbox" th:field="*{dengue}"> Dengue
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Back Pain
+                            <input type="checkbox" th:field="*{typhoid}"> Typhoid
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Neck Pain
-                        </div>
-                        <div class="medical-box">
-                            <input type="checkbox"> Thyroid Disorder
+                            <input type="checkbox" th:field="*{backPain}"> Back Pain
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Skin Allergy
+                            <input type="checkbox" th:field="*{neckPain}"> Neck Pain
+                        </div>
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{thyroidDisorder}"> Thyroid Disorder
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Kidney Stone
+                            <input type="checkbox" th:field="*{skinAllergy}"> Skin Allergy
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Gastric Problem
+                            <input type="checkbox" th:field="*{kidneyStone}"> Kidney Stone
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Hemorrhoids (Piles)
+                            <input type="checkbox" th:field="*{hemorrhoidsPiles}"> Hemorrhoids (Piles)
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Urinary Tract Infection (UTI)
+                            <input type="checkbox" th:field="*{urinaryTractInfectionUti}"> Urinary Tract Infection (UTI)
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> AIDS
+                            <input type="checkbox" th:field="*{dogBite}"> Dog Bite
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Tumor
+                            <input type="checkbox" th:field="*{catBite}"> Cat Bite
                         </div>
 
                         <div class="medical-box">
-                            <input type="checkbox"> Lipomas Tumor
+                            <input type="checkbox" th:field="*{snakeBite}"> Snake Bite
+                        </div>
+
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{centipedesBite}"> Centipedes Bite
+                        </div>
+
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{otherBites}"> other Bite
+                        </div>
+
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{aids}"> AIDS
+                        </div>
+
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{copd}"> COPD
+                        </div>
+
+                        <div class="medical-box">
+                            <input type="checkbox" th:field="*{gerd}"> GERD
                         </div>
 
                     </div>
@@ -292,9 +313,9 @@
                     <div class="row mt-4">
 
                         <div class="col-md-6">
-                            <label>Allergies</label>
+                            <label>Mental Symptom</label>
                             <textarea class="form-control"
-                                      th:field="*{allergies}"></textarea>
+                                      th:field="*{mentalSymptoms}"></textarea>
                         </div>
 
                         <div class="col-md-6">
@@ -385,10 +406,10 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label>Temperature</label>
+                            <label>Diabetes</label>
                             <input type="text"
                                    class="form-control"
-                                   th:field="*{temperature}">
+                                   th:field="*{diabetesRate}">
                         </div>
 
                     </div>
@@ -423,15 +444,20 @@
                             <label>Visit Type</label>
                             <select class="form-select"
                                     th:field="*{visitType}">
-                                <option value="New">New</option>
-                                <option value="Follow-up">Follow-up</option>
-                                <option value="Emergency">Emergency</option>
+                                <option value="new">NEW</option>
+                                <option value="follow-up">FOLLOW_UP</option>
+                                <option value="emergency">EMERGENCY</option>
+                                <option value="routine_checkup">ROUTINE_CHECKUP</option>
+                                <option value="consultation">CONSULTATION</option>
+                                <option value="telemedicine">TELEMEDICINE</option>
+                                <option value="home_visit">HOME_VISIT</option>
                             </select>
                         </div>
 
                     </div>
 
                 </div>
+
 
                 <!-- ACTION BUTTONS -->
                 <div class="d-flex gap-3 mb-5">

@@ -34,6 +34,7 @@ public class PatientController  {
         return "/patient/patientRegistration";
     }
 
+
     // SAVE PATIENT
     @PostMapping("/save")
     public String savePatient(@ModelAttribute Patient patient){
