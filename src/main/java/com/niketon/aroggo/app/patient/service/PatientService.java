@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import java.time.format.DateTimeFormatter;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,30 @@ public class PatientService {
     PatientRepository patientRepository;
 
     // SAVE / UPDATE
-    public Patient save(Patient patient){
+    public Patient save(Patient patient) {
+
+        if (patient.getPatientId() == null) {
+
+            String lastPatientCode = patientRepository.findLastPatientCode();
+
+            long nextNumber = 1;
+
+            if (lastPatientCode != null && !lastPatientCode.isBlank()) {
+                String sequencePart = lastPatientCode.substring(8);
+                nextNumber = Long.parseLong(sequencePart) + 1;
+            }
+
+            String currentDate = LocalDate.now()
+                    .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+            String patientCode = currentDate +
+                    String.format("%04d", nextNumber);
+
+            patient.setPatientCode(patientCode);
+        }
+
         return patientRepository.save(patient);
     }
-
     // GET ALL
     public List<Patient> getAllPatients(){
         return patientRepository.findAll();
@@ -43,6 +64,7 @@ public class PatientService {
     }
 
     public Page<Patient> searchPatients(
+            String patientId,
             String name,
             String mobile,
             String bloodGroup,
@@ -53,7 +75,8 @@ public class PatientService {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Patient> patients = patientRepository.searchPatients(
-                 name,
+                patientId,
+                name,
                 mobile,
                 bloodGroup,
                 dob,
@@ -83,4 +106,21 @@ public class PatientService {
 //                pageable
 //        );
 //    }
+
+public Patient getPatientByCode(String patientCode) {
+    return patientRepository.findByPatientCode(patientCode)
+            .orElseThrow(() ->
+                    new RuntimeException("Patient Not Found"));
+}
+
+    public Patient update(Patient patient) {
+
+        Patient existingPatient = patientRepository.findById(patient.getPatientId())
+                .orElseThrow(() ->
+                        new RuntimeException("Patient Not Found"));
+
+        patient.setPatientCode(existingPatient.getPatientCode());
+
+        return patientRepository.save(patient);
+    }
 }

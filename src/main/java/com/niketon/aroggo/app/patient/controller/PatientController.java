@@ -44,16 +44,22 @@ public class PatientController  {
         return "redirect:/patients/list";
     }
 
+    @PostMapping("/update")
+    public String updatePatient(@ModelAttribute Patient patient) {
+
+        patientService.update(patient);
+
+        return "redirect:/patients/list";
+    }
+
     // DETAILS PAGE
-    @GetMapping("/details/{id}")
-    public String patientDetails(@PathVariable Long id, Model model){
-
-        Patient patient = patientService.getPatientById(id);
-
+    @GetMapping("/details/{patientCode}")
+    public String patientDetails(@PathVariable String patientCode, Model model) {
+        Patient patient = patientService.getPatientByCode(patientCode);
         model.addAttribute("patient", patient);
-
         return "patient/patientDetails";
     }
+
 
     @PostMapping("/search")
     @ResponseBody
@@ -62,6 +68,10 @@ public class PatientController  {
                 (req.getPatientName() == null || req.getPatientName().isBlank())
                         ? ""
                         : req.getPatientName();
+        String patientId =
+                (req.getPatientId() == null || req.getPatientId().isBlank())
+                        ? ""
+                        : req.getPatientId();
 
         String mobile =
                 (req.getMobileNo() == null || req.getMobileNo().isBlank())
@@ -74,6 +84,7 @@ public class PatientController  {
                         : req.getBloodGroup();
 
         return patientService.searchPatients(
+                patientId,
                 name,
                 mobile,
                 bloodGroup,

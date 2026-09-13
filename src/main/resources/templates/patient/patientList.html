@@ -27,9 +27,9 @@
                 <div class="col-md-3"><label>Patient Name</label> <input type="text" id="patientName" maxlength="50"
                                                                          class="form-control"
                                                                          placeholder="Enter patient name"></div>
-                <div class="col-md-3"><label>Patient Father Name</label> <input type="text" id="patientFatherName" maxlength="50"
-                                                                         class="form-control"
-                                                                         placeholder="Enter patient father name"></div>
+<!--                <div class="col-md-3"><label>Patient Father Name</label> <input type="text" id="patientFatherName" maxlength="50"-->
+<!--                                                                         class="form-control"-->
+<!--                                                                         placeholder="Enter patient father name"></div>-->
 
                 <div th:replace="~{fragments/inputs :: bloodGroupSelect('bloodGroup','Blood Group','col-md-2','form-label')}"></div>
                 <div th:replace="~{fragments/inputs :: dateInput('dateOfBirth','Date of Birth','col-md-2','form-label')}"></div>
@@ -94,6 +94,7 @@
         function loadPatients() {
 
             let request = {
+                patientId: $("#patientId").val(),
                 patientName: $("#patientName").val(),
                 mobileNo: $("#mobileNo").val(),
                 bloodGroup: $("#bloodGroup").val(),
@@ -116,8 +117,8 @@
                             $.each(res.content, function(i, p) {
                                 $("#patientTableBody").append(`
                         <tr>
-                            <td>${p.patientId}</td>
-                            <td><a href="/patients/details/${p.patientId}">${p.firstName} ${p.lastName}</a></td>
+                            <td>${p.patientCode}</td>
+                            <td><a href="/patients/details/${p.patientCode}">${p.firstName} ${p.lastName}</a></td>
                             <td>${p.mobile}</td>
                             <td>${p.bloodGroup}</td>
                             <td>${p.address}</td>

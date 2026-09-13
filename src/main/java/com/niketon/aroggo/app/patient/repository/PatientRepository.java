@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +19,11 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 	List<Patient> findByFirstNameContainingIgnoreCase(String firstName);
 
 	List<Patient> findByMobileContaining(String mobile);
+
+	Optional<Patient> findByPatientCode(String patientCode);
+
+	@Query("SELECT MAX(p.patientCode) FROM Patient p")
+	String findLastPatientCode();
 
 	@Query("""
     SELECT p
@@ -35,6 +41,11 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             OR LOWER(p.mobile) LIKE LOWER(CONCAT('%', :mobile, '%'))
         )
         AND (
+            :patientId IS NULL
+            OR :patientId = ''
+            OR LOWER(p.patientCode) LIKE LOWER(CONCAT('%', :patientId, '%'))
+        )
+        AND (
             :bloodGroup IS NULL
             OR :bloodGroup = ''
             OR p.bloodGroup = :bloodGroup
@@ -43,8 +54,10 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             :dob IS NULL
             OR p.dateOfBirth = :dob
         )
+        ORDER BY p.patientCode ASC
 """)
 	Page<Patient> searchPatients(
+			@Param("patientId") String patientId,
 			@Param("name") String name,
 			@Param("mobile") String mobile,
 			@Param("bloodGroup") String bloodGroup,

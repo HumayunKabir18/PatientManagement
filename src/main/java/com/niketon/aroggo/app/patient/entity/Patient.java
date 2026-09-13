@@ -18,6 +18,8 @@ public class Patient {
 	@Column(name = "patient_id")
 	private Long patientId;
 
+	@Column(name = "patient_code", unique = true, nullable = false, length = 20)
+	private String patientCode;
 	// BASIC INFO
 	@Column(name = "first_name")
 	private String firstName;
@@ -207,19 +209,19 @@ public class Patient {
 	@Column(name="lipomas_tumor",length = 1)
 	private boolean lipomasTumor;
 
-	@Column(length = 1)
+	@Column(name="dog_bite",length = 1)
 	private boolean dogBite;
 
-	@Column(length = 1)
+	@Column(name="cat_bite",length = 1)
 	private boolean catBite;
 
-	@Column(length = 1)
+	@Column(name="snake_bite",length = 1)
 	private boolean snakeBite;
 
-	@Column(length = 1)
+	@Column(name="centipedes_bite",length = 1)
 	private boolean centipedesBite;
 
-	@Column(length = 1)
+	@Column(name="other_bites",length = 1)
 	private boolean otherBites;
 
 
