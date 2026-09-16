@@ -41,5 +41,318 @@
     </div>
 
 </th:block>
+
+
+<!-- ===================================================== -->
+<!-- APPOINTMENT / CONSULTATION FRAGMENT -->
+<!-- ===================================================== -->
+
+<div th:fragment="appointmentSection">
+
+
+    <!-- ===================================================== -->
+    <!-- APPOINTMENT -->
+    <!-- ===================================================== -->
+
+    <div class="main-card mb-4">
+
+        <div class="section-title">
+
+            <i class="bi bi-calendar-check me-2"></i>
+
+            Appointment / Consultation
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- ================================================= -->
+            <!-- DATE -->
+            <!-- ================================================= -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Appointment Date
+                </label>
+
+                <input type="date"
+                       class="form-control"
+                       th:field="*{appointment.appointmentDate}"
+                       required>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- TIME -->
+            <!-- ================================================= -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Appointment Time
+                </label>
+
+                <input type="time"
+                       class="form-control"
+                       th:field="*{appointment.appointmentTime}">
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- TYPE -->
+            <!-- ================================================= -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Appointment Type
+                </label>
+
+                <select class="form-select"
+                        th:field="*{appointment.appointmentType}">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option value="NEW">
+                        New Patient
+                    </option>
+
+                    <option value="FOLLOW_UP">
+                        Follow-up
+                    </option>
+
+                    <option value="EMERGENCY">
+                        Emergency
+                    </option>
+
+                    <option value="ROUTINE_CHECKUP">
+                        Routine Check-up
+                    </option>
+
+                    <option value="CONSULTATION">
+                        Consultation
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- CHIEF COMPLAINT -->
+            <!-- ================================================= -->
+
+            <div class="col-md-12">
+
+                <label class="form-label">
+                    Chief Complaint
+                </label>
+
+                <textarea class="form-control"
+                          rows="3"
+                          placeholder="What is the patient's main complaint?"
+                          th:field="*{appointment.chiefComplaint}"></textarea>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SYMPTOMS -->
+            <!-- ================================================= -->
+
+            <div class="col-md-12">
+
+                <label class="form-label">
+                    Symptoms
+                </label>
+
+                <textarea class="form-control"
+                          rows="3"
+                          placeholder="Describe patient's symptoms"
+                          th:field="*{appointment.symptoms}"></textarea>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- DIAGNOSIS -->
+            <!-- ================================================= -->
+
+            <div class="col-md-12">
+
+                <label class="form-label">
+                    Diagnosis
+                </label>
+
+                <textarea class="form-control"
+                          rows="3"
+                          placeholder="Doctor's diagnosis"
+                          th:field="*{appointment.diagnosis}"></textarea>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- DOCTOR ADVICE -->
+            <!-- ================================================= -->
+
+            <div class="col-md-12">
+
+                <label class="form-label">
+                    Doctor Advice / Prescription Notes
+                </label>
+
+                <textarea class="form-control"
+                          rows="4"
+                          placeholder="Doctor's advice"
+                          th:field="*{appointment.doctorAdvice}"></textarea>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FOLLOW UP -->
+            <!-- ================================================= -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Follow-up Date
+                </label>
+
+                <input type="date"
+                       class="form-control"
+                       th:field="*{appointment.followUpDate}">
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- NOTES -->
+            <!-- ================================================= -->
+
+            <div class="col-md-8">
+
+                <label class="form-label">
+                    Additional Notes
+                </label>
+
+                <textarea class="form-control"
+                          rows="2"
+                          th:field="*{appointment.notes}"></textarea>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MEDICINES -->
+    <!-- ===================================================== -->
+
+    <div class="main-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+            <div class="section-title mb-0">
+
+                <i class="bi bi-capsule me-2"></i>
+
+                Medicines
+
+            </div>
+
+
+            <button type="button"
+                    id="addMedicineButton"
+                    class="btn btn-primary">
+
+                <i class="bi bi-plus-lg me-1"></i>
+
+                Add Medicine
+
+            </button>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table align-middle"
+                   id="medicineTable">
+
+                <thead>
+
+                <tr>
+
+                    <th style="width: 60px;">
+                        #
+                    </th>
+
+                    <th>
+                        Medicine Name
+                    </th>
+
+                    <th style="width: 150px;">
+                        Type
+                    </th>
+
+                    <th style="width: 150px;">
+                        Doses
+                    </th>
+
+                    <th class="text-center">
+                        Morning
+                    </th>
+
+                    <th class="text-center">
+                        Noon
+                    </th>
+
+                    <th class="text-center">
+                        Night
+                    </th>
+
+                    <th style="width: 60px;">
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody id="medicineBody">
+
+                <!-- Medicine rows are generated by appointment.js -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="text-secondary small"
+             id="noMedicineMessage">
+
+            No medicine added yet.
+            Click "Add Medicine" to add a prescription.
+
+        </div>
+
+    </div>
+
+
+</div>
 </body>
 </html>

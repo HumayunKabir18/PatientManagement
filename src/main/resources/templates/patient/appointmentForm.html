@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master}">
+
+<head>
+
+    <title>New Appointment</title>
+
+
+    <!-- ===================================================== -->
+    <!-- PAGE CSS -->
+    <!-- ===================================================== -->
+
+    <th:block layout:fragment="pageCss">
+
+        <link rel="stylesheet"
+              th:href="@{/css/appointment.css}">
+
+    </th:block>
+
+</head>
+
+
+<body>
+
+
+<div layout:fragment="content">
+
+    <div class="container-fluid px-0">
+
+
+        <!-- ===================================================== -->
+        <!-- PAGE HEADER -->
+        <!-- ===================================================== -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+            <div>
+
+                <div class="d-flex align-items-center gap-2 mb-1">
+
+
+                    <div class="page-icon">
+
+                        <i class="bi bi-calendar-plus"></i>
+
+                    </div>
+
+
+                    <h4 class="mb-0 fw-semibold">
+
+                        New Appointment
+
+                    </h4>
+
+                </div>
+
+
+                <p class="text-muted mb-0">
+
+                    Create a new appointment and consultation record
+
+                </p>
+
+            </div>
+
+
+            <a th:href="@{/patients/details/{patientCode}(patientCode=${form.patient.patientCode})}"
+               class="btn btn-light border">
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Back to Patient
+
+            </a>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- FORM -->
+        <!-- ===================================================== -->
+
+        <form th:action="@{/patients/appointment/save}"
+              th:object="${form}"
+              method="post">
+
+
+            <!-- ===================================================== -->
+            <!-- IMPORTANT: PATIENT CODE -->
+            <!-- ===================================================== -->
+
+            <input type="hidden"
+                   th:field="*{patient.patientCode}">
+
+
+            <!-- ===================================================== -->
+            <!-- PATIENT INFORMATION -->
+            <!-- ===================================================== -->
+
+            <div class="main-card mb-4">
+
+
+                <div class="section-title">
+
+                    <i class="bi bi-person me-2"></i>
+
+                    Patient Information
+
+                </div>
+
+
+                <div class="row g-4">
+
+
+                    <!-- PATIENT CODE -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Patient Code
+
+                        </label>
+
+
+                        <input type="text"
+                               class="form-control"
+                               th:value="${form.patient.patientCode}"
+                               readonly>
+
+                    </div>
+
+
+                    <!-- PATIENT NAME -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Patient Name
+
+                        </label>
+
+
+                        <input type="text"
+                               class="form-control"
+                               th:value="${form.patient.firstName + ' ' + form.patient.lastName}"
+                               readonly>
+
+                    </div>
+
+
+                    <!-- MOBILE -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Mobile
+
+                        </label>
+
+
+                        <input type="text"
+                               class="form-control"
+                               th:value="${form.patient.mobile}"
+                               readonly>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- APPOINTMENT + MEDICINES FRAGMENT -->
+            <!-- ===================================================== -->
+
+            <div th:replace="~{fragments/inputs :: appointmentSection}"></div>
+
+
+            <!-- ===================================================== -->
+            <!-- ACTION BUTTONS -->
+            <!-- ===================================================== -->
+
+            <div class="d-flex justify-content-end gap-2 mb-5">
+
+
+                <a th:href="@{/patients/details/{patientCode}(patientCode=${form.patient.patientCode})}"
+                   class="btn btn-light border px-4">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="btn btn-primary px-4">
+
+                    <i class="bi bi-check-lg me-1"></i>
+
+                    Save Appointment
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- PAGE JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<th:block layout:fragment="pageJs">
+
+    <script th:src="@{/js/appointment.js}"></script>
+
+</th:block>
+
+
+</body>
+
+</html>

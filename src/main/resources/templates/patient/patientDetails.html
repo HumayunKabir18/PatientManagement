@@ -7,18 +7,827 @@
 
 <div layout:fragment="content">
 
-    <div class="row">
+    <div class="row g-4">
 
+        <!-- ===================================================== -->
         <!-- PATIENT INFORMATION -->
-        <div class="col-lg-9">
+        <!-- ===================================================== -->
 
-            <div th:replace="~{patient/patientRegistration :: patientForm}">
+        <div class="col-lg-8">
+
+            <div class="main-card mb-4">
+
+                <div class="section-title">
+                    <i class="bi bi-person me-2"></i>
+                    Patient Information
+                </div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Patient ID
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.patientCode}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            First Name
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.firstName}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Last Name
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.lastName}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Gender
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.gender}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Date of Birth
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.dateOfBirth}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Age
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.age}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Blood Group
+                        </small>
+
+                        <div class="fw-semibold text-danger"
+                             th:text="${patient.bloodGroup}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Mobile
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.mobile}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <small class="text-secondary">
+                            Email
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.email}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <small class="text-secondary">
+                            Address
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.address}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <small class="text-secondary">
+                            Occupation
+                        </small>
+
+                        <div class="fw-semibold"
+                             th:text="${patient.occupation}">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- MEDICAL HISTORY -->
+            <!-- ================================================= -->
+
+            <div class="main-card mb-4">
+
+                <div class="section-title">
+
+                    <i class="bi bi-heart-pulse me-2"></i>
+
+                    Medical History
+
+                </div>
+
+
+                <div class="checkbox-grid">
+
+
+                    <!-- ================================================= -->
+                    <!-- COMMON CONDITIONS -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.diabetes}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Diabetes
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.hypertension}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Hypertension
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.gastricProblem}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Gastric Problem
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.asthma}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Asthma
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.arthritis}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Arthritis
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.migraine}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Migraine
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- RHEUMATIC / ALLERGY -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.rheumaticArthritis}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Rheumatic Arthritis
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.rheumaticFever}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Rheumatic Fever
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.allergy}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Allergy
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- RESPIRATORY / INFECTION -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.fever}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Fever
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.cough}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Cough
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.cold}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Cold
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.sinusitis}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Sinusitis
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.bronchitis}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Bronchitis
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- SKIN / DIGESTIVE -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.eczema}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Eczema
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.constipation}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Constipation
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.diarrhea}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Diarrhea
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- MENTAL / LIFESTYLE -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.insomnia}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Insomnia
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.anxiety}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Anxiety
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.depression}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Depression
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.obesity}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Obesity
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- TUMOR / OTHER CONDITIONS -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.tumor}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Tumor
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.lipomasTumor}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Lipomas Tumor
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.dengue}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Dengue
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.typhoid}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Typhoid
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PAIN -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.backPain}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Back Pain
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.neckPain}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Neck Pain
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- THYROID / KIDNEY / URINARY -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.thyroidDisorder}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Thyroid Disorder
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.skinAllergy}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Dysentery
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.kidneyStone}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Kidney Stone
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.hemorrhoidsPiles}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Hemorrhoids (Piles)
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.urinaryTractInfectionUti}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Urinary Tract Infection (UTI)
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- BITES / OTHER -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.dogBite}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Gallbladder stones
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.catBite}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Headache
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.snakeBite}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Polipas
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.centipedesBite}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Sciatica
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.otherBites}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Bite
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- OTHER -->
+                    <!-- ================================================= -->
+
+                    <div class="medical-box"
+                         th:if="${patient.aids}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        AIDS
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.copd}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Tonsils
+
+                    </div>
+
+
+                    <div class="medical-box"
+                         th:if="${patient.gerd}">
+
+                        <i class="bi bi-check-circle-fill text-success"></i>
+
+                        Teeth pain
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- NO CONDITIONS -->
+                    <!-- ================================================= -->
+
+                    <div class="col-12"
+                         th:if="${!patient.diabetes
+                                && !patient.hypertension
+                                && !patient.gastricProblem
+                                && !patient.asthma
+                                && !patient.arthritis
+                                && !patient.migraine
+                                && !patient.rheumaticArthritis
+                                && !patient.rheumaticFever
+                                && !patient.allergy
+                                && !patient.fever
+                                && !patient.cough
+                                && !patient.cold
+                                && !patient.sinusitis
+                                && !patient.eczema
+                                && !patient.constipation
+                                && !patient.diarrhea
+                                && !patient.insomnia
+                                && !patient.anxiety
+                                && !patient.depression
+                                && !patient.obesity
+                                && !patient.tumor
+                                && !patient.lipomasTumor
+                                && !patient.bronchitis
+                                && !patient.dengue
+                                && !patient.typhoid
+                                && !patient.backPain
+                                && !patient.neckPain
+                                && !patient.thyroidDisorder
+                                && !patient.skinAllergy
+                                && !patient.kidneyStone
+                                && !patient.hemorrhoidsPiles
+                                && !patient.urinaryTractInfectionUti
+                                && !patient.dogBite
+                                && !patient.catBite
+                                && !patient.snakeBite
+                                && !patient.centipedesBite
+                                && !patient.otherBites
+                                && !patient.aids
+                                && !patient.copd
+                                && !patient.gerd}">
+
+                        <span class="text-secondary">
+
+                            No recorded medical conditions.
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- ADDITIONAL MEDICAL INFORMATION -->
+                <!-- ================================================= -->
+
+                <div class="row g-4 mt-2">
+
+
+                    <div class="col-md-6">
+
+                        <small class="text-secondary">
+                            Mental Symptoms
+                        </small>
+
+                        <div th:text="${patient.mentalSymptoms}">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <small class="text-secondary">
+                            Previous Medication / Other Diseases
+                        </small>
+
+                        <div th:text="${patient.previousMedication}">
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- APPOINTMENT HISTORY -->
+            <!-- ================================================= -->
+
+            <div class="main-card mb-4">
+
+                <div class="d-flex justify-content-between
+                            align-items-center mb-4">
+
+                    <div class="section-title mb-0">
+
+                        <i class="bi bi-calendar-check me-2"></i>
+
+                        Appointment History
+
+                    </div>
+
+
+                    <a th:href="@{/patients/appointment/new/{patientCode}
+                                (patientCode=${patient.patientCode})}"
+                       class="btn btn-primary">
+
+                        <i class="bi bi-plus-lg me-1"></i>
+
+                        New Appointment
+
+                    </a>
+
+                </div>
+
+
+                <div th:if="${#lists.isEmpty(appointments)}"
+                     class="text-secondary">
+
+                    No appointments found.
+
+                </div>
+
+
+                <div th:unless="${#lists.isEmpty(appointments)}"
+                     class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Time
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Chief Complaint
+                            </th>
+
+                            <th>
+                                Diagnosis
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr th:each="appointment : ${appointments}">
+
+                            <td th:text="${appointment.appointmentDate}">
+                            </td>
+
+                            <td th:text="${appointment.appointmentTime}">
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-light text-dark"
+                                      th:text="${appointment.appointmentType}">
+                                </span>
+
+                            </td>
+
+                            <td th:text="${appointment.chiefComplaint}">
+                            </td>
+
+                            <td th:text="${appointment.diagnosis}">
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
             </div>
 
         </div>
 
+
+        <!-- ===================================================== -->
         <!-- PATIENT SUMMARY -->
-        <div class="col-lg-3">
+        <!-- ===================================================== -->
+
+        <div class="col-lg-4">
 
             <div class="summary-card sticky-sidebar">
 
@@ -26,7 +835,9 @@
                     Patient Summary
                 </h5>
 
+
                 <!-- Patient ID -->
+
                 <div class="summary-item">
 
                     <small class="text-secondary">
@@ -39,20 +850,32 @@
 
                 </div>
 
+
                 <!-- Last Visit -->
+
                 <div class="summary-item">
 
                     <small class="text-secondary">
                         Last Visit
                     </small>
 
-                    <div class="fw-semibold">
-                        12 May 2026
+                    <div class="fw-semibold"
+                         th:if="${not #lists.isEmpty(appointments)}"
+                         th:text="${appointments[0].appointmentDate}">
+                    </div>
+
+                    <div class="text-secondary"
+                         th:if="${#lists.isEmpty(appointments)}">
+
+                        No visit yet
+
                     </div>
 
                 </div>
 
+
                 <!-- Blood Group -->
+
                 <div class="summary-item">
 
                     <small class="text-secondary">
@@ -65,82 +888,60 @@
 
                 </div>
 
-                <!-- Allergy Alert -->
-                <div class="summary-item">
 
-                    <small class="text-secondary">
-                        Allergy Alert
-                    </small>
+                <!-- Allergy -->
 
-                    <div class="fw-semibold text-warning">
+                <!--                <div class="summary-item">-->
 
-                        <span th:if="${patient.allergy}">
-                            Allergy
-                        </span>
+                <!--                    <small class="text-secondary">-->
+                <!--                        Allergy Alert-->
+                <!--                    </small>-->
 
-                        <span th:unless="${patient.allergy}">
-                            No known allergy
-                        </span>
+                <!--                    <div class="fw-semibold text-warning">-->
 
-                    </div>
+                <!--                        <span th:if="${patient.allergy}">-->
+                <!--                            Allergy-->
+                <!--                        </span>-->
 
-                </div>
+                <!--                        <span th:unless="${patient.allergy}">-->
+                <!--                            No known allergy-->
+                <!--                        </span>-->
 
-                <!-- Payment Status -->
-                <div class="summary-item">
+                <!--                    </div>-->
 
-                    <small class="text-secondary">
-                        Payment Status
-                    </small>
+                <!--                </div>-->
 
-                    <div class="badge bg-success">
-                        Paid
-                    </div>
-
-                </div>
 
                 <hr>
 
+
                 <!-- Recent Visits -->
+
                 <h6 class="fw-bold mb-3">
                     Recent Visits
                 </h6>
 
+
                 <div class="timeline">
 
-                    <div class="timeline-item">
+                    <div class="timeline-item"
+                         th:each="appointment : ${appointments}">
 
-                        <small>
-                            May 2026
+                        <small
+                                th:text="${appointment.appointmentDate}">
                         </small>
 
-                        <div class="fw-semibold">
-                            Fever Treatment
+                        <div class="fw-semibold"
+                             th:text="${appointment.chiefComplaint}">
                         </div>
 
                     </div>
 
-                    <div class="timeline-item">
 
-                        <small>
-                            Jan 2026
-                        </small>
+                    <div th:if="${#lists.isEmpty(appointments)}"
+                         class="text-secondary small">
 
-                        <div class="fw-semibold">
-                            Blood Test
-                        </div>
-
-                    </div>
-
-                    <div class="timeline-item">
-
-                        <small>
-                            2025
-                        </small>
-
-                        <div class="fw-semibold">
-                            Follow-up
-                        </div>
+                        No visit history.
 
                     </div>
 
@@ -155,4 +956,5 @@
 </div>
 
 </body>
+
 </html>

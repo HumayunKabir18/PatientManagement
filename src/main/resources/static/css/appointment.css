@@ -1,0 +1,359 @@
+    /*
+     * ============================================================
+     * APPOINTMENT PAGE CSS
+     * ============================================================
+     */
+
+
+    /* ============================================================
+       PAGE HEADER
+    ============================================================ */
+
+.page-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(37, 99, 235, 0.08);
+
+    color: #2563eb;
+
+    font-size: 18px;
+
+}
+
+
+/* ============================================================
+   SECTION ICON
+============================================================ */
+
+.section-icon {
+
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(37, 99, 235, 0.08);
+
+    color: #2563eb;
+
+    margin-right: 12px;
+
+    font-size: 16px;
+
+}
+
+
+/* ============================================================
+   APPOINTMENT CARD
+============================================================ */
+
+.main-card {
+
+    overflow: hidden;
+
+}
+
+
+/* ============================================================
+   CARD HEADER
+============================================================ */
+
+.main-card .card-header {
+
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #eef0f2;
+
+}
+
+
+/* ============================================================
+   CARD BODY
+============================================================ */
+
+.main-card .card-body {
+
+    padding: 20px;
+
+}
+
+
+/* ============================================================
+   FORM LABEL
+============================================================ */
+
+.form-label {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #495057;
+
+    margin-bottom: 7px;
+
+}
+
+
+/* ============================================================
+   READ ONLY FIELD
+============================================================ */
+
+input[readonly] {
+
+    cursor: default;
+
+}
+
+
+/* ============================================================
+   FORM FOCUS
+============================================================ */
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: #2563eb;
+
+    box-shadow:
+            0 0 0 0.2rem rgba(37, 99, 235, 0.08);
+
+}
+
+
+/* ============================================================
+   MEDICINE TABLE
+============================================================ */
+
+.medicine-table {
+
+    vertical-align: middle;
+
+}
+
+
+.medicine-table thead th {
+
+    background: #f8f9fa;
+
+    border-bottom: 1px solid #dee2e6;
+
+    border-top: 0;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #6c757d;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.02em;
+
+    padding: 13px 12px;
+
+    white-space: nowrap;
+
+}
+
+
+.medicine-table tbody td {
+
+    padding: 10px 12px;
+
+    border-color: #edf0f2;
+
+}
+
+
+.medicine-table tbody tr.medicine-row:hover {
+
+    background-color: #fafbfc;
+
+}
+
+
+/* ============================================================
+   MEDICINE SERIAL
+============================================================ */
+
+.medicine-serial {
+
+    font-weight: 600;
+
+    color: #6c757d;
+
+}
+
+
+/* ============================================================
+   MEDICINE CHECKBOX
+============================================================ */
+
+.medicine-table .form-check-input {
+
+    width: 17px;
+
+    height: 17px;
+
+    cursor: pointer;
+
+}
+
+
+/* ============================================================
+   EMPTY MEDICINE
+============================================================ */
+
+.empty-medicine {
+
+    color: #6c757d;
+
+}
+
+
+.empty-medicine-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 10px;
+
+    border-radius: 50%;
+
+    background: #f8f9fa;
+
+    color: #adb5bd;
+
+    font-size: 20px;
+
+}
+
+
+/* ============================================================
+   REMOVE MEDICINE
+============================================================ */
+
+.remove-medicine {
+
+    width: 34px;
+
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .main-card .card-header {
+
+        padding: 14px 16px;
+
+    }
+
+
+    .main-card .card-body {
+
+        padding: 16px;
+
+    }
+
+
+    .medicine-table {
+
+        min-width: 900px;
+
+    }
+
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .main-card .card-header {
+
+    background: #000000 !important;
+
+    border-color: #2a2a2a;
+
+}
+
+
+body.dark-mode .medicine-table thead th {
+
+    background: #111111;
+
+    color: #cbd5e1;
+
+    border-color: #2a2a2a;
+
+}
+
+
+body.dark-mode .medicine-table tbody td {
+
+    border-color: #2a2a2a;
+
+}
+
+
+body.dark-mode .medicine-table tbody tr.medicine-row:hover {
+
+    background-color: #111111;
+
+}
+
+
+body.dark-mode .empty-medicine-icon {
+
+    background: #111111;
+
+    color: #64748b;
+
+}
+
+
+body.dark-mode .form-label {
+
+    color: #cbd5e1;
+
+}
