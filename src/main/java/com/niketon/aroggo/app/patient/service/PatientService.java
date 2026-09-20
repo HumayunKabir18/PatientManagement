@@ -86,26 +86,6 @@ public class PatientService {
         return patients;
     }
 
-//    public Page<Patient> searchPatients(
-//            String name,
-//            String mobile,
-//            String bloodGroup,
-//            LocalDate dob,
-//            int page,
-//            int size
-//    ) {
-//
-////        Pageable pageable = PageRequest.of(page, size);
-//
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("patientId").descending());
-//        return patientRepository.searchPatients(
-//                (name == null || name.isEmpty()) ? null : name,
-//                (mobile == null || mobile.isEmpty()) ? null : mobile,
-//                (bloodGroup == null || bloodGroup.isEmpty()) ? null : bloodGroup,
-//                dob,
-//                pageable
-//        );
-//    }
 
 public Patient getPatientByCode(String patientCode) {
     return patientRepository.findByPatientCode(patientCode)

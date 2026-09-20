@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <input
         type="checkbox"
-        class="form-check-input"
+        class="form-check-input checkbox-medicine"
         name="appointment.medicines[${index}].morning"
         value="true">
 
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <input
         type="checkbox"
-        class="form-check-input"
+        class="form-check-input checkbox-medicine"
         name="appointment.medicines[${index}].noon"
         value="true">
 
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <input
         type="checkbox"
-        class="form-check-input"
+        class="form-check-input checkbox-medicine"
         name="appointment.medicines[${index}].night"
         value="true">
 

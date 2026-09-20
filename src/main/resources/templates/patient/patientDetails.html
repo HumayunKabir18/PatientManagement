@@ -164,515 +164,311 @@
             <!-- ================================================= -->
             <!-- MEDICAL HISTORY -->
             <!-- ================================================= -->
-
             <div class="main-card mb-4">
 
                 <div class="section-title">
-
                     <i class="bi bi-heart-pulse me-2"></i>
-
                     Medical History
-
                 </div>
 
+                <div class="row g-3">
 
-                <div class="checkbox-grid">
+                    <!-- ==================== -->
+                    <!-- MEDICAL CONDITIONS -->
+                    <!-- ==================== -->
 
+                    <div class="col-md-3" th:if="${patient.diabetes}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Diabetes
+            </span>
+                    </div>
 
-                    <!-- ================================================= -->
-                    <!-- COMMON CONDITIONS -->
-                    <!-- ================================================= -->
+                    <div class="col-md-3" th:if="${patient.hypertension}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Hypertension
+            </span>
+                    </div>
 
-                    <div class="medical-box"
-                         th:if="${patient.diabetes}">
+                    <div class="col-md-3" th:if="${patient.gastricProblem}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Gastric Problem
+            </span>
+                    </div>
 
-                        <i class="bi bi-check-circle-fill text-success"></i>
+                    <div class="col-md-3" th:if="${patient.asthma}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Asthma
+            </span>
+                    </div>
 
-                        Diabetes
+                    <div class="col-md-3" th:if="${patient.arthritis}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Arthritis
+            </span>
+                    </div>
 
+                    <div class="col-md-3" th:if="${patient.migraine}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Migraine
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.rheumaticArthritis}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Rheumatic Arthritis
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.rheumaticFever}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Rheumatic Fever
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.allergy}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Allergy
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.fever}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Fever
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.cough}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Cough
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.cold}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Cold
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.sinusitis}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Sinusitis
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.eczema}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Eczema
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.constipation}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Constipation
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.diarrhea}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Diarrhea
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.insomnia}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Insomnia
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.anxiety}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Anxiety
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.depression}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Depression
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.obesity}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Obesity
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.tumor}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Tumor
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.lipomasTumor}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Lipomas Tumor
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.bronchitis}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Bronchitis
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.dengue}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Dengue
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.typhoid}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Typhoid
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.backPain}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Back Pain
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.neckPain}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Neck Pain
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.thyroidDisorder}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Thyroid Disorder
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.skinAllergy}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Dysentery
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.kidneyStone}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Kidney Stone
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.hemorrhoidsPiles}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Hemorrhoids / Piles
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.urinaryTractInfectionUti}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Urinary Tract Infection (UTI)
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.dogBite}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Gallbladder Stones
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.catBite}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Headache
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.snakeBite}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Polipas
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.centipedesBite}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Sciatica
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.otherBites}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Bite
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.aids}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                AIDS
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.copd}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Tonsils
+            </span>
+                    </div>
+
+                    <div class="col-md-3" th:if="${patient.gerd}">
+            <span class="badge text-dark" style="background-color: #a8cdca;">
+                Teeth Pain
+            </span>
                     </div>
 
 
-                    <div class="medical-box"
-                         th:if="${patient.hypertension}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Hypertension
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.gastricProblem}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Gastric Problem
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.asthma}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Asthma
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.arthritis}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Arthritis
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.migraine}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Migraine
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- RHEUMATIC / ALLERGY -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.rheumaticArthritis}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Rheumatic Arthritis
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.rheumaticFever}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Rheumatic Fever
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.allergy}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Allergy
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- RESPIRATORY / INFECTION -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.fever}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Fever
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.cough}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Cough
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.cold}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Cold
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.sinusitis}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Sinusitis
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.bronchitis}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Bronchitis
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- SKIN / DIGESTIVE -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.eczema}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Eczema
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.constipation}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Constipation
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.diarrhea}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Diarrhea
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- MENTAL / LIFESTYLE -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.insomnia}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Insomnia
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.anxiety}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Anxiety
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.depression}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Depression
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.obesity}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Obesity
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- TUMOR / OTHER CONDITIONS -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.tumor}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Tumor
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.lipomasTumor}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Lipomas Tumor
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.dengue}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Dengue
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.typhoid}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Typhoid
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- PAIN -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.backPain}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Back Pain
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.neckPain}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Neck Pain
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- THYROID / KIDNEY / URINARY -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.thyroidDisorder}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Thyroid Disorder
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.skinAllergy}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Dysentery
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.kidneyStone}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Kidney Stone
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.hemorrhoidsPiles}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Hemorrhoids (Piles)
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.urinaryTractInfectionUti}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Urinary Tract Infection (UTI)
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- BITES / OTHER -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.dogBite}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Gallbladder stones
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.catBite}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Headache
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.snakeBite}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Polipas
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.centipedesBite}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Sciatica
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.otherBites}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Bite
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- OTHER -->
-                    <!-- ================================================= -->
-
-                    <div class="medical-box"
-                         th:if="${patient.aids}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        AIDS
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.copd}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Tonsils
-
-                    </div>
-
-
-                    <div class="medical-box"
-                         th:if="${patient.gerd}">
-
-                        <i class="bi bi-check-circle-fill text-success"></i>
-
-                        Teeth pain
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- NO CONDITIONS -->
-                    <!-- ================================================= -->
+                    <!-- ==================== -->
+                    <!-- NO MEDICAL HISTORY -->
+                    <!-- ==================== -->
 
                     <div class="col-12"
                          th:if="${!patient.diabetes
-                                && !patient.hypertension
-                                && !patient.gastricProblem
-                                && !patient.asthma
-                                && !patient.arthritis
-                                && !patient.migraine
-                                && !patient.rheumaticArthritis
-                                && !patient.rheumaticFever
-                                && !patient.allergy
-                                && !patient.fever
-                                && !patient.cough
-                                && !patient.cold
-                                && !patient.sinusitis
-                                && !patient.eczema
-                                && !patient.constipation
-                                && !patient.diarrhea
-                                && !patient.insomnia
-                                && !patient.anxiety
-                                && !patient.depression
-                                && !patient.obesity
-                                && !patient.tumor
-                                && !patient.lipomasTumor
-                                && !patient.bronchitis
-                                && !patient.dengue
-                                && !patient.typhoid
-                                && !patient.backPain
-                                && !patient.neckPain
-                                && !patient.thyroidDisorder
-                                && !patient.skinAllergy
-                                && !patient.kidneyStone
-                                && !patient.hemorrhoidsPiles
-                                && !patient.urinaryTractInfectionUti
-                                && !patient.dogBite
-                                && !patient.catBite
-                                && !patient.snakeBite
-                                && !patient.centipedesBite
-                                && !patient.otherBites
-                                && !patient.aids
-                                && !patient.copd
-                                && !patient.gerd}">
+                    && !patient.hypertension
+                    && !patient.gastricProblem
+                    && !patient.asthma
+                    && !patient.arthritis
+                    && !patient.migraine
+                    && !patient.rheumaticArthritis
+                    && !patient.rheumaticFever
+                    && !patient.allergy
+                    && !patient.fever
+                    && !patient.cough
+                    && !patient.cold
+                    && !patient.sinusitis
+                    && !patient.eczema
+                    && !patient.constipation
+                    && !patient.diarrhea
+                    && !patient.insomnia
+                    && !patient.anxiety
+                    && !patient.depression
+                    && !patient.obesity
+                    && !patient.tumor
+                    && !patient.lipomasTumor
+                    && !patient.bronchitis
+                    && !patient.dengue
+                    && !patient.typhoid
+                    && !patient.backPain
+                    && !patient.neckPain
+                    && !patient.thyroidDisorder
+                    && !patient.skinAllergy
+                    && !patient.kidneyStone
+                    && !patient.hemorrhoidsPiles
+                    && !patient.urinaryTractInfectionUti
+                    && !patient.dogBite
+                    && !patient.catBite
+                    && !patient.snakeBite
+                    && !patient.centipedesBite
+                    && !patient.otherBites
+                    && !patient.aids
+                    && !patient.copd
+                    && !patient.gerd}">
 
-                        <span class="text-secondary">
-
-                            No recorded medical conditions.
-
-                        </span>
+            <span class="text-secondary">
+                No recorded medical conditions.
+            </span>
 
                     </div>
-
 
                 </div>
 
@@ -682,7 +478,6 @@
                 <!-- ================================================= -->
 
                 <div class="row g-4 mt-2">
-
 
                     <div class="col-md-6">
 
@@ -707,11 +502,9 @@
 
                     </div>
 
-
                 </div>
 
             </div>
-
 
             <!-- ================================================= -->
             <!-- APPOINTMENT HISTORY -->
@@ -733,7 +526,7 @@
 
                     <a th:href="@{/patients/appointment/new/{patientCode}
                                 (patientCode=${patient.patientCode})}"
-                       class="btn btn-primary">
+                       class="btn btn-primary-custom">
 
                         <i class="bi bi-plus-lg me-1"></i>
 
