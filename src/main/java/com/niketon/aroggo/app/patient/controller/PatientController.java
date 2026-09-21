@@ -1,7 +1,10 @@
 package com.niketon.aroggo.app.patient.controller;
 
+import com.niketon.aroggo.app.appointment.dto.AppointmentForm;
+import com.niketon.aroggo.app.appointment.dto.AppointmentMedicineForm;
 import com.niketon.aroggo.app.appointment.dto.PatientAppointmentForm;
 import com.niketon.aroggo.app.appointment.entity.Appointment;
+import com.niketon.aroggo.app.appointment.entity.AppointmentId;
 import com.niketon.aroggo.app.appointment.service.AppointmentService;
 import com.niketon.aroggo.app.patient.entity.Patient;
 import com.niketon.aroggo.app.patient.entity.PatientSearchEntity;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PatientController {
 
+
     private final PatientService patientService;
     private final AppointmentService appointmentService;
 
@@ -27,7 +31,10 @@ public class PatientController {
     @GetMapping("/list")
     public String listPage(Model model) {
 
-        model.addAttribute("patient", new Patient());
+        model.addAttribute(
+                "patient",
+                new Patient()
+        );
 
         return "patient/patientList";
     }
@@ -40,9 +47,22 @@ public class PatientController {
                 new PatientAppointmentForm();
 
         form.getAppointment()
-                .setAppointmentDate(LocalDate.now());
+                .setAppointmentDate(
+                        LocalDate.now()
+                );
 
-        model.addAttribute("form", form);
+        model.addAttribute(
+                "form",
+                form
+        );
+
+        /*
+         * New appointment is editable.
+         */
+        model.addAttribute(
+                "editable",
+                true
+        );
 
         return "patient/patientRegistration";
     }
@@ -55,7 +75,9 @@ public class PatientController {
     ) {
 
         Patient savedPatient =
-                patientService.save(form.getPatient());
+                patientService.save(
+                        form.getPatient()
+                );
 
         if (form.getAppointment() != null
                 && form.getAppointment().getAppointmentDate() != null) {
@@ -89,19 +111,34 @@ public class PatientController {
     ) {
 
         Patient patient =
-                patientService.getPatientByCode(patientCode);
+                patientService.getPatientByCode(
+                        patientCode
+                );
 
         List<Appointment> appointments =
                 appointmentService.getPatientAppointments(
                         patientCode
                 );
 
-        model.addAttribute("patient", patient);
-        model.addAttribute("appointments", appointments);
+        model.addAttribute(
+                "patient",
+                patient
+        );
+
+        model.addAttribute(
+                "appointments",
+                appointments
+        );
 
         return "patient/patientDetails";
     }
 
+
+    /*
+     * ============================================================
+     * NEW APPOINTMENT
+     * ============================================================
+     */
 
     @GetMapping("/appointment/new/{patientCode}")
     public String newAppointment(
@@ -110,7 +147,9 @@ public class PatientController {
     ) {
 
         Patient patient =
-                patientService.getPatientByCode(patientCode);
+                patientService.getPatientByCode(
+                        patientCode
+                );
 
         PatientAppointmentForm form =
                 new PatientAppointmentForm();
@@ -118,9 +157,184 @@ public class PatientController {
         form.setPatient(patient);
 
         form.getAppointment()
-                .setAppointmentDate(LocalDate.now());
+                .setAppointmentDate(
+                        LocalDate.now()
+                );
 
-        model.addAttribute("form", form);
+        model.addAttribute(
+                "form",
+                form
+        );
+
+        /*
+         * New appointment = editable.
+         */
+        model.addAttribute(
+                "editable",
+                true
+        );
+
+        return "patient/appointmentForm";
+    }
+
+
+    /*
+     * ============================================================
+     * EXISTING APPOINTMENT
+     * ============================================================
+     *
+     * Appointment history row -> this URL
+     *
+     * Existing appointment is READ ONLY.
+     *
+     */
+
+    @GetMapping(
+            "/appointment/edit/{patientCode}/{appointmentCode}"
+    )
+    public String editAppointment(
+            @PathVariable String patientCode,
+            @PathVariable String appointmentCode,
+            Model model
+    ) {
+
+        Patient patient =
+                patientService.getPatientByCode(
+                        patientCode
+                );
+
+
+        AppointmentId appointmentId =
+                new AppointmentId(
+                        appointmentCode,
+                        patientCode
+                );
+
+
+        Appointment appointment =
+                appointmentService.getAppointment(
+                        appointmentId
+                );
+
+
+        PatientAppointmentForm form =
+                new PatientAppointmentForm();
+
+        form.setPatient(patient);
+
+
+        AppointmentForm appointmentForm =
+                new AppointmentForm();
+
+
+        /*
+         * Appointment fields
+         */
+
+        appointmentForm.setAppointmentDate(
+                appointment.getAppointmentDate()
+        );
+
+        appointmentForm.setAppointmentTime(
+                appointment.getAppointmentTime()
+        );
+
+        appointmentForm.setAppointmentType(
+                appointment.getAppointmentType()
+        );
+
+        appointmentForm.setChiefComplaint(
+                appointment.getChiefComplaint()
+        );
+
+        appointmentForm.setSymptoms(
+                appointment.getSymptoms()
+        );
+
+        appointmentForm.setDiagnosis(
+                appointment.getDiagnosis()
+        );
+
+        appointmentForm.setDoctorAdvice(
+                appointment.getDoctorAdvice()
+        );
+
+        appointmentForm.setFollowUpDate(
+                appointment.getFollowUpDate()
+        );
+
+        appointmentForm.setNotes(
+                appointment.getNotes()
+        );
+
+
+        /*
+         * Medicines
+         */
+
+        List<AppointmentMedicineForm> medicines =
+                appointmentService
+                        .getMedicines(appointmentId)
+                        .stream()
+                        .map(medicine -> {
+
+                            AppointmentMedicineForm medicineForm =
+                                    new AppointmentMedicineForm();
+
+                            medicineForm.setMedicineName(
+                                    medicine.getMedicineName()
+                            );
+
+                            medicineForm.setMedicineType(
+                                    medicine.getMedicineType()
+                            );
+
+                            medicineForm.setDoses(
+                                    medicine.getDoses()
+                            );
+
+                            medicineForm.setMorning(
+                                    medicine.isMorning()
+                            );
+
+                            medicineForm.setNoon(
+                                    medicine.isNoon()
+                            );
+
+                            medicineForm.setNight(
+                                    medicine.isNight()
+                            );
+
+                            return medicineForm;
+
+                        })
+                        .toList();
+
+
+        appointmentForm.setMedicines(
+                medicines
+        );
+
+
+        form.setAppointment(
+                appointmentForm
+        );
+
+
+        model.addAttribute(
+                "form",
+                form
+        );
+
+
+        /*
+         * Existing appointment = READ ONLY.
+         */
+        model.addAttribute(
+                "editable",
+                false
+        );
+
 
         return "patient/appointmentForm";
     }
@@ -134,7 +348,8 @@ public class PatientController {
 
         Patient patient =
                 patientService.getPatientByCode(
-                        form.getPatient().getPatientCode()
+                        form.getPatient()
+                                .getPatientCode()
                 );
 
         appointmentService.saveAppointment(
@@ -187,4 +402,6 @@ public class PatientController {
                 req.getSize()
         );
     }
+
+
 }

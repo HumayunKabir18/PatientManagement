@@ -21,8 +21,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppointmentService {
 
+
 	private final AppointmentRepository appointmentRepository;
 	private final AppointmentMedicineRepository medicineRepository;
+
 
 	@Transactional
 	public Appointment saveAppointment(
@@ -30,35 +32,64 @@ public class AppointmentService {
 			AppointmentForm form
 	) {
 
-		String appointmentCode = generateAppointmentCode();
+		String appointmentCode =
+				generateAppointmentCode();
 
-		AppointmentId appointmentId = new AppointmentId(
-				appointmentCode,
-				patient.getPatientCode()
-		);
+		AppointmentId appointmentId =
+				new AppointmentId(
+						appointmentCode,
+						patient.getPatientCode()
+				);
 
-		Appointment appointment = Appointment.builder()
-				.id(appointmentId)
-				.patient(patient)
-				.appointmentDate(form.getAppointmentDate())
-				.appointmentTime(form.getAppointmentTime())
-				.appointmentType(form.getAppointmentType())
-				.chiefComplaint(form.getChiefComplaint())
-				.symptoms(form.getSymptoms())
-				.diagnosis(form.getDiagnosis())
-				.doctorAdvice(form.getDoctorAdvice())
-				.followUpDate(form.getFollowUpDate())
-				.notes(form.getNotes())
-				.createdAt(LocalDateTime.now())
-				.build();
+		Appointment appointment =
+				Appointment.builder()
+						.id(appointmentId)
+						.patient(patient)
+						.appointmentDate(
+								form.getAppointmentDate()
+						)
+						.appointmentTime(
+								form.getAppointmentTime()
+						)
+						.appointmentType(
+								form.getAppointmentType()
+						)
+						.chiefComplaint(
+								form.getChiefComplaint()
+						)
+						.symptoms(
+								form.getSymptoms()
+						)
+						.diagnosis(
+								form.getDiagnosis()
+						)
+						.doctorAdvice(
+								form.getDoctorAdvice()
+						)
+						.followUpDate(
+								form.getFollowUpDate()
+						)
+						.notes(
+								form.getNotes()
+						)
+						.createdAt(
+								LocalDateTime.now()
+						)
+						.build();
 
 		Appointment savedAppointment =
-				appointmentRepository.save(appointment);
+				appointmentRepository.save(
+						appointment
+				);
 
-		saveMedicines(savedAppointment, form);
+		saveMedicines(
+				savedAppointment,
+				form
+		);
 
 		return savedAppointment;
 	}
+
 
 	private void saveMedicines(
 			Appointment appointment,
@@ -74,15 +105,20 @@ public class AppointmentService {
 		for (AppointmentMedicineForm medicineForm :
 				form.getMedicines()) {
 
-			if (medicineForm.getMedicineName() == null ||
-					medicineForm.getMedicineName().isBlank()) {
+			if (medicineForm.getMedicineName() == null
+					|| medicineForm.getMedicineName().isBlank()) {
+
 				continue;
 			}
 
 			AppointmentMedicineId medicineId =
 					new AppointmentMedicineId(
-							appointment.getId().getAppointmentCode(),
-							appointment.getId().getPatientCode(),
+							appointment.getId()
+									.getAppointmentCode(),
+
+							appointment.getId()
+									.getPatientCode(),
+
 							serialNo
 					);
 
@@ -90,12 +126,24 @@ public class AppointmentService {
 					AppointmentMedicine.builder()
 							.id(medicineId)
 							.appointment(appointment)
-							.medicineName(medicineForm.getMedicineName())
-							.medicineType(medicineForm.getMedicineType())
-							.doses(medicineForm.getDoses())
-							.morning(medicineForm.isMorning())
-							.noon(medicineForm.isNoon())
-							.night(medicineForm.isNight())
+							.medicineName(
+									medicineForm.getMedicineName()
+							)
+							.medicineType(
+									medicineForm.getMedicineType()
+							)
+							.doses(
+									medicineForm.getDoses()
+							)
+							.morning(
+									medicineForm.isMorning()
+							)
+							.noon(
+									medicineForm.isNoon()
+							)
+							.night(
+									medicineForm.isNight()
+							)
 							.build();
 
 			medicineRepository.save(medicine);
@@ -103,6 +151,7 @@ public class AppointmentService {
 			serialNo++;
 		}
 	}
+
 
 	public List<Appointment> getPatientAppointments(
 			String patientCode
@@ -114,6 +163,31 @@ public class AppointmentService {
 				);
 	}
 
+
+	/*
+	 * Get one appointment together with all of
+	 * its medicines while the transaction is open.
+	 */
+	@Transactional(readOnly = true)
+	public Appointment getAppointment(
+			AppointmentId appointmentId
+	) {
+
+		return appointmentRepository
+				.findById(appointmentId)
+				.orElseThrow(() ->
+						new RuntimeException(
+								"Appointment Not Found"
+						)
+				);
+	}
+
+
+	/*
+	 * Important:
+	 * Medicines are loaded inside a transaction.
+	 */
+	@Transactional(readOnly = true)
 	public List<AppointmentMedicine> getMedicines(
 			AppointmentId appointmentId
 	) {
@@ -123,6 +197,7 @@ public class AppointmentService {
 						appointmentId
 				);
 	}
+
 
 	private String generateAppointmentCode() {
 
@@ -134,4 +209,6 @@ public class AppointmentService {
 								)
 						);
 	}
+
+
 }

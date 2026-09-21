@@ -814,8 +814,7 @@
         <!-- APPOINTMENT + MEDICINES -->
         <!-- ===================================================== -->
 
-        <div th:replace="~{fragments/inputs :: appointmentSection}"></div>
-
+        <div th:replace="~{fragments/inputs :: appointmentSection(editable=${editable})}"></div>
 
         <!-- ===================================================== -->
         <!-- SAVE -->

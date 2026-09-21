@@ -1,17 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf"
       layout:decorate="~{layout/master}">
 
 <head>
 
+    
     <title>New Appointment</title>
-
-
-    <!-- ===================================================== -->
-    <!-- PAGE CSS -->
-    <!-- ===================================================== -->
 
     <th:block layout:fragment="pageCss">
 
@@ -19,29 +16,27 @@
               th:href="@{/css/appointment.css}">
 
     </th:block>
+    
 
 </head>
 
-
 <body>
-
 
 <div layout:fragment="content">
 
+    
     <div class="container-fluid px-0">
 
 
-        <!-- ===================================================== -->
-        <!-- PAGE HEADER -->
-        <!-- ===================================================== -->
+        <!-- ========================================================= -->
+        <!-- PAGE HEADER                                               -->
+        <!-- ========================================================= -->
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-
 
             <div>
 
                 <div class="d-flex align-items-center gap-2 mb-1">
-
 
                     <div class="page-icon">
 
@@ -49,26 +44,26 @@
 
                     </div>
 
-
                     <h4 class="mb-0 fw-semibold">
 
-                        New Appointment
+                        Appointment
 
                     </h4>
 
                 </div>
 
-
                 <p class="text-muted mb-0">
 
-                    Create a new appointment and consultation record
+                    View appointment and consultation details
 
                 </p>
 
             </div>
 
 
-            <a th:href="@{/patients/details/{patientCode}(patientCode=${form.patient.patientCode})}"
+            <a th:href="@{/patients/details/{patientCode}(
+                    patientCode=${form.patient.patientCode}
+                 )}"
                class="btn btn-light border">
 
                 <i class="bi bi-arrow-left me-1"></i>
@@ -80,29 +75,26 @@
         </div>
 
 
-        <!-- ===================================================== -->
-        <!-- FORM -->
-        <!-- ===================================================== -->
+        <!-- ========================================================= -->
+        <!-- APPOINTMENT FORM                                          -->
+        <!-- ========================================================= -->
 
         <form th:action="@{/patients/appointment/save}"
               th:object="${form}"
               method="post">
 
 
-            <!-- ===================================================== -->
-            <!-- IMPORTANT: PATIENT CODE -->
-            <!-- ===================================================== -->
+            <!-- Patient code used during submit -->
 
             <input type="hidden"
                    th:field="*{patient.patientCode}">
 
 
             <!-- ===================================================== -->
-            <!-- PATIENT INFORMATION -->
+            <!-- PATIENT INFORMATION                                   -->
             <!-- ===================================================== -->
 
             <div class="main-card mb-4">
-
 
                 <div class="section-title">
 
@@ -116,16 +108,11 @@
                 <div class="row g-4">
 
 
-                    <!-- PATIENT CODE -->
-
                     <div class="col-md-4">
 
                         <label class="form-label">
-
                             Patient Code
-
                         </label>
-
 
                         <input type="text"
                                class="form-control"
@@ -135,16 +122,11 @@
                     </div>
 
 
-                    <!-- PATIENT NAME -->
-
                     <div class="col-md-4">
 
                         <label class="form-label">
-
                             Patient Name
-
                         </label>
-
 
                         <input type="text"
                                class="form-control"
@@ -154,16 +136,11 @@
                     </div>
 
 
-                    <!-- MOBILE -->
-
                     <div class="col-md-4">
 
                         <label class="form-label">
-
                             Mobile
-
                         </label>
-
 
                         <input type="text"
                                class="form-control"
@@ -179,29 +156,37 @@
 
 
             <!-- ===================================================== -->
-            <!-- APPOINTMENT + MEDICINES FRAGMENT -->
+            <!-- APPOINTMENT SECTION                                   -->
             <!-- ===================================================== -->
 
-            <div th:replace="~{fragments/inputs :: appointmentSection}"></div>
+            <div th:replace="~{fragments/inputs :: appointmentSection(${editable})}">
+            </div>
 
 
             <!-- ===================================================== -->
-            <!-- ACTION BUTTONS -->
+            <!-- ACTION BUTTONS                                        -->
             <!-- ===================================================== -->
 
             <div class="d-flex justify-content-end gap-2 mb-5">
 
 
-                <a th:href="@{/patients/details/{patientCode}(patientCode=${form.patient.patientCode})}"
+                <a th:href="@{/patients/details/{patientCode}(
+                        patientCode=${form.patient.patientCode}
+                     )}"
                    class="btn btn-outline-secondary px-4 rounded-4">
 
-                    <span>Cancel</span>
+                    <span>Back</span>
 
                 </a>
 
 
+                <!--
+                    Save is shown ONLY for a new appointment.
+                -->
+
                 <button type="submit"
-                        class="btn btn-primary-custom px-4">
+                        class="btn btn-primary-custom"
+                        th:if="${editable}">
 
                     <i class="bi bi-check-lg me-1"></i>
 
@@ -212,25 +197,20 @@
 
             </div>
 
-
         </form>
 
-
     </div>
+    
 
 </div>
 
-
-<!-- ===================================================== -->
-<!-- PAGE JAVASCRIPT -->
-<!-- ===================================================== -->
-
 <th:block layout:fragment="pageJs">
 
+    
     <script th:src="@{/js/appointment.js}"></script>
+    
 
 </th:block>
-
 
 </body>
 
