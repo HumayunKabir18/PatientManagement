@@ -207,14 +207,14 @@
             <!-- CHIEF COMPLAINT -->
             <!-- ================================================= -->
 
-            <div class="col-md-12">
+            <div class="col-md-6">
 
                 <label class="form-label">
                     Chief Complaint
                 </label>
 
                 <textarea class="form-control"
-                          rows="3"
+                          rows="4"
                           placeholder="What is the patient's main complaint?"
                           th:field="*{appointment.chiefComplaint}"
                           th:readonly="${!editable}"></textarea>
@@ -226,14 +226,14 @@
             <!-- SYMPTOMS -->
             <!-- ================================================= -->
 
-            <div class="col-md-12">
+            <div class="col-md-6">
 
                 <label class="form-label">
                     Symptoms
                 </label>
 
                 <textarea class="form-control"
-                          rows="3"
+                          rows="4"
                           placeholder="Describe patient's symptoms"
                           th:field="*{appointment.symptoms}"
                           th:readonly="${!editable}"></textarea>
@@ -245,14 +245,14 @@
             <!-- DIAGNOSIS -->
             <!-- ================================================= -->
 
-            <div class="col-md-12">
+            <div class="col-md-6">
 
                 <label class="form-label">
                     Diagnosis
                 </label>
 
                 <textarea class="form-control"
-                          rows="3"
+                          rows="4"
                           placeholder="Doctor's diagnosis"
                           th:field="*{appointment.diagnosis}"
                           th:readonly="${!editable}"></textarea>
@@ -264,7 +264,7 @@
             <!-- DOCTOR ADVICE -->
             <!-- ================================================= -->
 
-            <div class="col-md-12">
+            <div class="col-md-6">
 
                 <label class="form-label">
                     Doctor Advice / Prescription Notes
@@ -403,7 +403,7 @@
 
 
                 <!-- ================================================= -->
-                <!-- EXISTING MEDICINES                                -->
+                <!-- EXISTING MEDICINES -->
                 <!-- ================================================= -->
 
                 <tr th:each="medicine, medicineStat : ${form.appointment.medicines}">
@@ -412,8 +412,8 @@
 
                     <td>
 
-                    <span th:text="${medicineStat.count}">
-                    </span>
+                            <span th:text="${medicineStat.count}">
+                            </span>
 
                     </td>
 
@@ -427,8 +427,8 @@
                         <input type="text"
                                class="form-control"
                                th:name="${'appointment.medicines['
-                                    + medicineStat.index
-                                    + '].medicineName'}"
+                                        + medicineStat.index
+                                        + '].medicineName'}"
                                th:value="${medicine.medicineName}"
                                th:readonly="${!editable}">
 
@@ -443,8 +443,8 @@
 
                         <select class="form-select"
                                 th:name="${'appointment.medicines['
-                                     + medicineStat.index
-                                     + '].medicineType'}"
+                                         + medicineStat.index
+                                         + '].medicineType'}"
                                 th:disabled="${!editable}">
 
                             <option value="">
@@ -500,8 +500,8 @@
                         <input type="text"
                                class="form-control"
                                th:name="${'appointment.medicines['
-                                    + medicineStat.index
-                                    + '].doses'}"
+                                        + medicineStat.index
+                                        + '].doses'}"
                                th:value="${medicine.doses}"
                                th:readonly="${!editable}">
 
@@ -517,8 +517,8 @@
                         <input type="checkbox"
                                class="form-check-input"
                                th:name="${'appointment.medicines['
-                                    + medicineStat.index
-                                    + '].morning'}"
+                                        + medicineStat.index
+                                        + '].morning'}"
                                th:checked="${medicine.morning}"
                                th:disabled="${!editable}">
 
@@ -534,8 +534,8 @@
                         <input type="checkbox"
                                class="form-check-input"
                                th:name="${'appointment.medicines['
-                                    + medicineStat.index
-                                    + '].noon'}"
+                                        + medicineStat.index
+                                        + '].noon'}"
                                th:checked="${medicine.noon}"
                                th:disabled="${!editable}">
 
@@ -551,8 +551,8 @@
                         <input type="checkbox"
                                class="form-check-input"
                                th:name="${'appointment.medicines['
-                                    + medicineStat.index
-                                    + '].night'}"
+                                        + medicineStat.index
+                                        + '].night'}"
                                th:checked="${medicine.night}"
                                th:disabled="${!editable}">
 
