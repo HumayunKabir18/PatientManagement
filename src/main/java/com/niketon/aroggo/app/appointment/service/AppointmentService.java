@@ -135,6 +135,12 @@ public class AppointmentService {
 							.doses(
 									medicineForm.getDoses()
 							)
+							.frequency(
+									medicineForm.getFrequency()
+							)
+							.meal(
+									medicineForm.getMeal()
+							)
 							.morning(
 									medicineForm.isMorning()
 							)
@@ -184,9 +190,9 @@ public class AppointmentService {
 
 
 	/*
-	 * Important:
-	 * Medicines are loaded inside a transaction.
+	 * Get all medicines belonging to an appointment.
 	 */
+
 	@Transactional(readOnly = true)
 	public List<AppointmentMedicine> getMedicines(
 			AppointmentId appointmentId

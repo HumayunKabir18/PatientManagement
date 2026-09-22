@@ -94,9 +94,64 @@
 
 <!-- ===================================================== -->
 
+<div th:fragment="bloodGroupSelect(fieldName, label, containerClass, labelClass)" th:class="${containerClass}">
+
+    <label th:for="${fieldName}"
+           th:text="${label}"
+           th:class="${labelClass}">
+    </label>
+
+    <select class="form-select"
+            th:id="${fieldName}"
+            th:name="${fieldName}">
+
+        <option value="">
+            Select Blood Group
+        </option>
+
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+
+    </select>
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- DATE INPUT FIELD -->
+
+<!-- ===================================================== -->
+
+<th th="dateInput(fieldName, label, containerClass, labelClass)">
+
+    <div th:class="${containerClass}">
+
+        <label th:text="${label}"
+               th:class="${labelClass}">
+        </label>
+
+        <input type="date"
+               class="form-control"
+               th:field="*{__${fieldName}__}" />
+
+    </div>
+
+</th>
+
+<!-- ===================================================== -->
+
+<!-- APPOINTMENT / CONSULTATION FRAGMENT -->
+
+<!-- ===================================================== -->
+
 <div th:fragment="appointmentSection(editable)">
 
-    
     <!-- ================================================= -->
     <!-- APPOINTMENT -->
     <!-- ================================================= -->
@@ -115,9 +170,7 @@
         <div class="row g-4">
 
 
-            <!-- ================================================= -->
             <!-- DATE -->
-            <!-- ================================================= -->
 
             <div class="col-md-4">
 
@@ -134,9 +187,7 @@
             </div>
 
 
-            <!-- ================================================= -->
             <!-- TIME -->
-            <!-- ================================================= -->
 
             <div class="col-md-4">
 
@@ -152,9 +203,7 @@
             </div>
 
 
-            <!-- ================================================= -->
             <!-- TYPE -->
-            <!-- ================================================= -->
 
             <div class="col-md-4">
 
@@ -166,9 +215,7 @@
                         th:field="*{appointment.appointmentType}"
                         th:disabled="${!editable}">
 
-                    <option value="">
-                        Select
-                    </option>
+                    <option value="">Select</option>
 
                     <option value="NEW">
                         New Patient
@@ -203,9 +250,7 @@
             </div>
 
 
-            <!-- ================================================= -->
             <!-- CHIEF COMPLAINT -->
-            <!-- ================================================= -->
 
             <div class="col-md-6">
 
@@ -217,14 +262,13 @@
                           rows="4"
                           placeholder="What is the patient's main complaint?"
                           th:field="*{appointment.chiefComplaint}"
-                          th:readonly="${!editable}"></textarea>
+                          th:readonly="${!editable}">
+            </textarea>
 
             </div>
 
 
-            <!-- ================================================= -->
             <!-- SYMPTOMS -->
-            <!-- ================================================= -->
 
             <div class="col-md-6">
 
@@ -236,14 +280,13 @@
                           rows="4"
                           placeholder="Describe patient's symptoms"
                           th:field="*{appointment.symptoms}"
-                          th:readonly="${!editable}"></textarea>
+                          th:readonly="${!editable}">
+            </textarea>
 
             </div>
 
 
-            <!-- ================================================= -->
             <!-- DIAGNOSIS -->
-            <!-- ================================================= -->
 
             <div class="col-md-6">
 
@@ -255,14 +298,13 @@
                           rows="4"
                           placeholder="Doctor's diagnosis"
                           th:field="*{appointment.diagnosis}"
-                          th:readonly="${!editable}"></textarea>
+                          th:readonly="${!editable}">
+            </textarea>
 
             </div>
 
 
-            <!-- ================================================= -->
             <!-- DOCTOR ADVICE -->
-            <!-- ================================================= -->
 
             <div class="col-md-6">
 
@@ -274,14 +316,13 @@
                           rows="4"
                           placeholder="Doctor's advice"
                           th:field="*{appointment.doctorAdvice}"
-                          th:readonly="${!editable}"></textarea>
+                          th:readonly="${!editable}">
+            </textarea>
 
             </div>
 
 
-            <!-- ================================================= -->
             <!-- FOLLOW UP -->
-            <!-- ================================================= -->
 
             <div class="col-md-4">
 
@@ -297,9 +338,7 @@
             </div>
 
 
-            <!-- ================================================= -->
             <!-- NOTES -->
-            <!-- ================================================= -->
 
             <div class="col-md-8">
 
@@ -310,7 +349,8 @@
                 <textarea class="form-control"
                           rows="2"
                           th:field="*{appointment.notes}"
-                          th:readonly="${!editable}"></textarea>
+                          th:readonly="${!editable}">
+            </textarea>
 
             </div>
 
@@ -325,8 +365,10 @@
 
     <div class="main-card mb-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
 
+        <!-- MEDICINE HEADER -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div class="section-title mb-0">
 
@@ -338,7 +380,6 @@
 
 
             <!-- ADD MEDICINE -->
-            <!-- Only available for NEW appointment -->
 
             <button type="button"
                     id="addMedicineButton"
@@ -354,6 +395,10 @@
         </div>
 
 
+        <!-- ================================================= -->
+        <!-- MEDICINE TABLE -->
+        <!-- ================================================= -->
+
         <div class="table-responsive">
 
             <table class="table align-middle"
@@ -367,27 +412,38 @@
                         #
                     </th>
 
-                    <th>
+                    <th style="min-width: 200px;">
                         Medicine Name
                     </th>
 
-                    <th style="width: 150px;">
+                    <th style="min-width: 150px;">
                         Type
                     </th>
 
-                    <th style="width: 150px;">
+                    <th style="min-width: 120px;">
                         Doses
                     </th>
 
-                    <th class="text-center">
+                    <th style="min-width: 180px;">
+                        Frequency
+                    </th>
+
+                    <th style="min-width: 150px;">
+                        Meal
+                    </th>
+
+                    <th class="text-center"
+                        style="min-width: 90px;">
                         Morning
                     </th>
 
-                    <th class="text-center">
+                    <th class="text-center"
+                        style="min-width: 90px;">
                         Noon
                     </th>
 
-                    <th class="text-center">
+                    <th class="text-center"
+                        style="min-width: 90px;">
                         Night
                     </th>
 
@@ -406,45 +462,43 @@
                 <!-- EXISTING MEDICINES -->
                 <!-- ================================================= -->
 
-                <tr th:each="medicine, medicineStat : ${form.appointment.medicines}">
+                <tr th:each="medicine, medicineStat : ${form.appointment.medicines}"
+                    class="medicine-row">
+
 
                     <!-- SERIAL -->
 
-                    <td>
+                    <td class="medicine-serial text-center">
 
-                            <span th:text="${medicineStat.count}">
-                            </span>
+                    <span th:text="${medicineStat.count}">
+                    </span>
 
                     </td>
 
 
-                    <!-- ================================================= -->
                     <!-- MEDICINE NAME -->
-                    <!-- ================================================= -->
 
                     <td>
 
                         <input type="text"
                                class="form-control"
                                th:name="${'appointment.medicines['
-                                        + medicineStat.index
-                                        + '].medicineName'}"
+                                    + medicineStat.index
+                                    + '].medicineName'}"
                                th:value="${medicine.medicineName}"
                                th:readonly="${!editable}">
 
                     </td>
 
 
-                    <!-- ================================================= -->
                     <!-- MEDICINE TYPE -->
-                    <!-- ================================================= -->
 
                     <td>
 
                         <select class="form-select"
                                 th:name="${'appointment.medicines['
-                                         + medicineStat.index
-                                         + '].medicineType'}"
+                                     + medicineStat.index
+                                     + '].medicineType'}"
                                 th:disabled="${!editable}">
 
                             <option value="">
@@ -459,6 +513,11 @@
                             <option value="CAPSULE"
                                     th:selected="${medicine.medicineType == 'CAPSULE'}">
                                 Capsule
+                            </option>
+
+                            <option value="LIQUID"
+                                    th:selected="${medicine.medicineType == 'LIQUID'}">
+                                Liquid
                             </option>
 
                             <option value="SYRUP"
@@ -481,6 +540,11 @@
                                 Drops
                             </option>
 
+                            <option value="SUPPOSITORY"
+                                    th:selected="${medicine.medicineType == 'SUPPOSITORY'}">
+                                Suppository
+                            </option>
+
                             <option value="OTHER"
                                     th:selected="${medicine.medicineType == 'OTHER'}">
                                 Other
@@ -491,83 +555,122 @@
                     </td>
 
 
-                    <!-- ================================================= -->
                     <!-- DOSES -->
-                    <!-- ================================================= -->
 
                     <td>
 
                         <input type="text"
                                class="form-control"
                                th:name="${'appointment.medicines['
-                                        + medicineStat.index
-                                        + '].doses'}"
+                                    + medicineStat.index
+                                    + '].doses'}"
                                th:value="${medicine.doses}"
                                th:readonly="${!editable}">
 
                     </td>
 
 
-                    <!-- ================================================= -->
+                    <!-- FREQUENCY -->
+
+                    <td>
+
+                        <input type="text"
+                               class="form-control"
+                               th:name="${'appointment.medicines['
+                                    + medicineStat.index
+                                    + '].frequency'}"
+                               th:value="${medicine.frequency}"
+                               placeholder="e.g. Every 4 hours"
+                               th:readonly="${!editable}">
+
+                    </td>
+
+
+                    <!-- MEAL -->
+
+                    <td>
+
+                        <select class="form-select"
+                                th:name="${'appointment.medicines['
+                                     + medicineStat.index
+                                     + '].meal'}"
+                                th:disabled="${!editable}">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option value="BEFORE"
+                                    th:selected="${medicine.meal == 'BEFORE'}">
+                                Before Meal
+                            </option>
+
+                            <option value="AFTER"
+                                    th:selected="${medicine.meal == 'AFTER'}">
+                                After Meal
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
                     <!-- MORNING -->
-                    <!-- ================================================= -->
 
                     <td class="text-center">
 
                         <input type="checkbox"
-                               class="form-check-input"
+                               class="form-check-input checkbox-medicine"
                                th:name="${'appointment.medicines['
-                                        + medicineStat.index
-                                        + '].morning'}"
+                                    + medicineStat.index
+                                    + '].morning'}"
+                               value="true"
                                th:checked="${medicine.morning}"
                                th:disabled="${!editable}">
 
                     </td>
 
 
-                    <!-- ================================================= -->
                     <!-- NOON -->
-                    <!-- ================================================= -->
 
                     <td class="text-center">
 
                         <input type="checkbox"
-                               class="form-check-input"
+                               class="form-check-input checkbox-medicine"
                                th:name="${'appointment.medicines['
-                                        + medicineStat.index
-                                        + '].noon'}"
+                                    + medicineStat.index
+                                    + '].noon'}"
+                               value="true"
                                th:checked="${medicine.noon}"
                                th:disabled="${!editable}">
 
                     </td>
 
 
-                    <!-- ================================================= -->
                     <!-- NIGHT -->
-                    <!-- ================================================= -->
 
                     <td class="text-center">
 
                         <input type="checkbox"
-                               class="form-check-input"
+                               class="form-check-input checkbox-medicine"
                                th:name="${'appointment.medicines['
-                                        + medicineStat.index
-                                        + '].night'}"
+                                    + medicineStat.index
+                                    + '].night'}"
+                               value="true"
                                th:checked="${medicine.night}"
                                th:disabled="${!editable}">
 
                     </td>
 
 
-                    <!-- ================================================= -->
                     <!-- DELETE -->
-                    <!-- ================================================= -->
 
-                    <td>
+                    <td class="text-center">
 
                         <button type="button"
-                                class="btn btn-sm btn-outline-danger remove-medicine-button"
-                                th:if="${editable}">
+                                class="btn btn-sm btn-outline-danger remove-medicine"
+                                th:if="${editable}"
+                                title="Remove medicine">
 
                             <i class="bi bi-trash"></i>
 
@@ -598,10 +701,8 @@
 
         </div>
 
+
     </div>
-    
-
 </div>
-
 </body>
 </html>

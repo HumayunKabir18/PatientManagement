@@ -11,6 +11,10 @@ public class AppointmentMedicineForm {
 
 	private String doses;
 
+	private String frequency ;
+
+	private String meal ;
+
 	private boolean morning;
 
 	private boolean noon;

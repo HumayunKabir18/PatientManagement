@@ -36,8 +36,8 @@ public class PatientController {
                 new Patient()
         );
 
-        return "patient/patientList";
-    }
+		return "patient/patientList";
+	}
 
 
     @GetMapping("/register")
@@ -293,9 +293,20 @@ public class PatientController {
                                     medicine.getDoses()
                             );
 
-                            medicineForm.setMorning(
-                                    medicine.isMorning()
-                            );
+
+							medicineForm.setFrequency(
+									medicine.getFrequency()
+							);
+
+
+							medicineForm.setMeal(
+									medicine.getMeal()
+							);
+
+
+							medicineForm.setMorning(
+									medicine.isMorning()
+							);
 
                             medicineForm.setNoon(
                                     medicine.isNoon()
@@ -340,11 +351,17 @@ public class PatientController {
     }
 
 
-    @PostMapping("/appointment/save")
-    public String saveAppointment(
-            @ModelAttribute("form")
-            PatientAppointmentForm form
-    ) {
+	/*
+	 * ============================================================
+	 * SAVE APPOINTMENT
+	 * ============================================================
+	 */
+
+	@PostMapping("/appointment/save")
+	public String saveAppointment(
+			@ModelAttribute("form")
+			PatientAppointmentForm form
+	) {
 
         Patient patient =
                 patientService.getPatientByCode(
@@ -362,11 +379,17 @@ public class PatientController {
     }
 
 
-    @PostMapping("/search")
-    @ResponseBody
-    public Page<Patient> search(
-            @RequestBody PatientSearchEntity req
-    ) {
+	/*
+	 * ============================================================
+	 * PATIENT SEARCH
+	 * ============================================================
+	 */
+
+	@PostMapping("/search")
+	@ResponseBody
+	public Page<Patient> search(
+			@RequestBody PatientSearchEntity req
+	) {
 
         String name =
                 (req.getPatientName() == null

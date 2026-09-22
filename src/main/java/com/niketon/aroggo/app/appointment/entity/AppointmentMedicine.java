@@ -41,6 +41,12 @@ public class AppointmentMedicine {
 	@Column(name = "doses", length = 100)
 	private String doses;
 
+	@Column(name = "frequency", length = 100)
+	private String frequency;
+
+	@Column(name = "meal", length = 6)
+	private String meal;
+
 	@Column(name = "morning", nullable = false)
 	private boolean morning;
 
