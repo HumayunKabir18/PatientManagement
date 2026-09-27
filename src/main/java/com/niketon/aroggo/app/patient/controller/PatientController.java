@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -79,15 +81,6 @@ public class PatientController {
                         form.getPatient()
                 );
 
-        if (form.getAppointment() != null
-                && form.getAppointment().getAppointmentDate() != null) {
-
-            appointmentService.saveAppointment(
-                    savedPatient,
-                    form.getAppointment()
-            );
-        }
-
         return "redirect:/patients/details/"
                 + savedPatient.getPatientCode();
     }
@@ -95,12 +88,14 @@ public class PatientController {
 
     @PostMapping("/update")
     public String updatePatient(
-            @ModelAttribute Patient patient
+            @ModelAttribute("form")
+            PatientAppointmentForm form
     ) {
 
-        patientService.update(patient);
+        patientService.update(form.getPatient());
 
-        return "redirect:/patients/list";
+        return "redirect:/patients/details/"
+                + form.getPatient().getPatientCode();
     }
 
 
@@ -131,6 +126,30 @@ public class PatientController {
         );
 
         return "patient/patientDetails";
+    }
+
+    @GetMapping("/update/details/{patientCode}")
+    public String patientUpdateDetails(
+            @PathVariable String patientCode,
+            Model model
+    ) {
+
+        Patient patient =
+                patientService.getPatientByCode(
+                        patientCode
+                );
+
+        PatientAppointmentForm form =
+                new PatientAppointmentForm();
+
+        form.setPatient(patient);
+
+        model.addAttribute(
+                "form",
+                form
+        );
+
+        return "patient/patientRegistration";
     }
 
 
@@ -231,6 +250,8 @@ public class PatientController {
          * Appointment fields
          */
 
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         appointmentForm.setAppointmentDate(
                 appointment.getAppointmentDate()
         );
@@ -266,7 +287,12 @@ public class PatientController {
         appointmentForm.setNotes(
                 appointment.getNotes()
         );
-
+        appointmentForm.setHeight(appointment.getHeight());
+        appointmentForm.setWeight(appointment.getWeight());
+        appointmentForm.setBmi(appointment.getBmi());
+        appointmentForm.setBloodPressure(appointment.getBloodPressure());
+        appointmentForm.setPulseRate(appointment.getPulseRate());
+        appointmentForm.setDiabetes(appointment.getDiabetes());
 
         /*
          * Medicines
@@ -369,16 +395,77 @@ public class PatientController {
                                 .getPatientCode()
                 );
 
-        appointmentService.saveAppointment(
-                patient,
-                form.getAppointment()
-        );
+        Appointment savedAppointment =
+                appointmentService.saveAppointment(
+                        patient,
+                        form.getAppointment()
+                );
 
-        return "redirect:/patients/details/"
-                + patient.getPatientCode();
+        return "redirect:/patients/appointment/print/"
+                + patient.getPatientCode()
+                + "/"
+                + savedAppointment.getId().getAppointmentCode();
     }
 
+    /*
+     * ============================================================
+     * PRINT APPOINTMENT PRESCRIPTION
+     * ============================================================
+     */
 
+    @GetMapping(
+            "/appointment/print/{patientCode}/{appointmentCode}"
+    )
+    public String printAppointment(
+            @PathVariable String patientCode,
+            @PathVariable String appointmentCode,
+            Model model
+    ) {
+
+        Patient patient =
+                patientService.getPatientByCode(
+                        patientCode
+                );
+
+
+        AppointmentId appointmentId =
+                new AppointmentId(
+                        appointmentCode,
+                        patientCode
+                );
+
+
+        Appointment appointment =
+                appointmentService.getAppointment(
+                        appointmentId
+                );
+
+
+        List<com.niketon.aroggo.app.appointment.entity.AppointmentMedicine>
+                medicines =
+                appointmentService.getMedicines(
+                        appointmentId
+                );
+
+
+        model.addAttribute(
+                "patient",
+                patient
+        );
+
+        model.addAttribute(
+                "appointment",
+                appointment
+        );
+
+        model.addAttribute(
+                "medicines",
+                medicines
+        );
+
+
+        return "patient/appointmentPrint";
+    }
 	/*
 	 * ============================================================
 	 * PATIENT SEARCH

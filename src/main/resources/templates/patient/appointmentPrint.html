@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Prescription - Araggo Niketon</title>
+
+  <link rel="stylesheet"
+        th:href="@{/css/appointment-print.css}">
+
+</head>
+
+
+<body>
+
+
+<!-- ============================================================
+     PRINT / BACK BUTTONS
+============================================================ -->
+
+<div class="print-actions">
+
+  <button type="button"
+          onclick="window.print()">
+    Print Prescription
+  </button>
+
+    <a th:href="@{/patients/details/{patientCode}(patientCode=${patient.patientCode})}"
+       class="back-button">
+        Back
+    </a>
+</div>
+
+
+
+<!-- ============================================================
+     PRESCRIPTION PAGE
+============================================================ -->
+
+<div class="prescription-page">
+
+
+  <!-- ========================================================
+       HEADER
+  ========================================================= -->
+
+  <div class="prescription-header">
+
+    <div class="clinic-name">
+      ARAGGO NIKETON
+    </div>
+
+    <div class="clinic-subtitle">
+      Patient Management &amp; Consultation
+    </div>
+
+
+    <div class="doctor-info">
+
+      <div>
+
+        <strong>
+          Dr. Ziaur Rahman Khan
+        </strong>
+
+        <br>
+          B,A.  L,H,M,P. (KHULNA)
+        <br>
+          D.H.M.S (DHAKA)
+        <br>
+          Contact: 01961152025(WhatsApp), 01645497828
+        <br>
+
+        Araggo Niketon, Mailpost, Abhoynagar, Jashore
+
+      </div>
+
+
+      <div class="appointment-info">
+
+        <div>
+
+          <strong>
+            Date:
+          </strong>
+
+          <span th:text="${#temporals.format(
+                            appointment.appointmentDate,
+                            'dd/MM/yyyy'
+                    )}">
+                    </span>
+
+        </div>
+
+
+        <div th:if="${appointment.appointmentTime != null}">
+
+          <strong>
+            Time:
+          </strong>
+
+          <span th:text="${#temporals.format(
+                            appointment.appointmentTime,
+                            'hh:mm a'
+                    )}">
+                    </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       PATIENT INFORMATION
+  ========================================================= -->
+
+  <div class="patient-section">
+
+
+    <div>
+
+      <strong>
+        PATIENT:
+      </strong>
+
+      <span th:text="${patient.firstName + ' ' + patient.lastName}">
+            </span>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Patient ID:
+      </strong>
+
+      <span th:text="${patient.patientCode}">
+            </span>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Age:
+      </strong>
+
+      <span th:text="${patient.age}">
+            </span>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Gender:
+      </strong>
+
+      <span th:text="${patient.gender}">
+            </span>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Blood Group:
+      </strong>
+
+      <span th:text="${patient.bloodGroup}">
+            </span>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       CONSULTATION SECTION
+  ========================================================= -->
+
+  <div class="consultation-section">
+
+
+    <!-- ====================================================
+         DOCTOR ADVICE
+    ==================================================== -->
+
+    <div class="advice-column">
+
+      <div class="column-title">
+        DOCTOR ADVICE
+      </div>
+
+
+      <div class="advice-content"
+           th:if="${appointment.doctorAdvice != null
+                         && !appointment.doctorAdvice.isBlank()}"
+           th:text="${appointment.doctorAdvice}">
+      </div>
+
+
+      <div class="advice-content empty-text"
+           th:unless="${appointment.doctorAdvice != null
+                         && !appointment.doctorAdvice.isBlank()}">
+
+        No specific advice.
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ====================================================
+         PRESCRIPTION
+    ==================================================== -->
+
+    <div class="prescription-column">
+
+
+      <div class="column-title">
+        PRESCRIPTION
+      </div>
+
+
+      <div class="medicine-list">
+
+
+        <!-- ============================================
+             MEDICINE
+        ============================================= -->
+
+        <div class="medicine"
+             th:each="medicine, medicineStat : ${medicines}">
+
+
+          <!-- ========================================
+               MEDICINE NAME + TYPE
+          ========================================= -->
+
+          <div class="medicine-name">
+
+                        <span th:text="${medicineStat.count + '.'}">
+                        </span>
+
+            <strong th:text="${medicine.medicineName}">
+            </strong>
+
+
+            <!-- Medicine Type -->
+
+            <span th:if="${medicine.medicineType != null
+                                      && !medicine.medicineType.isBlank()}">
+
+                            <span>
+                                (
+                            </span>
+
+                            <span th:text="${medicine.medicineType}">
+                            </span>
+
+                            <span>
+                                )
+                            </span>
+
+                        </span>
+
+          </div>
+
+
+
+          <!-- ========================================
+               DOSE + MORNING/NOON/NIGHT
+          ========================================= -->
+
+          <div class="medicine-instruction">
+
+
+            <!-- Morning -->
+
+            <span th:if="${medicine.morning}">
+
+                            <span th:if="${medicine.doses == '0.5'
+                                          || medicine.doses == '.5'}">
+                                1/2
+                            </span>
+
+                            <span th:unless="${medicine.doses == '0.5'
+                                              || medicine.doses == '.5'}"
+                                  th:text="${medicine.doses}">
+                            </span>
+
+                        </span>
+
+
+            <span th:unless="${medicine.morning}">
+                            0
+                        </span>
+
+
+            <span>
+                            +
+                        </span>
+
+
+            <!-- Noon -->
+
+            <span th:if="${medicine.noon}">
+
+                            <span th:if="${medicine.doses == '0.5'
+                                          || medicine.doses == '.5'}">
+                                1/2
+                            </span>
+
+                            <span th:unless="${medicine.doses == '0.5'
+                                              || medicine.doses == '.5'}"
+                                  th:text="${medicine.doses}">
+                            </span>
+
+                        </span>
+
+
+            <span th:unless="${medicine.noon}">
+                            0
+                        </span>
+
+
+            <span>
+                            +
+                        </span>
+
+
+            <!-- Night -->
+
+            <span th:if="${medicine.night}">
+
+                            <span th:if="${medicine.doses == '0.5'
+                                          || medicine.doses == '.5'}">
+                                1/2
+                            </span>
+
+                            <span th:unless="${medicine.doses == '0.5'
+                                              || medicine.doses == '.5'}"
+                                  th:text="${medicine.doses}">
+                            </span>
+
+                        </span>
+
+
+            <span th:unless="${medicine.night}">
+                            0
+                        </span>
+
+
+
+            <!-- ====================================
+                 MEAL INSTRUCTION
+            ===================================== -->
+
+            <span class="meal-instruction">
+
+                            <span th:if="${medicine.meal == 'BEFORE'}">
+
+                                - খাবার আগে খেতে হবে
+
+                            </span>
+
+
+                            <span th:if="${medicine.meal == 'AFTER'}">
+
+                                - খাবার পর খেতে হবে
+
+                            </span>
+
+                        </span>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- ============================================
+             NO MEDICINES
+        ============================================= -->
+
+        <div class="empty-text"
+             th:if="${#lists.isEmpty(medicines)}">
+
+          No medicines prescribed.
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       FOLLOW-UP DATE
+  ========================================================= -->
+
+  <div class="follow-up"
+       th:if="${appointment.followUpDate != null}">
+
+    <strong>
+      Follow-up Date:
+    </strong>
+
+    <span th:text="${#temporals.format(
+                appointment.followUpDate,
+                'dd/MM/yyyy'
+        )}">
+        </span>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       DOCTOR SIGNATURE
+  ========================================================= -->
+
+  <div class="signature-area">
+
+    <div class="signature">
+
+        <pre> </pre>
+      <div class="signature-line">
+      </div>
+
+      <strong>
+        Doctor's Signature
+      </strong>
+
+      <div>
+        Dr. Ziaur Rahman Khan
+      </div>
+
+<!--      <div>-->
+<!--        FCPS, FRCS, MBBS-->
+<!--      </div>-->
+
+<!--      <div>-->
+<!--        Araggo Niketon-->
+<!--      </div>-->
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================
+       FOOTER
+  ========================================================= -->
+
+<!--  <div class="prescription-footer">-->
+
+<!--    Araggo Niketon • Malibag, Dhaka-1212-->
+
+<!--  </div>-->
+
+
+</div>
+
+
+
+<!-- ============================================================
+     AUTO PRINT
+============================================================ -->
+
+<script>
+
+  window.addEventListener(
+          "load",
+          function () {
+
+            setTimeout(
+                    function () {
+
+                      window.print();
+
+                    },
+                    500
+            );
+
+          }
+  );
+
+</script>
+
+
+</body>
+
+</html>
+

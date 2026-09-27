@@ -72,6 +72,30 @@ public class AppointmentService {
 						.notes(
 								form.getNotes()
 						)
+						.height(
+								form.getHeight()
+						)
+
+						.weight(
+								form.getWeight()
+						)
+
+						.bmi(
+								form.getBmi()
+						)
+
+						.bloodPressure(
+								form.getBloodPressure()
+						)
+
+						.diabetes(
+								form.getDiabetes()
+						)
+
+						.pulseRate(
+								form.getPulseRate()
+						)
+
 						.createdAt(
 								LocalDateTime.now()
 						)

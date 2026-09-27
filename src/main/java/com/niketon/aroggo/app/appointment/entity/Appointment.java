@@ -48,6 +48,24 @@ public class Appointment {
 	@Column(name = "diagnosis", length = 4000)
 	private String diagnosis;
 
+	@Column(name = "height", length = 20)
+	private String height;
+
+	@Column(name = "weight", length = 20)
+	private String weight;
+
+	@Column(name = "bmi", length = 20)
+	private String bmi;
+
+	@Column(name = "blood_pressure", length = 20)
+	private String bloodPressure;
+
+	@Column(name = "pulse_rate", length = 20)
+	private String pulseRate;
+
+	@Column(name = "diabetes", length = 20)
+	private String diabetes;
+
 	@Column(name = "doctor_advice", length = 5000)
 	private String doctorAdvice;
 
@@ -59,4 +77,6 @@ public class Appointment {
 
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
+
+
 }

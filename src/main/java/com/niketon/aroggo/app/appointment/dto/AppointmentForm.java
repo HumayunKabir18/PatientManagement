@@ -20,6 +20,18 @@ public class AppointmentForm {
 
 	private String symptoms;
 
+	private String height;
+
+	private String weight;
+
+	private String bmi;
+
+	private String bloodPressure;
+
+	private String pulseRate;
+
+	private String diabetes;
+
 	private String diagnosis;
 
 	private String doctorAdvice;

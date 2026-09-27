@@ -1,0 +1,391 @@
+/* ============================================================
+   PRESCRIPTION PRINT CSS
+============================================================ */
+
+@page {
+    size: A4;
+    margin: 12mm;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #eeeeee;
+    color: #111111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   PRINT ACTION BUTTONS
+============================================================ */
+
+.print-actions {
+    width: 210mm;
+    margin: 20px auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.print-actions button {
+    border: 1px solid #cccccc;
+    background: #ffffff;
+    padding: 9px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.print-actions button:hover {
+    background: #f5f5f5;
+}
+
+
+/* ============================================================
+   PRESCRIPTION PAGE
+============================================================ */
+
+.prescription-page {
+    width: 210mm;
+    min-height: 273mm;
+    margin: 0 auto 30px;
+    padding: 12mm;
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    position: relative;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.prescription-header {
+    border-bottom: 2px solid #111111;
+    padding-bottom: 12px;
+}
+
+.clinic-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.clinic-subtitle {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 3px;
+    color: #555555;
+}
+
+.doctor-info {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    line-height: 1.6;
+}
+
+.doctor-info strong {
+    font-size: 14px;
+}
+
+.appointment-info {
+    text-align: right;
+    min-width: 150px;
+}
+
+
+/* ============================================================
+   PATIENT INFORMATION
+============================================================ */
+
+.patient-section {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr 1.2fr;
+    gap: 8px;
+    padding: 11px 0;
+    border-bottom: 1px solid #111111;
+}
+
+.patient-section > div {
+    line-height: 1.5;
+}
+
+.patient-section strong {
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   CONSULTATION SECTION
+============================================================ */
+
+.consultation-section {
+    display: grid;
+    grid-template-columns: 35% 65%;
+
+    /*
+       Reduced from 170mm so the footer does not
+       get pushed onto a second page.
+    */
+    min-height: 150mm;
+
+    border-bottom: 1px solid #111111;
+}
+
+.advice-column {
+    padding: 14px 18px 14px 0;
+    border-right: 1px solid #111111;
+}
+
+.prescription-column {
+    padding: 14px 0 14px 18px;
+}
+
+
+/* ============================================================
+   COLUMN TITLES
+============================================================ */
+
+.column-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding-bottom: 7px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #cccccc;
+}
+
+
+/* ============================================================
+   DOCTOR ADVICE
+============================================================ */
+
+.advice-content {
+    white-space: pre-line;
+    line-height: 1.7;
+}
+
+.empty-text {
+    color: #777777;
+}
+
+
+/* ============================================================
+   MEDICINES
+============================================================ */
+
+.medicine {
+    margin-bottom: 17px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.medicine-name {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.medicine-type {
+    margin-left: 20px;
+    font-style: italic;
+    color: #444444;
+    margin-top: 2px;
+}
+
+.medicine-instruction {
+    margin-left: 20px;
+    margin-top: 4px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.medicine-meal {
+    margin-left: 20px;
+    margin-top: 3px;
+    font-size: 12px;
+    color: #444444;
+}
+
+
+/* ============================================================
+   FOLLOW-UP
+============================================================ */
+
+.follow-up {
+    padding: 12px 0;
+    border-bottom: 1px solid #111111;
+}
+
+
+/* ============================================================
+   SIGNATURE
+============================================================ */
+
+.signature-area {
+    display: flex;
+    justify-content: flex-end;
+
+    /*
+       Reduced slightly to keep everything
+       within one A4 page.
+    */
+    padding-top: 25px;
+
+    min-height: 45mm;
+}
+
+.signature {
+    width: 65mm;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.signature-line {
+    width: 65mm;
+    border-top: 1px solid #111111;
+    margin-bottom: 5px;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.prescription-footer {
+    text-align: center;
+    font-size: 10px;
+    color: #666666;
+
+    /*
+       Footer is removed from normal document flow.
+       Therefore it cannot create another page.
+    */
+    position: absolute;
+
+    bottom: 10mm;
+
+    left: 12mm;
+    right: 12mm;
+}
+
+
+/* ============================================================
+   PRINT MODE
+============================================================ */
+
+@media print {
+
+    body {
+        background: #ffffff;
+    }
+
+    /*
+       Hide browser-page buttons.
+    */
+    .print-actions {
+        display: none !important;
+    }
+
+    /*
+       Keep the prescription exactly within
+       one printable A4 page.
+    */
+    .prescription-page {
+        width: 100%;
+        height: 273mm;
+        min-height: 273mm;
+
+        margin: 0;
+        padding: 0;
+
+        background: #ffffff;
+        box-shadow: none;
+
+        position: relative;
+
+        /*
+           Prevent small overflow from creating
+           a second page.
+        */
+        overflow: hidden;
+    }
+
+    /*
+       Footer stays at the bottom of page 1.
+    */
+    .prescription-footer {
+        position: absolute;
+
+        bottom: 5mm;
+
+        left: 0;
+        right: 0;
+
+        text-align: center;
+    }
+
+    /*
+       Avoid splitting important sections
+       between pages.
+    */
+    .medicine {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .advice-column,
+    .prescription-column {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .follow-up {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .signature-area {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
+
+css
+   .meal-instruction {
+       font-weight: 400;
+       margin-left: 6px;
+   }
+
+@media print {
+
+    .meal-instruction {
+        font-weight: 400;
+        margin-left: 6px;
+    }
+
+}
+
+.back-button {
+    display: inline-block;
+    border: 1px solid #cccccc;
+    background: #ffffff;
+    padding: 9px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #111111;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background: #f5f5f5;
+}

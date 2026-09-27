@@ -1,0 +1,620 @@
+:root {
+
+    --primary: #2563eb;
+
+    --bg: #f4f7fb;
+
+    --card: #ffffff;
+
+    --text: #0f172a;
+
+    --border: #e2e8f0;
+
+    --input: #ffffff;
+
+    --sidebar: #ffffff;
+
+}
+
+
+body.dark-mode {
+
+    --primary: #3b82f6;
+
+    --bg: #0f172a;
+
+    --card: #000000;
+
+    --text: #f8fafc;
+
+    --border: #334155;
+
+    --input: #1e293b;
+
+    --sidebar: #000000;
+
+}
+
+
+/* =================================================
+   MAIN WRAPPER
+================================================= */
+
+.main-wrapper {
+
+    margin-left: 270px;
+
+    width: calc(100% - 270px);
+
+    transition: all 0.3s ease;
+
+}
+
+
+.sidebar-collapsed .sidebar {
+
+    width: 80px;
+
+}
+
+
+.sidebar-collapsed .main-wrapper {
+
+    margin-left: 80px;
+
+    width: calc(100% - 80px);
+
+}
+
+
+/* =================================================
+   BODY
+================================================= */
+
+body {
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family: 'Inter', sans-serif;
+
+    transition: 0.3s;
+
+}
+
+
+html,
+body {
+
+    margin: 0;
+
+    padding: 0;
+
+    overflow-x: hidden;
+
+    width: 100%;
+
+}
+
+
+/* =================================================
+   NAVBAR
+================================================= */
+
+.navbar-custom {
+
+    background: var(--card);
+
+    border-bottom: 1px solid var(--border);
+
+}
+
+
+/* =================================================
+   BRAND LOGO
+================================================= */
+
+.brand-logo {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 12px;
+
+    background: black;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 22px;
+
+}
+
+
+/* =================================================
+   MAIN CARD
+================================================= */
+
+.main-card {
+
+    background: #e1e2e8;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    padding: 25px;
+
+    margin-bottom: 24px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+
+}
+
+
+body.dark-mode .main-card {
+
+    background: #000000;
+
+    border-color: #2a2a2a;
+
+}
+
+
+/* =================================================
+   SECTION TITLE
+================================================= */
+
+.section-title {
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+    color: var(--text);
+
+}
+
+
+/* =================================================
+   FORM CONTROLS
+================================================= */
+
+.form-control,
+.form-select {
+
+    background: var(--input);
+
+    border: 1px solid var(--border);
+
+    color: var(--text);
+
+    min-height: 48px;
+
+    border-radius: 14px;
+
+}
+
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: var(--primary);
+
+    box-shadow: none;
+
+}
+
+
+textarea.form-control {
+
+    min-height: 120px;
+
+}
+
+
+label {
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+}
+
+
+/* =================================================
+   SUMMARY CARD
+================================================= */
+
+.summary-card {
+
+    position: sticky;
+
+    top: 20px;
+
+    background: var(--sidebar);
+
+    border-radius: 24px;
+
+    border: 1px solid var(--border);
+
+    padding: 25px;
+
+}
+
+
+.summary-item {
+
+    padding: 12px 0;
+
+    border-bottom: 1px dashed var(--border);
+
+}
+
+
+.summary-item:last-child {
+
+    border: none;
+
+}
+
+
+/* =================================================
+   CUSTOM PRIMARY BUTTON
+================================================= */
+
+.btn-primary-custom {
+
+    background: #4fd0ae;
+
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 12px 24px;
+
+    font-weight: 600;
+
+}
+
+
+.btn-primary-custom:hover {
+
+    background-color: #38aa8c;
+
+    border: 0.5px solid black;
+
+}
+
+
+/* =================================================
+   BADGE
+================================================= */
+
+.badge-soft {
+
+    background: rgba(37, 99, 235, 0.1);
+
+    color: var(--primary);
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+}
+
+
+/* =================================================
+   SWITCH BUTTON
+================================================= */
+
+.switch-btn {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: var(--primary);
+
+    color: white;
+
+}
+
+
+/* =================================================
+   TIMELINE
+================================================= */
+
+.timeline {
+
+    border-left: 3px solid var(--primary);
+
+    padding-left: 15px;
+
+}
+
+
+.timeline-item {
+
+    margin-bottom: 18px;
+
+}
+
+
+/* =================================================
+   CHECKBOX GRID
+================================================= */
+
+.checkbox-grid {
+
+    display: grid;
+
+    grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+
+    gap: 10px;
+
+}
+
+
+/* =================================================
+   MEDICAL BOX
+================================================= */
+
+.medical-box {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 12px 16px;
+
+    background: var(--card);
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+}
+
+
+.medical-box input[type="checkbox"] {
+
+    width: 22px;
+
+    height: 22px;
+
+    accent-color: red;
+
+    cursor: pointer;
+
+}
+
+
+.medical-box:has(
+            input[type="checkbox"]:checked
+        ) {
+
+    background: #ff4d4f;
+
+    border-color: #ff4d4f;
+
+    color: white;
+
+}
+
+
+/* =================================================
+   FLOATING SAVE
+================================================= */
+
+.floating-save {
+
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 20px;
+
+    z-index: 999;
+
+}
+
+
+/* =================================================
+   DARK MODE
+================================================= */
+
+body.dark-mode .summary-card,
+body.dark-mode .medical-box,
+body.dark-mode .navbar-custom {
+
+    background: #000000;
+
+    border-color: #2a2a2a;
+
+}
+
+
+/* =================================================
+   SIDEBAR
+================================================= */
+
+.sidebar {
+
+    width: 270px;
+
+    height: 100vh;
+
+    position: fixed;
+
+    left: 0;
+
+    top: 0;
+
+    transition: all 0.3s ease;
+
+    overflow: hidden;
+
+}
+
+
+/* =================================================
+   SIDEBAR HEADER
+================================================= */
+
+.sidebar-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px;
+
+}
+
+
+/* =================================================
+   SIDEBAR MENU
+================================================= */
+
+.sidebar-menu {
+
+    list-style: none;
+
+    padding: 0;
+
+}
+
+
+.sidebar-menu li a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 15px;
+
+    text-decoration: none;
+
+    color: var(--text);
+
+}
+
+
+.sidebar-menu i {
+
+    font-size: 18px;
+
+    min-width: 20px;
+
+}
+
+
+/* =================================================
+   COLLAPSED SIDEBAR
+================================================= */
+
+#app.sidebar-collapsed .sidebar {
+
+    width: 80px;
+
+}
+
+
+#app.sidebar-collapsed .menu-text,
+#app.sidebar-collapsed .sidebar-title {
+
+    display: none;
+
+}
+
+
+#app.sidebar-collapsed .sidebar-menu li a {
+
+    justify-content: center;
+
+}
+
+
+#app.sidebar-collapsed .sidebar-header {
+
+    justify-content: center;
+
+}
+
+
+/* =================================================
+   PAGE CONTENT
+================================================= */
+
+.page-content {
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =================================================
+   TOGGLE BUTTON
+================================================= */
+
+.btn-toggle {
+
+    background: none;
+
+    border: none;
+
+    font-size: 1.5rem;
+
+    cursor: pointer;
+
+    color: #6c757d;
+
+    transition: 0.2s;
+
+}
+
+
+.btn-toggle:hover,
+.menu-text:hover {
+
+    color: #0d6efd;
+
+}
+
+.checkbox-medicine {
+    height: 20px;
+    width: 20px;
+    margin-bottom: 10px;
+
+}
