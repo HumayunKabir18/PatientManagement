@@ -28,7 +28,8 @@
 <div layout:fragment="content">
 
 
-    <form th:action="@{/patients/save}"
+    <form th:fragment="patientForm"
+          th:action="${form.patient.patientId == null} ? @{/patients/save} : @{/patients/update}"
           th:object="${form}"
           method="post">
 
@@ -37,11 +38,7 @@
         <!-- PATIENT ID -->
         <!-- ===================================================== -->
 
-        <input type="hidden"
-               th:field="*{patient.patientId}">
 
-        <input type="hidden"
-               th:field="*{patient.patientCode}">
 
 
         <!-- ===================================================== -->
@@ -65,7 +62,11 @@
                 <!-- FIRST NAME -->
 
                 <div class="col-md-4">
+                    <input type="hidden"
+                           th:field="*{patient.patientId}">
 
+                    <input type="hidden"
+                           th:field="*{patient.patientCode}">
                     <label class="form-label">
                         First Name
                     </label>
@@ -811,35 +812,41 @@
 
 
         <!-- ===================================================== -->
-        <!-- APPOINTMENT + MEDICINES -->
-        <!-- ===================================================== -->
-
-        <div th:replace="~{fragments/inputs :: appointmentSection(editable=${editable})}"></div>
-
-        <!-- ===================================================== -->
         <!-- SAVE -->
         <!-- ===================================================== -->
+        <!-- Registration -->
+        <div th:if="${form.patient.patientId == null}">
+            <div class="d-flex justify-content-end gap-2 mb-5">
 
-        <div class="d-flex justify-content-end gap-2 mb-5">
-
-
-            <a th:href="@{/patients/list}"
-               class="btn btn-outline-secondary px-4 rounded-4">
-
-                <span>Cancel</span>
-
-            </a>
+                <a th:href="@{/patients/list}"
+                   class="btn btn-outline-secondary px-4 rounded-4">
+                    <span>Cancel</span>
+                </a>
 
 
-            <button type="submit"
-                    class="btn btn-primary-custom">
+                <button type="submit" class="btn btn-primary-custom">
+                    <i class="bi bi-check-lg me-1"></i>
+                    Save
+                </button>
+            </div>
 
-                <i class="bi bi-check-lg me-1"></i>
+        </div>
 
-                Save Patient & Appointment
+        <div th:if="${form.patient.patientId != null}">
 
-            </button>
+            <div class="d-flex justify-content-end gap-2 mb-5">
 
+                <a th:href="@{/patients/details/{patientCode}(patientCode=${form.patient.patientCode})}"
+                   class="btn btn-outline-secondary px-4 rounded-4">
+                    <span>Back</span>
+                </a>
+
+
+                <button type="submit" class="btn btn-primary-custom">
+                    <i class="bi bi-check-lg me-1"></i>
+                    Update
+                </button>
+            </div>
 
         </div>
 

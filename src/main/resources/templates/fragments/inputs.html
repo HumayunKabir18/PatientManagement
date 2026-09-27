@@ -285,6 +285,59 @@
 
             </div>
 
+            <!-- VITALS -->
+
+                <div class="row g-3">
+                       <div class="col-md-2">
+                        <label>Height</label>
+                        <input type="text"
+                               class="form-control"
+                        th:field="*{appointment.height}"
+                        th:readonly="${!editable}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Weight</label>
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{appointment.weight}"
+                               th:readonly="${!editable}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>BMI</label>
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{appointment.bmi}"
+                               th:readonly="${!editable}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Blood Pressure</label>
+                        <input type="text"
+                               class="form-control"
+                        th:field="*{appointment.bloodPressure}"
+                        th:readonly="${!editable}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Pulse</label>
+                        <input type="text"
+                               class="form-control"
+                        th:field="*{appointment.pulseRate}"
+                        th:readonly="${!editable}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Diabetes</label>
+                        <input type="text"
+                               class="form-control"
+                        th:field="*{appointment.diabetes}"
+                        th:readonly="${!editable}">
+                    </div>
+
+                </div>
+
 
             <!-- DIAGNOSIS -->
 

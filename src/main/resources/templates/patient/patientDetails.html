@@ -732,11 +732,18 @@
             </div>
 
         </div>
-
     </div>
-
 </div>
-
+<div layout:fragment="footer" class="d-flex justify-content-center gap-2 mb-2">
+    <a th:href="@{/patients/list}"
+       class="btn btn-outline-secondary px-4 rounded-4">
+        <span>Back</span>
+    </a>
+    <a th:href="@{/patients/update/details/{patientCode}(patientCode=${patient.patientCode})}"
+            class="btn btn-primary-custom">
+        Update History
+    </a>
+</div>
 </body>
 
 </html>
