@@ -13,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -96,6 +94,15 @@ public class PatientController {
 
         return "redirect:/patients/details/"
                 + form.getPatient().getPatientCode();
+    }
+
+    @GetMapping("/delete/{patientCode}")
+    public String deletePatient(
+            @PathVariable String patientCode) {
+
+        patientService.deletePatientByCode(patientCode);
+
+        return "redirect:/patients/list";
     }
 
 
@@ -311,6 +318,10 @@ public class PatientController {
                                     medicine.getMedicineName()
                             );
 
+                            medicineForm.setOriginalName(
+                                    medicine.getOriginalName()
+                            );
+
                             medicineForm.setMedicineType(
                                     medicine.getMedicineType()
                             );
@@ -413,9 +424,7 @@ public class PatientController {
      * ============================================================
      */
 
-    @GetMapping(
-            "/appointment/print/{patientCode}/{appointmentCode}"
-    )
+    @GetMapping("/appointment/print/{patientCode}/{appointmentCode}")
     public String printAppointment(
             @PathVariable String patientCode,
             @PathVariable String appointmentCode,

@@ -153,6 +153,9 @@ public class AppointmentService {
 							.medicineName(
 									medicineForm.getMedicineName()
 							)
+							.originalName(
+									medicineForm.getOriginalName()
+							)
 							.medicineType(
 									medicineForm.getMedicineType()
 							)

@@ -223,7 +223,4 @@ public class Patient {
 
 	@Column(name="other_bites",length = 1)
 	private boolean otherBites;
-
-
-
 }

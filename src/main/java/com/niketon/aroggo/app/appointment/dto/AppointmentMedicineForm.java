@@ -7,6 +7,8 @@ public class AppointmentMedicineForm {
 
 	private String medicineName;
 
+	private String originalName;
+
 	private String medicineType;
 
 	private String doses;

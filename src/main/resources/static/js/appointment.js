@@ -128,6 +128,17 @@ if (addMedicineButton) {
         
 
 </td>
+<td>
+
+
+    <input
+    type="text"
+    class="form-control"
+    name="appointment.medicines[${index}].originalName"
+    placeholder="Original medicine name">
+        
+
+</td>
 
 <!-- MEDICINE TYPE -->
 

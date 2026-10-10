@@ -14,4 +14,6 @@ public interface AppointmentRepository
 	List<Appointment> findByPatientPatientCodeOrderByAppointmentDateDescAppointmentTimeDesc(
 			String patientCode
 	);
+
+	void deleteByIdPatientCode(String patientCode);
 }

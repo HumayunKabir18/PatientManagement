@@ -35,6 +35,9 @@ public class AppointmentMedicine {
 	@Column(name = "medicine_name", nullable = false, length = 255)
 	private String medicineName;
 
+	@Column(name = "original_name", length = 255)
+	private String originalName;
+
 	@Column(name = "medicine_type", length = 50)
 	private String medicineType;
 

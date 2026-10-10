@@ -1,25 +1,29 @@
 package com.niketon.aroggo.app.patient.service;
 
+import com.niketon.aroggo.app.appointment.repository.AppointmentMedicineRepository;
+import com.niketon.aroggo.app.appointment.repository.AppointmentRepository;
 import com.niketon.aroggo.app.patient.entity.Patient;
 import com.niketon.aroggo.app.patient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.time.format.DateTimeFormatter;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class PatientService {
-    @Autowired
-    PatientRepository patientRepository;
+
+    private final  PatientRepository patientRepository;
+
+    private final AppointmentRepository appointmentRepository;
+
+    private final AppointmentMedicineRepository medicineRepository;
 
     // SAVE / UPDATE
     public Patient save(Patient patient) {
@@ -59,8 +63,21 @@ public class PatientService {
     }
 
     // DELETE
-    public void deletePatient(Long id){
-        patientRepository.deleteById(id);
+    @Transactional
+    public void deletePatientByCode(String patientCode) {
+
+        Patient patient = patientRepository
+                .findByPatientCode(patientCode)
+                .orElseThrow(() ->
+                        new RuntimeException("Patient Not Found"));
+        medicineRepository.deleteByIdPatientCode(patientCode);
+
+
+        // 1. Delete appointments first
+        appointmentRepository.deleteByIdPatientCode(patientCode);
+
+        // 2. Delete patient
+        patientRepository.delete(patient);
     }
 
     public Page<Patient> searchPatients(

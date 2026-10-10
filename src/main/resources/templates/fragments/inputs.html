@@ -469,6 +469,10 @@
                         Medicine Name
                     </th>
 
+                    <th style="min-width: 200px;">
+                        Original Medicine Name
+                    </th>
+
                     <th style="min-width: 150px;">
                         Type
                     </th>
@@ -539,6 +543,17 @@
                                     + medicineStat.index
                                     + '].medicineName'}"
                                th:value="${medicine.medicineName}"
+                               th:readonly="${!editable}">
+
+                    </td>
+                    <td>
+
+                        <input type="text"
+                               class="form-control"
+                               th:name="${'appointment.medicines['
+                                    + medicineStat.index
+                                    + '].originalName'}"
+                               th:value="${medicine.originalName}"
                                th:readonly="${!editable}">
 
                     </td>

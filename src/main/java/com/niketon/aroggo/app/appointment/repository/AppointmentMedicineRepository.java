@@ -15,4 +15,5 @@ public interface AppointmentMedicineRepository
 	List<AppointmentMedicine> findByAppointment_IdOrderById_SerialNoAsc(
 			AppointmentId appointmentId
 	);
+	void deleteByIdPatientCode(String patientCode);
 }
