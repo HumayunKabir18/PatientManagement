@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("/patients")
@@ -166,39 +167,192 @@ public class PatientController {
      * ============================================================
      */
 
+//    @GetMapping("/appointment/new/{patientCode}")
+//    public String newAppointment(
+//            @PathVariable String patientCode,
+//            Model model
+//    ) {
+//
+//        Patient patient =
+//                patientService.getPatientByCode(
+//                        patientCode
+//                );
+//
+//        PatientAppointmentForm form =
+//                new PatientAppointmentForm();
+//
+//        form.setPatient(patient);
+//
+//        form.getAppointment()
+//                .setAppointmentDate(
+//                        LocalDate.now()
+//                );
+//
+//        model.addAttribute(
+//                "form",
+//                form
+//        );
+//
+//        /*
+//         * New appointment = editable.
+//         */
+//        model.addAttribute(
+//                "editable",
+//                true
+//        );
+//
+//        return "patient/appointmentForm";
+//    }
+
+
     @GetMapping("/appointment/new/{patientCode}")
     public String newAppointment(
             @PathVariable String patientCode,
             Model model
     ) {
 
-        Patient patient =
-                patientService.getPatientByCode(
-                        patientCode
-                );
+        Patient patient = patientService.getPatientByCode(patientCode);
 
-        PatientAppointmentForm form =
-                new PatientAppointmentForm();
-
+        PatientAppointmentForm form = new PatientAppointmentForm();
         form.setPatient(patient);
 
-        form.getAppointment()
-                .setAppointmentDate(
-                        LocalDate.now()
-                );
+        AppointmentForm appointmentForm = new AppointmentForm();
 
-        model.addAttribute(
-                "form",
-                form
-        );
+        // Default: new appointment date is today.
+        appointmentForm.setAppointmentDate(LocalDate.now());
 
-        /*
-         * New appointment = editable.
-         */
-        model.addAttribute(
-                "editable",
-                true
-        );
+        // Find the patient's most recent appointment.
+        Appointment previousAppointment = appointmentService
+                .getPatientAppointments(patientCode)
+                .stream()
+                .max(
+                        Comparator
+                                .comparing(
+                                        Appointment::getAppointmentDate,
+                                        Comparator.nullsFirst(Comparator.naturalOrder())
+                                )
+                                .thenComparing(
+                                        Appointment::getAppointmentTime,
+                                        Comparator.nullsFirst(Comparator.naturalOrder())
+                                )
+                                .thenComparing(
+                                        Appointment::getCreatedAt,
+                                        Comparator.nullsFirst(Comparator.naturalOrder())
+                                )
+                )
+                .orElse(null);
+
+        // If this patient has a previous appointment, copy its data.
+        if (previousAppointment != null) {
+
+            appointmentForm.setAppointmentTime(
+                    previousAppointment.getAppointmentTime()
+            );
+
+            appointmentForm.setAppointmentType(
+                    previousAppointment.getAppointmentType()
+            );
+
+            appointmentForm.setChiefComplaint(
+                    previousAppointment.getChiefComplaint()
+            );
+
+            appointmentForm.setSymptoms(
+                    previousAppointment.getSymptoms()
+            );
+
+            appointmentForm.setDiagnosis(
+                    previousAppointment.getDiagnosis()
+            );
+
+            appointmentForm.setDoctorAdvice(
+                    previousAppointment.getDoctorAdvice()
+            );
+
+            appointmentForm.setFollowUpDate(
+                    previousAppointment.getFollowUpDate()
+            );
+
+            appointmentForm.setNotes(
+                    previousAppointment.getNotes()
+            );
+
+            appointmentForm.setHeight(previousAppointment.getHeight());
+            appointmentForm.setWeight(previousAppointment.getWeight());
+            appointmentForm.setBmi(previousAppointment.getBmi());
+
+            appointmentForm.setBloodPressure(
+                    previousAppointment.getBloodPressure()
+            );
+
+            appointmentForm.setPulseRate(
+                    previousAppointment.getPulseRate()
+            );
+
+            appointmentForm.setDiabetes(
+                    previousAppointment.getDiabetes()
+            );
+
+            // Copy all medicines from the previous appointment.
+            List<AppointmentMedicineForm> medicines =
+                    appointmentService
+                            .getMedicines(previousAppointment.getId())
+                            .stream()
+                            .map(medicine -> {
+                                AppointmentMedicineForm medicineForm =
+                                        new AppointmentMedicineForm();
+
+                                medicineForm.setMedicineName(
+                                        medicine.getMedicineName()
+                                );
+
+                                medicineForm.setOriginalName(
+                                        medicine.getOriginalName()
+                                );
+
+                                medicineForm.setMedicineType(
+                                        medicine.getMedicineType()
+                                );
+
+                                medicineForm.setDoses(
+                                        medicine.getDoses()
+                                );
+
+                                medicineForm.setFrequency(
+                                        medicine.getFrequency()
+                                );
+
+                                medicineForm.setMeal(
+                                        medicine.getMeal()
+                                );
+
+                                medicineForm.setMorning(
+                                        medicine.isMorning()
+                                );
+
+                                medicineForm.setNoon(
+                                        medicine.isNoon()
+                                );
+
+                                medicineForm.setNight(
+                                        medicine.isNight()
+                                );
+
+                                return medicineForm;
+                            })
+                            .toList();
+
+            appointmentForm.setMedicines(medicines);
+        }
+
+        // Always use today's date for the new appointment,
+        // even when previous appointment data was copied.
+        appointmentForm.setAppointmentDate(LocalDate.now());
+
+        form.setAppointment(appointmentForm);
+
+        model.addAttribute("form", form);
+        model.addAttribute("editable", true);
 
         return "patient/appointmentForm";
     }

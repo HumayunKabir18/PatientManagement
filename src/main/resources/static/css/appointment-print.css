@@ -73,14 +73,14 @@ body {
 
 .clinic-name {
     text-align: center;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     letter-spacing: 1px;
 }
 
 .clinic-subtitle {
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 3px;
     color: #555555;
 }
@@ -94,7 +94,7 @@ body {
 }
 
 .doctor-info strong {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .appointment-info {
@@ -120,7 +120,7 @@ body {
 }
 
 .patient-section strong {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 
@@ -156,7 +156,7 @@ body {
 ============================================================ */
 
 .column-title {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.5px;
     padding-bottom: 7px;
@@ -190,7 +190,7 @@ body {
 }
 
 .medicine-name {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.5;
 }
 
@@ -205,13 +205,13 @@ body {
     margin-left: 20px;
     margin-top: 4px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .medicine-meal {
     margin-left: 20px;
     margin-top: 3px;
-    font-size: 12px;
+    font-size: 14px;
     color: #444444;
 }
 
@@ -238,7 +238,7 @@ body {
        Reduced slightly to keep everything
        within one A4 page.
     */
-    padding-top: 25px;
+    padding-top: 50px;
 
     min-height: 45mm;
 }
@@ -304,7 +304,7 @@ body {
         height: 273mm;
         min-height: 273mm;
 
-        margin: 0;
+        margin: 0 .05% 0 2.2%;
         padding: 0;
 
         background: #ffffff;
