@@ -462,4 +462,123 @@ function refreshMedicineSerials() {
 
     updateHiddenDate();
 
+    const $height = $('#appointment\\.height');
+    const $weight = $('#appointment\\.weight');
+    const $bmi = $('#appointment\\.bmi');
+    const $message = $('#bmiMessage');
+    const $doctorAdvice = $('#appointment\\.doctorAdvice');
+
+    function calculateBMI() {
+        const heightValue = ($height.val() || '').trim();
+        const weight = parseFloat($weight.val());
+
+        // Clear BMI and indication if inputs are incomplete
+        if (!heightValue || !Number.isFinite(weight) || weight <= 0) {
+            $bmi.val('');
+            updateWeightAdvice(null, null);
+            return;
+        }
+
+        // Height format: 5.7 means 5 feet 7 inches
+        const parts = heightValue.split('.');
+
+        if (parts.length > 2 || !/^\d+$/.test(parts[0]) ||
+            (parts.length === 2 && !/^\d{1,2}$/.test(parts[1]))) {
+            $bmi.val('');
+            updateWeightAdvice(null, null);
+            return;
+        }
+
+        const feet = Number(parts[0]);
+        const inches = parts.length === 2 ? Number(parts[1]) : 0;
+
+        if (feet <= 0 || inches > 11) {
+            $bmi.val('');
+            updateWeightAdvice(null, null);
+            return;
+        }
+
+        const heightInMeters = (feet * 12 + inches) * 0.0254;
+
+        if (heightInMeters <= 0) {
+            $bmi.val('');
+            updateWeightAdvice(null, null);
+            return;
+        }
+
+        // Calculate and display BMI
+        const bmi = weight / (heightInMeters * heightInMeters);
+        $bmi.val(bmi.toFixed(2));
+
+        updateWeightAdvice(bmi, {
+            weight: weight,
+            heightInMeters: heightInMeters
+        });
+    }
+
+    function updateWeightAdvice(bmi, measurements) {
+        $message
+            .text('')
+            .removeClass('text-success text-warning text-danger')
+            .css('color', '');
+
+        let adviceMessage = '';
+
+        $message
+            .text('')
+            .removeClass('text-success text-warning text-danger');
+
+        if (bmi !== null && measurements) {
+            const { weight, heightInMeters } = measurements;
+
+            if (bmi < 18.5) {
+                const targetWeight = 18.5 * heightInMeters * heightInMeters;
+                const gain = targetWeight - weight;
+
+                adviceMessage = `ওজন ${gain.toFixed(1)} kg বাড়াতে হবে`;
+
+                $message.text(adviceMessage).css('color', 'black');
+            } else if (bmi >= 25) {
+                const targetWeight = 24.9 * heightInMeters * heightInMeters;
+                const lose = weight - targetWeight;
+
+                adviceMessage = `ওজন ${lose.toFixed(1)} kg কমাতে হবে`;
+
+                $message.text(adviceMessage).addClass('text-danger');
+
+            } else {
+                $message
+                    .text('স্বাস্থ্যকর BMI সীমার মধ্যে আছে')
+                    .addClass('text-success');
+            }
+        }
+
+        // Preserve other doctor notes and replace any previous
+        // generated Bangla weight-indication line.
+        if ($doctorAdvice.length) {
+            let advice = $doctorAdvice.val() || '';
+
+            advice = advice
+                .split(/\r?\n/)
+                .filter(line =>
+                    !/^ওজন\s+[\d.]+\s*kg\s+(কমাতে হবে|বাড়াতে হবে)\s*$/.test(line.trim())
+                )
+                .join('\n')
+                .trim();
+
+            if (adviceMessage) {
+                advice = advice
+                    ? advice + '\n' + adviceMessage
+                    : adviceMessage;
+            }
+
+            $doctorAdvice.val(advice);
+        }
+    }
+
+    // Calculate on every height or weight change
+    $height.add($weight).on('input change', calculateBMI);
+
+    // Also calculate when editing an existing appointment
+    calculateBMI();
 });

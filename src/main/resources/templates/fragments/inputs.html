@@ -293,12 +293,22 @@
                            th:readonly="${!editable}">
                 </div>
 
+<!--                <div class="col-md-2">-->
+<!--                    <label>BMI</label>-->
+<!--                    <input type="text"-->
+<!--                           class="form-control"-->
+<!--                           th:field="*{appointment.bmi}"-->
+<!--                           th:readonly="${!editable}">-->
+<!--                </div>-->
                 <div class="col-md-2">
                     <label>BMI</label>
                     <input type="text"
+                           id="appointment.bmi"
                            class="form-control"
                            th:field="*{appointment.bmi}"
                            th:readonly="${!editable}">
+
+                    <small id="bmiMessage" class="form-text"></small>
                 </div>
 
                 <div class="col-md-2">
