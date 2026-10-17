@@ -79,7 +79,11 @@
         <!-- APPOINTMENT FORM                                          -->
         <!-- ========================================================= -->
 
-        <form th:action="@{/patients/appointment/save}"
+        <form th:action="${editing}
+        ? @{/patients/appointment/update/{patientCode}/{appointmentCode}
+            (patientCode=${form.patient.patientCode},
+             appointmentCode=${appointmentCode})}
+        : @{/patients/appointment/save}"
               th:object="${form}"
               method="post">
 
@@ -169,30 +173,22 @@
 
             <div class="d-flex justify-content-end gap-2 mb-5">
 
-
-                <a th:href="@{/patients/details/{patientCode}(
-                        patientCode=${form.patient.patientCode}
-                     )}"
-                   class="btn btn-outline-secondary px-4 rounded-4">
+                                <!--
+                    Save is shown ONLY for a new appointment.
+                -->
+                <a th:href="@{/patients/details/{patientCode}(patientCode=${form.patient.patientCode})}" class="btn btn-outline-secondary px-4 rounded-4 mt-4">
 
                     <span>Back</span>
 
                 </a>
 
-
-                <!--
-                    Save is shown ONLY for a new appointment.
-                -->
-
-                <button type="submit"
-                        class="btn btn-primary-custom"
-                        th:if="${editable}">
-
-                    <i class="bi bi-check-lg me-1"></i>
-
-                    Save Appointment
-
-                </button>
+                <div class="text-end mt-4" th:if="${editable}">
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="bi bi-check-circle me-1"></i>
+                        <span th:text="${editing} ? 'Update Appointment' : 'Save Appointment'">
+                        </span>
+                    </button>
+                </div>
 
 
             </div>

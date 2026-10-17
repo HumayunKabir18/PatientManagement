@@ -448,5 +448,18 @@ function refreshMedicineSerials() {
 
 }
 
+    const datePicker = document.getElementById("followUpDateDisplay");
+    const hidden = document.getElementById("followUpDate");
+
+    if (!datePicker || !hidden) return;
+
+    function updateHiddenDate() {
+        hidden.value = datePicker.value;
+    }
+
+    datePicker.addEventListener("input", updateHiddenDate);
+    datePicker.addEventListener("change", updateHiddenDate);
+
+    updateHiddenDate();
 
 });

@@ -10,59 +10,59 @@
 
 <!-- ===================================================== -->
 
-<div th:fragment="bloodGroupSelect(fieldName, label, containerClass, labelClass)"
-     th:class="${containerClass}">
+<!--<div th:fragment="bloodGroupSelect(fieldName, label, containerClass, labelClass)"-->
+<!--     th:class="${containerClass}">-->
 
-    
-    <label th:for="${fieldName}"
-           th:text="${label}"
-           th:class="${labelClass}">
-    </label>
+<!--    -->
+<!--    <label th:for="${fieldName}"-->
+<!--           th:text="${label}"-->
+<!--           th:class="${labelClass}">-->
+<!--    </label>-->
 
-    <select class="form-select"
-            th:id="${fieldName}"
-            th:name="${fieldName}">
+<!--    <select class="form-select"-->
+<!--            th:id="${fieldName}"-->
+<!--            th:name="${fieldName}">-->
 
-        <option value="">
-            Select Blood Group
-        </option>
+<!--        <option value="">-->
+<!--            Select Blood Group-->
+<!--        </option>-->
 
-        <option value="A+">
-            A+
-        </option>
+<!--        <option value="A+">-->
+<!--            A+-->
+<!--        </option>-->
 
-        <option value="A-">
-            A-
-        </option>
+<!--        <option value="A-">-->
+<!--            A- -->
+<!--        </option>-->
 
-        <option value="B+">
-            B+
-        </option>
+<!--        <option value="B+">-->
+<!--            B+-->
+<!--        </option>-->
 
-        <option value="B-">
-            B-
-        </option>
+<!--        <option value="B-">-->
+<!--            B- -->
+<!--        </option>-->
 
-        <option value="O+">
-            O+
-        </option>
+<!--        <option value="O+">-->
+<!--            O+-->
+<!--        </option>-->
 
-        <option value="O-">
-            O-
-        </option>
+<!--        <option value="O-">-->
+<!--            O- -->
+<!--        </option>-->
 
-        <option value="AB+">
-            AB+
-        </option>
+<!--        <option value="AB+">-->
+<!--            AB+-->
+<!--        </option>-->
 
-        <option value="AB-">
-            AB-
-        </option>
+<!--        <option value="AB-">-->
+<!--            AB- -->
+<!--        </option>-->
 
-    </select>
-    
+<!--    </select>-->
+<!--    -->
 
-</div>
+<!--</div>-->
 
 <!-- ===================================================== -->
 
@@ -156,55 +156,71 @@
     <!-- APPOINTMENT -->
     <!-- ================================================= -->
 
+
     <div class="main-card mb-4">
 
         <div class="section-title">
-
             <i class="bi bi-calendar-check me-2"></i>
-
             Appointment / Consultation
-
         </div>
-
 
         <div class="row g-4">
 
-
-            <!-- DATE -->
-
+            <!-- APPOINTMENT DATE: DISPLAY dd/MM/yyyy -->
             <div class="col-md-4">
 
                 <label class="form-label">
                     Appointment Date
                 </label>
 
-                <input type="date"
+                <input type="text"
+                       id="appointmentDateDisplay"
                        class="form-control"
-                       th:field="*{appointment.appointmentDate}"
-                       th:readonly="${!editable}"
+                       th:value="${form.appointment.appointmentDate != null
+                           ? #temporals.format(form.appointment.appointmentDate, 'dd/MM/yyyy')
+                           : ''}"
+                       placeholder="dd/MM/yyyy"
+                       readonly
                        required>
+
+                <!-- Backend value: yyyy-MM-dd -->
+                <input type="hidden"
+                       id="appointmentDate"
+                       name="appointment.appointmentDate"
+                       th:value="${form.appointment.appointmentDate != null
+                           ? #temporals.format(form.appointment.appointmentDate, 'yyyy-MM-dd')
+                           : ''}">
 
             </div>
 
-
-            <!-- TIME -->
-
+            <!-- APPOINTMENT TIME: DISPLAY hh:mm AM/PM -->
             <div class="col-md-4">
 
                 <label class="form-label">
                     Appointment Time
                 </label>
 
-                <input type="time"
+                <input type="text"
+                       id="appointmentTimeDisplay"
                        class="form-control"
-                       th:field="*{appointment.appointmentTime}"
-                       th:readonly="${!editable}">
+                       th:value="${form.appointment.appointmentTime != null
+                           ? #temporals.format(form.appointment.appointmentTime, 'hh:mm a')
+                           : ''}"
+                       placeholder="hh:mm AM/PM"
+                       readonly
+                       required>
+
+                <!-- Backend value: HH:mm -->
+                <input type="hidden"
+                       id="appointmentTime"
+                       name="appointment.appointmentTime"
+                       th:value="${form.appointment.appointmentTime != null
+                           ? #temporals.format(form.appointment.appointmentTime, 'HH:mm')
+                           : ''}">
 
             </div>
 
-
-            <!-- TYPE -->
-
+            <!-- APPOINTMENT TYPE -->
             <div class="col-md-4">
 
                 <label class="form-label">
@@ -216,42 +232,19 @@
                         th:disabled="${!editable}">
 
                     <option value="">Select</option>
-
-                    <option value="NEW">
-                        New Patient
-                    </option>
-
-                    <option value="FOLLOW_UP">
-                        Follow-up
-                    </option>
-
-                    <option value="EMERGENCY">
-                        Emergency
-                    </option>
-
-                    <option value="ROUTINE_CHECKUP">
-                        Routine Check-up
-                    </option>
-
-                    <option value="CONSULTATION">
-                        Consultation
-                    </option>
-
-                    <option value="TELE-MEDICINE">
-                        TELE-MEDICINE
-                    </option>
-
-                    <option value="HOME-VISIT">
-                        HOME-VISIT
-                    </option>
+                    <option value="NEW">New Patient</option>
+                    <option value="FOLLOW_UP">Follow-up</option>
+                    <option value="EMERGENCY">Emergency</option>
+                    <option value="ROUTINE_CHECKUP">Routine Check-up</option>
+                    <option value="CONSULTATION">Consultation</option>
+                    <option value="TELE-MEDICINE">TELE-MEDICINE</option>
+                    <option value="HOME-VISIT">HOME-VISIT</option>
 
                 </select>
 
             </div>
 
-
             <!-- CHIEF COMPLAINT -->
-
             <div class="col-md-6">
 
                 <label class="form-label">
@@ -262,14 +255,11 @@
                           rows="4"
                           placeholder="What is the patient's main complaint?"
                           th:field="*{appointment.chiefComplaint}"
-                          th:readonly="${!editable}">
-            </textarea>
+                          th:readonly="${!editable}"></textarea>
 
             </div>
 
-
             <!-- SYMPTOMS -->
-
             <div class="col-md-6">
 
                 <label class="form-label">
@@ -280,67 +270,64 @@
                           rows="4"
                           placeholder="Describe patient's symptoms"
                           th:field="*{appointment.symptoms}"
-                          th:readonly="${!editable}">
-            </textarea>
+                          th:readonly="${!editable}"></textarea>
 
             </div>
 
             <!-- VITALS -->
+            <div class="row g-3">
 
-                <div class="row g-3">
-                       <div class="col-md-2">
-                        <label>Height</label>
-                        <input type="text"
-                               class="form-control"
-                        th:field="*{appointment.height}"
-                        th:readonly="${!editable}">
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>Weight</label>
-                        <input type="text"
-                               class="form-control"
-                               th:field="*{appointment.weight}"
-                               th:readonly="${!editable}">
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>BMI</label>
-                        <input type="text"
-                               class="form-control"
-                               th:field="*{appointment.bmi}"
-                               th:readonly="${!editable}">
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>Blood Pressure</label>
-                        <input type="text"
-                               class="form-control"
-                        th:field="*{appointment.bloodPressure}"
-                        th:readonly="${!editable}">
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>Pulse</label>
-                        <input type="text"
-                               class="form-control"
-                        th:field="*{appointment.pulseRate}"
-                        th:readonly="${!editable}">
-                    </div>
-
-                    <div class="col-md-2">
-                        <label>Diabetes</label>
-                        <input type="text"
-                               class="form-control"
-                        th:field="*{appointment.diabetes}"
-                        th:readonly="${!editable}">
-                    </div>
-
+                <div class="col-md-2">
+                    <label>Height</label>
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{appointment.height}"
+                           th:readonly="${!editable}">
                 </div>
 
+                <div class="col-md-2">
+                    <label>Weight</label>
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{appointment.weight}"
+                           th:readonly="${!editable}">
+                </div>
+
+                <div class="col-md-2">
+                    <label>BMI</label>
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{appointment.bmi}"
+                           th:readonly="${!editable}">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Blood Pressure</label>
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{appointment.bloodPressure}"
+                           th:readonly="${!editable}">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Pulse</label>
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{appointment.pulseRate}"
+                           th:readonly="${!editable}">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Diabetes</label>
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{appointment.diabetes}"
+                           th:readonly="${!editable}">
+                </div>
+
+            </div>
 
             <!-- DIAGNOSIS -->
-
             <div class="col-md-6">
 
                 <label class="form-label">
@@ -351,14 +338,11 @@
                           rows="4"
                           placeholder="Doctor's diagnosis"
                           th:field="*{appointment.diagnosis}"
-                          th:readonly="${!editable}">
-            </textarea>
+                          th:readonly="${!editable}"></textarea>
 
             </div>
 
-
             <!-- DOCTOR ADVICE -->
-
             <div class="col-md-6">
 
                 <label class="form-label">
@@ -369,30 +353,32 @@
                           rows="4"
                           placeholder="Doctor's advice"
                           th:field="*{appointment.doctorAdvice}"
-                          th:readonly="${!editable}">
-            </textarea>
+                          th:readonly="${!editable}"></textarea>
 
             </div>
 
-
-            <!-- FOLLOW UP -->
-
             <div class="col-md-4">
-
-                <label class="form-label">
+                <label class="form-label" for="followUpDateDisplay">
                     Follow-up Date
                 </label>
 
                 <input type="date"
+                       id="followUpDateDisplay"
                        class="form-control"
-                       th:field="*{appointment.followUpDate}"
-                       th:readonly="${!editable}">
-
+                       th:value="${form.appointment.followUpDate != null
+               ? #temporals.format(form.appointment.followUpDate, 'yyyy-MM-dd')
+               : ''}"
+                       th:readonly="${editing and !editable}">
             </div>
 
+            <input type="hidden"
+                   id="followUpDate"
+                   name="appointment.followUpDate"
+                   th:value="${form.appointment.followUpDate != null
+           ? #temporals.format(form.appointment.followUpDate, 'yyyy-MM-dd')
+           : ''}">
 
             <!-- NOTES -->
-
             <div class="col-md-8">
 
                 <label class="form-label">
@@ -402,13 +388,11 @@
                 <textarea class="form-control"
                           rows="2"
                           th:field="*{appointment.notes}"
-                          th:readonly="${!editable}">
-            </textarea>
+                          th:readonly="${!editable}"></textarea>
 
             </div>
 
         </div>
-
     </div>
 
 
