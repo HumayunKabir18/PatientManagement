@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Comparator;
 
@@ -215,11 +216,7 @@ public class PatientController {
 
         PatientAppointmentForm form = new PatientAppointmentForm();
         form.setPatient(patient);
-
         AppointmentForm appointmentForm = new AppointmentForm();
-
-        // Default: new appointment date is today.
-        appointmentForm.setAppointmentDate(LocalDate.now());
 
         // Find the patient's most recent appointment.
         Appointment previousAppointment = appointmentService
@@ -244,10 +241,6 @@ public class PatientController {
 
         // If this patient has a previous appointment, copy its data.
         if (previousAppointment != null) {
-
-            appointmentForm.setAppointmentTime(
-                    previousAppointment.getAppointmentTime()
-            );
 
             appointmentForm.setAppointmentType(
                     previousAppointment.getAppointmentType()
@@ -348,12 +341,15 @@ public class PatientController {
         // Always use today's date for the new appointment,
         // even when previous appointment data was copied.
         appointmentForm.setAppointmentDate(LocalDate.now());
+        appointmentForm.setAppointmentTime(
+                LocalTime.now().withSecond(0).withNano(0)
+        );
 
         form.setAppointment(appointmentForm);
 
         model.addAttribute("form", form);
         model.addAttribute("editable", true);
-
+        model.addAttribute("editing", false);
         return "patient/appointmentForm";
     }
 
@@ -532,15 +528,16 @@ public class PatientController {
         /*
          * Existing appointment = READ ONLY.
          */
-        model.addAttribute(
-                "editable",
-                false
-        );
+        boolean editable =
+                appointmentService.canEditAppointment(appointmentId);
+
+        model.addAttribute("editable", editable);
+        model.addAttribute("editing", true);
+        model.addAttribute("appointmentCode", appointmentCode);
 
 
         return "patient/appointmentForm";
     }
-
 
 	/*
 	 * ============================================================
@@ -570,6 +567,24 @@ public class PatientController {
                 + patient.getPatientCode()
                 + "/"
                 + savedAppointment.getId().getAppointmentCode();
+    }
+
+    @PostMapping("/appointment/update/{patientCode}/{appointmentCode}")
+    public String updateAppointment(
+            @PathVariable String patientCode,
+            @PathVariable String appointmentCode,
+            @ModelAttribute("form") PatientAppointmentForm form
+    ) {
+        Patient patient = patientService.getPatientByCode(patientCode);
+
+        appointmentService.updateAppointment(
+                patient,
+                appointmentCode,
+                form.getAppointment()
+        );
+
+        return "redirect:/patients/appointment/print/"
+                + patientCode + "/" + appointmentCode;
     }
 
     /*
