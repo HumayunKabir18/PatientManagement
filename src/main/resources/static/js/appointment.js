@@ -537,7 +537,7 @@ function refreshMedicineSerials() {
 
                 adviceMessage = `ওজন ${gain.toFixed(1)} kg বাড়াতে হবে`;
 
-                $message.text(adviceMessage).css('color', 'black');
+                $message.text(adviceMessage).css('color', 'blue');
             } else if (bmi >= 25) {
                 const targetWeight = 24.9 * heightInMeters * heightInMeters;
                 const lose = weight - targetWeight;

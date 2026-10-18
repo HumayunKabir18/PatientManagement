@@ -317,14 +317,14 @@
     <div class="follow-up"
          th:if="${appointment.followUpDate != null}">
 
-        <strong>Follow-up Date:</strong>
+        <strong>পরবর্তী সাক্ষাৎ - </strong>
 
-        <span th:text="${#temporals.format(
+        <b><span th:text="${#temporals.format(
             appointment.followUpDate,
             'dd/MM/yyyy'
         )}">
         </span>
-
+        <span style="margin-left: 5px"> প্রেসক্রিপশন অবশ্যই সঙ্গে আনুন এবং আসার পূর্বে ফোনে সিরিয়াল নিশ্চিত করুন।</span></b>
     </div>
 
 
@@ -346,6 +346,10 @@
 
         </div>
 
+    </div>
+
+    <div class="prescription-footer">
+        <b>জরুরি প্রয়োজনে অবশ্যই স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।</b>
     </div>
 
 </div>

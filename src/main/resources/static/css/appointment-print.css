@@ -85,12 +85,18 @@ body {
     color: #555555;
 }
 
+/*.doctor-info {*/
+/*    margin-top: 14px;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: flex-start;*/
+/*    line-height: 1.6;*/
+/*}*/
 .doctor-info {
-    margin-top: 14px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    line-height: 1.6;
+    gap: 10px;
 }
 
 .doctor-info strong {
@@ -100,6 +106,8 @@ body {
 .appointment-info {
     text-align: right;
     min-width: 150px;
+    padding-right: 5mm;
+    flex-shrink: 0;
 }
 
 
@@ -223,6 +231,7 @@ body {
 .follow-up {
     padding: 12px 0;
     border-bottom: 1px solid #111111;
+    color: red;
 }
 
 
@@ -260,27 +269,56 @@ body {
    FOOTER
 ============================================================ */
 
+/*.prescription-footer {*/
+/*    text-align: center;*/
+/*    font-size: 10px;*/
+/*    color: #666666;*/
+
+/*    !**/
+/*       Footer is removed from normal document flow.*/
+/*       Therefore it cannot create another page.*/
+/*    *!*/
+/*    position: absolute;*/
+
+/*    bottom: 10mm;*/
+
+/*    left: 12mm;*/
+/*    right: 12mm;*/
+/*}*/
+
 .prescription-footer {
-    text-align: center;
-    font-size: 10px;
-    color: #666666;
-
-    /*
-       Footer is removed from normal document flow.
-       Therefore it cannot create another page.
-    */
     position: absolute;
-
     bottom: 10mm;
-
     left: 12mm;
     right: 12mm;
+
+    text-align: center;
+    font-family: Arial, "Noto Sans Bengali", sans-serif;
+    font-size: 16px;
+    color: #d10808;
+    white-space: nowrap;
 }
 
 
 /* ============================================================
    PRINT MODE
 ============================================================ */
+@media print {
+    .prescription-header {
+        padding-right: 5mm;
+    }
+
+    .doctor-info {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .appointment-info {
+        padding-right: 5mm;
+        min-width: 150px;
+        flex-shrink: 0;
+    }
+}
 
 @media print {
 
@@ -304,7 +342,7 @@ body {
         height: 273mm;
         min-height: 273mm;
 
-        margin: 0 .05% 0 2.2%;
+        margin: 0.5% .05% 0 2.2%;
         padding: 0;
 
         background: #ffffff;
@@ -322,15 +360,26 @@ body {
     /*
        Footer stays at the bottom of page 1.
     */
+    /*.prescription-footer {*/
+    /*    position: absolute;*/
+
+    /*    bottom: 5mm;*/
+
+    /*    left: 0;*/
+    /*    right: 0;*/
+
+    /*    text-align: center;*/
+    /*}*/
+
     .prescription-footer {
         position: absolute;
-
         bottom: 5mm;
-
         left: 0;
         right: 0;
 
         text-align: center;
+        font-size: 16px;
+        color: red;
     }
 
     /*
@@ -351,6 +400,7 @@ body {
     .follow-up {
         page-break-inside: avoid;
         break-inside: avoid;
+        color: red;
     }
 
     .signature-area {
