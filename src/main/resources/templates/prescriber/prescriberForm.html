@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf"
+      layout:decorate="~{layout/master}">
+
+<head>
+    <title>Prescriber</title>
+
+    <th:block layout:fragment="pageCss">
+        <link rel="stylesheet" th:href="@{/css/appointment.css}">
+    </th:block>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid px-0">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <div class="page-icon">
+                        <i class="bi bi-prescription2"></i>
+                    </div>
+                    <h4 class="mb-0 fw-semibold">Prescriber</h4>
+                </div>
+                <p class="text-muted mb-0">
+                    Create and print a prescription without registering a patient.
+                </p>
+            </div>
+
+            <a th:href="@{/patients/list}" class="btn btn-light border">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back
+            </a>
+        </div>
+
+        <form th:action="@{/prescriber/print}"
+              th:object="${form}"
+              method="post"
+              id="prescriberForm">
+
+            <!-- PATIENT INFORMATION -->
+            <div class="main-card mb-4">
+                <div class="section-title">
+                    <i class="bi bi-person me-2"></i>
+                    Patient Information
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Patient Name</label>
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{patientName}"
+                               placeholder="Enter patient name"
+                               required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Age</label>
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{age}"
+                               placeholder="e.g. 35 years">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Blood Group</label>
+                        <select class="form-select" th:field="*{bloodGroup}">
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPOINTMENT / CONSULTATION -->
+            <div class="main-card mb-4">
+                <div class="section-title">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Appointment / Consultation
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Date</label>
+                        <input type="date"
+                               class="form-control"
+                               th:field="*{appointmentDate}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Time</label>
+                        <input type="time"
+                               class="form-control"
+                               th:field="*{appointmentTime}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Appointment Type</label>
+                        <select class="form-select" th:field="*{appointmentType}">
+                            <option value="">Select</option>
+                            <option value="NEW">New Patient</option>
+                            <option value="FOLLOW_UP">Follow-up</option>
+                            <option value="EMERGENCY">Emergency</option>
+                            <option value="ROUTINE_CHECKUP">Routine Check-up</option>
+                            <option value="CONSULTATION">Consultation</option>
+                            <option value="TELE-MEDICINE">Tele-medicine</option>
+                            <option value="HOME-VISIT">Home Visit</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Chief Complaint</label>
+                        <textarea class="form-control"
+                                  rows="3"
+                                  th:field="*{chiefComplaint}"
+                                  placeholder="Patient's main complaint"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Symptoms</label>
+                        <textarea class="form-control"
+                                  rows="3"
+                                  th:field="*{symptoms}"
+                                  placeholder="Describe symptoms"></textarea>
+                    </div>
+                </div>
+
+                <!-- VITALS -->
+                <div class="row g-3 mt-2">
+                    <div class="col-md-2">
+                        <label class="form-label">Height</label>
+                        <input type="text" class="form-control"
+                               th:field="*{height}" id="prescriberHeight"
+                               placeholder="e.g. 5.7">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Weight (kg)</label>
+                        <input type="text" class="form-control"
+                               th:field="*{weight}" id="prescriberWeight">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">BMI</label>
+                        <input type="text" class="form-control"
+                               th:field="*{bmi}" id="prescriberBmi"
+                               readonly>
+                        <small id="prescriberBmiMessage"
+                               class="form-text"></small>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Blood Pressure</label>
+                        <input type="text" class="form-control"
+                               th:field="*{bloodPressure}"
+                               placeholder="e.g. 120/80">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Pulse</label>
+                        <input type="text" class="form-control"
+                               th:field="*{pulseRate}">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Diabetes</label>
+                        <input type="text" class="form-control"
+                               th:field="*{diabetes}">
+                    </div>
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Diagnosis</label>
+                        <textarea class="form-control"
+                                  rows="3"
+                                  th:field="*{diagnosis}"
+                                  placeholder="Doctor's diagnosis"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Doctor Advice / Prescription Notes</label>
+                        <textarea class="form-control"
+                                  rows="3"
+                                  th:field="*{doctorAdvice}"
+                                  id="prescriberDoctorAdvice"
+                                  placeholder="Doctor's advice"></textarea>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Follow-up Date</label>
+                        <input type="date"
+                               class="form-control"
+                               th:field="*{followUpDate}">
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="form-label">Additional Notes</label>
+                        <textarea class="form-control"
+                                  rows="2"
+                                  th:field="*{notes}"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEDICINES -->
+            <div class="main-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="section-title mb-0">
+                        <i class="bi bi-capsule me-2"></i>
+                        Medicines
+                    </div>
+
+                    <button type="button"
+                            id="prescriberAddMedicine"
+                            class="btn btn-primary-custom">
+                        <i class="bi bi-plus-lg me-1"></i>
+                        Add Medicine
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle" id="prescriberMedicineTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th style="min-width:180px">Medicine Name</th>
+                            <th style="min-width:180px">Original Medicine Name</th>
+                            <th style="min-width:130px">Type</th>
+                            <th style="min-width:100px">Doses</th>
+                            <th style="min-width:150px">Frequency</th>
+                            <th style="min-width:130px">Meal</th>
+                            <th>Morning</th>
+                            <th>Noon</th>
+                            <th>Night</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="prescriberMedicineBody">
+                        <tr class="prescriber-medicine-row"
+                            th:each="medicine, stat : ${form.medicines}">
+                            <td class="prescriber-serial"
+                                th:text="${stat.count}">1</td>
+
+                            <td>
+                                <input class="form-control" type="text"
+                                       th:field="*{medicines[__${stat.index}__].medicineName}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="text"
+                                       th:field="*{medicines[__${stat.index}__].originalName}">
+                            </td>
+                            <td>
+                                <select class="form-select"
+                                        th:field="*{medicines[__${stat.index}__].medicineType}">
+                                    <option value="">Select</option>
+                                    <option value="TABLET">Tablet</option>
+                                    <option value="CAPSULE">Capsule</option>
+                                    <option value="LIQUID">Liquid</option>
+                                    <option value="SYRUP">Syrup</option>
+                                    <option value="INJECTION">Injection</option>
+                                    <option value="CREAM">Cream</option>
+                                    <option value="DROPS">Drops</option>
+                                    <option value="SUPPOSITORY">Suppository</option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="form-control" type="text"
+                                       th:field="*{medicines[__${stat.index}__].doses}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="text"
+                                       th:field="*{medicines[__${stat.index}__].frequency}"
+                                       placeholder="e.g. Twice daily">
+                            </td>
+                            <td>
+                                <select class="form-select"
+                                        th:field="*{medicines[__${stat.index}__].meal}">
+                                    <option value="">Select</option>
+                                    <option value="BEFORE">Before Meal</option>
+                                    <option value="AFTER">After Meal</option>
+                                </select>
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input"
+                                       th:field="*{medicines[__${stat.index}__].morning}">
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input"
+                                       th:field="*{medicines[__${stat.index}__].noon}">
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input"
+                                       th:field="*{medicines[__${stat.index}__].night}">
+                            </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger prescriber-remove-medicine"
+                                        title="Remove medicine">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-secondary small"
+                     id="prescriberNoMedicineMessage">
+                    No medicine added yet. Click "Add Medicine" to add a prescription.
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="d-flex justify-content-end gap-2 mb-5">
+                <a th:href="@{/patients/list}"
+                   class="btn btn-outline-secondary px-4 rounded-4">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary-custom">
+                    <i class="bi bi-printer me-1"></i>
+                    Print Prescription
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<th:block layout:fragment="pageJs">
+    <script th:src="@{/js/prescriber.js}"></script>
+</th:block>
+</body>
+</html>

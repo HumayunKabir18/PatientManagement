@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Prescription - Araggo Niketon</title>
+
+    <!-- Reuse the original appointment print CSS unchanged -->
+    <link rel="stylesheet"
+          th:href="@{/css/appointment-print.css}">
+</head>
+
+<body>
+
+<!-- ============================================================
+     PRINT / BACK BUTTONS
+============================================================ -->
+<div class="print-actions">
+
+    <button type="button"
+            onclick="window.print()">
+        Print Prescription
+    </button>
+
+    <a th:href="@{/prescriber}"
+       class="back-button">
+        Back
+    </a>
+
+</div>
+
+
+<!-- ============================================================
+     PRESCRIPTION PAGE
+============================================================ -->
+<div class="prescription-page">
+
+    <!-- ========================================================
+         HEADER
+    ========================================================= -->
+    <div class="prescription-header">
+
+        <div class="clinic-name">
+            ARAGGO NIKETON
+        </div>
+
+        <div class="clinic-subtitle">
+            Patient Management &amp; Consultation
+        </div>
+
+        <div class="doctor-info">
+
+            <div>
+                <strong>Dr. Ziaur Rahman Khan</strong>
+                <br>
+                B,A. L,H,M,P. (KHULNA)
+                <br>
+                D.H.M.S (DHAKA)
+                <br>
+                Contact: 01961152025 (WhatsApp), 01645497828
+                <br>
+                Araggo Niketon, Mailpost, Abhoynagar, Jashore
+            </div>
+
+            <div class="appointment-info">
+
+                <div>
+                    <strong>Date:</strong>
+
+                    <span th:if="${form.appointmentDate != null}"
+                          th:text="${#temporals.format(
+                              form.appointmentDate,
+                              'dd/MM/yyyy'
+                          )}">
+                    </span>
+                </div>
+
+                <div th:if="${form.appointmentTime != null}">
+                    <strong>Time:</strong>
+
+                    <span th:text="${#temporals.format(
+                        form.appointmentTime,
+                        'hh:mm a'
+                    )}">
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         PATIENT INFORMATION
+         Prescriber patients are entered manually.
+         Keep the original five-column layout.
+    ========================================================= -->
+    <div class="patient-section">
+
+        <!-- Patient name: column 1 -->
+        <div th:if="${form.patientName != null
+                     and !form.patientName.isBlank()}">
+
+            <strong>PATIENT:</strong>
+
+            <span th:text="${form.patientName}"></span>
+        </div>
+
+        <div th:unless="${form.patientName != null
+                         and !form.patientName.isBlank()}">
+        </div>
+
+        <!-- Empty column: Patient ID is not used -->
+        <div></div>
+
+        <!-- Age: column 3 -->
+        <div th:if="${form.age != null
+                     and !form.age.isBlank()}">
+
+            <strong>Age:</strong>
+
+            <span th:text="${form.age}"></span>
+        </div>
+
+        <div th:unless="${form.age != null
+                         and !form.age.isBlank()}">
+        </div>
+
+        <!-- Empty column: Gender is not used -->
+        <div></div>
+
+        <!-- Blood group: column 5 -->
+        <div th:if="${form.bloodGroup != null
+                     and !form.bloodGroup.isBlank()}">
+
+            <strong>Blood Group:</strong>
+
+            <span th:text="${form.bloodGroup}"></span>
+        </div>
+
+        <div th:unless="${form.bloodGroup != null
+                         and !form.bloodGroup.isBlank()}">
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         CONSULTATION SECTION
+    ========================================================= -->
+    <div class="consultation-section">
+
+        <!-- ====================================================
+             DOCTOR ADVICE
+        ===================================================== -->
+        <div class="advice-column">
+
+            <div class="column-title">
+                DOCTOR ADVICE
+            </div>
+            <!-- Doctor Advice -->
+            <div class="advice-content"
+                 th:if="${form.doctorAdvice != null
+                         and !form.doctorAdvice.isBlank()}"
+                 th:text="${form.doctorAdvice}">
+            </div>
+
+            <!-- Chief Complaint -->
+            <div class="advice-content"
+                 th:if="${form.chiefComplaint != null
+                         and !form.chiefComplaint.isBlank()}">
+                <strong>প্রধান কারণঃ- <span th:text="${form.chiefComplaint}"></span></strong>
+            </div>
+
+            <!-- Blood Pressure -->
+            <div class="advice-content"
+                 th:if="${form.bloodPressure != null
+                         and !form.bloodPressure.isBlank()}">
+                <strong>ব্লাড প্রেশারঃ-  <span th:text="${form.bloodPressure}"></span></strong>
+            </div>
+
+            <!-- Blood Pressure -->
+            <div class="advice-content"
+                 th:if="${form.diabetes != null
+                         and !form.diabetes.isBlank()}">
+                <strong>বডায়াবেটিসঃ-  <span th:text="${form.diabetes}"></span></strong>
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             PRESCRIPTION / MEDICINES
+        ===================================================== -->
+        <div class="prescription-column">
+
+            <div class="column-title">
+                MEDICINE
+            </div>
+
+            <div class="medicine-list">
+
+                <!-- ============================================
+                     MEDICINE ITEM
+                ============================================= -->
+                <div class="medicine"
+                     th:each="medicine, medicineStat : ${form.medicines}"
+                     th:if="${medicine.medicineName != null
+                             and !medicine.medicineName.isBlank()}">
+
+                    <!-- Medicine number, name and type -->
+                    <div class="medicine-name">
+
+                        <span th:text="${medicineStat.count + '.'}">
+                        </span>
+
+                        <strong th:text="${medicine.medicineName}">
+                        </strong>
+
+                        <span class="medicine-type"
+                              th:if="${medicine.medicineType != null
+                                      and !medicine.medicineType.isBlank()}"
+                              th:text="|(${medicine.medicineType})|">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ========================================
+                         DOSE + FREQUENCY
+                         Example: 4 drops per 5 minutes
+                    ========================================= -->
+                    <div class="medicine-instruction"
+                         th:if="${medicine.frequency != null
+                                 and !medicine.frequency.isBlank()}">
+
+                        <span th:if="${medicine.doses != null
+                                      and !medicine.doses.isBlank()}"
+                              th:text="${medicine.doses == '0.5'
+                                        || medicine.doses == '.5'
+                                        ? '1/2'
+                                        : medicine.doses}">
+                        </span>
+
+                        <span th:if="${medicine.doses != null
+                                      and !medicine.doses.isBlank()}">
+                            &nbsp;
+                        </span>
+
+                        <span th:text="${medicine.frequency}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ========================================
+                         MORNING + NOON + NIGHT
+                         Used when frequency is empty
+                    ========================================= -->
+                    <div class="medicine-instruction"
+                         th:if="${medicine.frequency == null
+                                 or medicine.frequency.isBlank()}">
+
+                        <!-- Morning -->
+                        <span th:text="${medicine.morning
+                                        ? (medicine.doses == '0.5'
+                                           || medicine.doses == '.5'
+                                           ? '1/2'
+                                           : (medicine.doses != null
+                                              and !medicine.doses.isBlank()
+                                              ? medicine.doses : '0'))
+                                        : '0'}">
+                        </span>
+
+                        +
+
+                        <!-- Noon -->
+                        <span th:text="${medicine.noon
+                                        ? (medicine.doses == '0.5'
+                                           || medicine.doses == '.5'
+                                           ? '1/2'
+                                           : (medicine.doses != null
+                                              and !medicine.doses.isBlank()
+                                              ? medicine.doses : '0'))
+                                        : '0'}">
+                        </span>
+
+                        +
+
+                        <!-- Night -->
+                        <span th:text="${medicine.night
+                                        ? (medicine.doses == '0.5'
+                                           || medicine.doses == '.5'
+                                           ? '1/2'
+                                           : (medicine.doses != null
+                                              and !medicine.doses.isBlank()
+                                              ? medicine.doses : '0'))
+                                        : '0'}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ========================================
+                         MEAL INSTRUCTION
+                    ========================================= -->
+                    <div class="medicine-meal"
+                         th:if="${medicine.meal != null
+                                 and !medicine.meal.isBlank()}">
+
+                        <span class="meal-instruction"
+                              th:if="${medicine.meal == 'BEFORE'}">
+                            - খাবার আগে খেতে হবে
+                        </span>
+
+                        <span class="meal-instruction"
+                              th:if="${medicine.meal == 'AFTER'}">
+                            - খাবার পর খেতে হবে
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================================
+                     NO MEDICINES
+                ============================================= -->
+                <div class="empty-text"
+                     th:if="${form.medicines == null
+                             or #lists.isEmpty(form.medicines.?[
+                                 medicineName != null
+                                 and !medicineName.isBlank()
+                             ])}">
+
+                    No medicines prescribed.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         FOLLOW-UP MESSAGE
+         No follow-up date is displayed.
+    ========================================================= -->
+    <div class="follow-up">
+
+        <strong>
+            পরবর্তী সাক্ষাতে প্রেসক্রিপশন অবশ্যই সঙ্গে আনুন এবং আসার পূর্বে ফোনে সিরিয়াল নিশ্চিত করুন।
+        </strong>
+
+    </div>
+
+
+    <!-- ========================================================
+         DOCTOR SIGNATURE
+    ========================================================= -->
+    <div class="signature-area">
+
+        <div class="signature">
+
+            <div class="signature-line">
+            </div>
+
+            <strong>Doctor's Signature</strong>
+
+            <div>
+                Dr. Ziaur Rahman Khan
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         FOOTER
+    ========================================================= -->
+    <div class="prescription-footer">
+        <b>জরুরি প্রয়োজনে অবশ্যই স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।</b>
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     AUTO PRINT
+============================================================ -->
+<script>
+    window.addEventListener("load", function () {
+        setTimeout(function () {
+            window.print();
+        }, 500);
+    });
+</script>
+
+</body>
+</html>
