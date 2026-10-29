@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 public class AppointmentForm {
@@ -39,6 +42,16 @@ public class AppointmentForm {
 	private LocalDate followUpDate;
 
 	private String notes;
+
+	@NotNull(message = "Appointment fee is required.")
+	@DecimalMin(value = "0.00", message = "Fee cannot be negative.")
+	private BigDecimal appointmentFee = BigDecimal.ZERO;
+
+	@NotNull(message = "Payment amount is required.")
+	@DecimalMin(value = "0.00", message = "Payment cannot be negative.")
+	private BigDecimal paymentNow = BigDecimal.ZERO;
+
+	private String paymentMethod = "CASH";
 
 	private List<AppointmentMedicineForm> medicines = new ArrayList<>();
 }

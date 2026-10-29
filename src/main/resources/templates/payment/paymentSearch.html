@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master}">
+
+<body>
+
+<div layout:fragment="content">
+
+    <div class="container-fluid py-3">
+
+        <!-- PAGE HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="section-title mb-0">
+                <i class="bi bi-cash-stack me-2"></i>
+                Patient Payment Management
+            </h4>
+
+            <a th:href="@{/patients/list}"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-people-fill me-1"></i>
+                Patient List
+            </a>
+        </div>
+
+        <!-- SEARCH CARD -->
+        <div class="main-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="section-title mb-0">
+                    <i class="bi bi-search me-2"></i>
+                    Patient Search
+                </h4>
+            </div>
+
+            <div class="row g-3">
+
+                <!-- PATIENT ID -->
+                <div class="col-md-4">
+                    <label for="patientId" class="form-label">
+                        Patient ID
+                    </label>
+
+                    <input type="text"
+                           id="patientId"
+                           maxlength="50"
+                           class="form-control"
+                           placeholder="Enter patient ID">
+                </div>
+
+                <!-- MOBILE NUMBER -->
+                <div class="col-md-4">
+                    <label for="mobileNo" class="form-label">
+                        Mobile Number
+                    </label>
+
+                    <input type="text"
+                           id="mobileNo"
+                           class="form-control"
+                           placeholder="01XXXXXXXXX">
+                </div>
+
+                <!-- PATIENT NAME -->
+                <div class="col-md-4">
+                    <label for="patientName" class="form-label">
+                        Patient Name
+                    </label>
+
+                    <input type="text"
+                           id="patientName"
+                           maxlength="50"
+                           class="form-control"
+                           placeholder="Enter patient name">
+                </div>
+
+            </div>
+
+            <!-- SEARCH BUTTON -->
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center mt-3">
+                    <button type="button"
+                            id="searchBtn"
+                            class="btn btn-primary-custom"
+                            style="min-width: 17%;">
+                        <i class="bi bi-search me-1"></i>
+                        Search
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PATIENT RESULT CARD -->
+        <div class="main-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="section-title mb-0">
+                    <i class="bi bi-people me-2"></i>
+                    Patient List
+                </h4>
+
+                <span class="badge-soft">
+                    Total: <span id="totalPatients">0</span>
+                </span>
+
+            </div>
+
+            <!-- LOADING -->
+            <div id="loadingDiv" class="text-center py-4 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+
+                <div class="mt-2">Searching patients...</div>
+            </div>
+
+            <!-- ERROR -->
+            <div id="errorDiv"
+                 class="alert alert-danger d-none"
+                 role="alert">
+            </div>
+
+            <!-- PATIENT TABLE -->
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient Name</th>
+                        <th>Mobile</th>
+                        <th>Blood Group</th>
+                        <th>Address</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="patientTableBody">
+
+                    <tr>
+                        <td colspan="6"
+                            class="text-center text-muted py-4">
+                            Search for a patient to view their payment information.
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+
+                <button type="button"
+                        id="prevBtn"
+                        class="btn btn-outline-primary btn-sm"
+                        disabled>
+                    <i class="bi bi-chevron-left"></i>
+                    Previous
+                </button>
+
+                <span class="text-muted small" id="pageInfo">
+                    Page 1
+                </span>
+
+                <button type="button"
+                        id="nextBtn"
+                        class="btn btn-outline-primary btn-sm"
+                        disabled>
+                    Next
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+    <!-- PATIENT SEARCH SCRIPT -->
+    <script>
+        let currentPage = 0;
+        const pageSize = 10;
+
+        $(document).ready(function () {
+
+            // Search button
+            $("#searchBtn").on("click", function () {
+                currentPage = 0;
+                loadPatients();
+            });
+
+            // Next page
+            $("#nextBtn").on("click", function () {
+                currentPage++;
+                loadPatients();
+            });
+
+            // Previous page
+            $("#prevBtn").on("click", function () {
+                if (currentPage > 0) {
+                    currentPage--;
+                    loadPatients();
+                }
+            });
+
+            // Search by pressing Enter
+            $("#patientId, #mobileNo, #patientName").on(
+                "keydown",
+                function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        currentPage = 0;
+                        loadPatients();
+                    }
+                }
+            );
+
+        });
+
+
+        // Safely escape values before inserting them into HTML.
+        function escapeHtml(value) {
+
+            return String(value ?? "").replace(/[&<>"']/g, function (character) {
+
+                return {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                }[character];
+
+            });
+        }
+
+
+        // Load patients from the existing patient search API.
+        function loadPatients() {
+
+            $("#loadingDiv").removeClass("d-none");
+            $("#errorDiv").addClass("d-none").text("");
+            $("#searchBtn").prop("disabled", true);
+
+            const request = {
+
+                patientId: $("#patientId").val().trim(),
+
+                patientName: $("#patientName").val().trim(),
+
+                mobileNo: $("#mobileNo").val().trim(),
+
+                // These filters are intentionally omitted.
+                page: currentPage,
+
+                size: pageSize
+            };
+
+
+            $.ajax({
+
+                url: "/patients/search",
+
+                type: "POST",
+
+                contentType: "application/json",
+
+                data: JSON.stringify(request),
+
+
+                success: function (res) {
+
+                    const tbody = $("#patientTableBody");
+
+                    tbody.empty();
+
+                    $("#totalPatients").text(res.totalElements ?? 0);
+
+                    const totalPages = res.totalPages ?? 0;
+
+                    // Update pagination
+                    $("#prevBtn").prop(
+                        "disabled",
+                        currentPage <= 0
+                    );
+
+                    $("#nextBtn").prop(
+                        "disabled",
+                        totalPages === 0 || currentPage >= totalPages - 1
+                    );
+
+                    $("#pageInfo").text(
+                        totalPages === 0
+                            ? "No pages"
+                            : "Page " + (currentPage + 1) + " of " + totalPages
+                    );
+
+
+                    // No results
+                    if (!res.content || res.content.length === 0) {
+
+                        tbody.append(`
+                            <tr>
+                                <td colspan="6"
+                                    class="text-center text-muted py-4">
+                                    No patients found.
+                                </td>
+                            </tr>
+                        `);
+
+                        return;
+                    }
+
+
+                    // Render patients
+                    $.each(res.content, function (i, patient) {
+
+                        const patientCode =
+                            escapeHtml(patient.patientCode);
+
+                        const patientName =
+                            escapeHtml(
+                                [patient.firstName, patient.lastName]
+                                    .filter(Boolean)
+                                    .join(" ")
+                            );
+
+                        const mobile =
+                            escapeHtml(patient.mobile);
+
+                        const bloodGroup =
+                            escapeHtml(patient.bloodGroup);
+
+                        const address =
+                            escapeHtml(patient.address);
+
+                        const paymentUrl =
+                            "/payments/patient/" +
+                            encodeURIComponent(patient.patientCode);
+
+
+                        tbody.append(`
+                            <tr>
+
+                                <td>${patientCode}</td>
+
+                                <td>
+                                    <a href="${paymentUrl}"
+                                       class="text-decoration-none fw-semibold">
+                                        ${patientName}
+                                    </a>
+                                </td>
+
+                                <td>${mobile}</td>
+
+                                <td>${bloodGroup}</td>
+
+                                <td>${address}</td>
+
+                                <td class="text-center">
+                                    <a href="${paymentUrl}"
+                                       class="btn btn-primary-custom btn-sm">
+                                        <i class="bi bi-cash-coin me-1"></i>
+                                        Receive Payment
+                                    </a>
+                                </td>
+
+                            </tr>
+                        `);
+
+                    });
+
+                },
+
+
+                error: function () {
+
+                    $("#errorDiv")
+                        .removeClass("d-none")
+                        .text(
+                            "Unable to search patients. Please try again."
+                        );
+
+                    $("#patientTableBody").empty().append(`
+                        <tr>
+                            <td colspan="6"
+                                class="text-center text-muted py-4">
+                                Patient search failed.
+                            </td>
+                        </tr>
+                    `);
+
+                    $("#prevBtn").prop("disabled", currentPage <= 0);
+                    $("#nextBtn").prop("disabled", true);
+
+                },
+
+
+                complete: function () {
+
+                    $("#loadingDiv").addClass("d-none");
+
+                    $("#searchBtn").prop("disabled", false);
+
+                }
+
+            });
+
+        }
+    </script>
+
+</div>
+
+</body>
+</html>

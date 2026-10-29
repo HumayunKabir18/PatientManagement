@@ -4,6 +4,7 @@ import com.niketon.aroggo.app.patient.entity.Patient;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -78,5 +79,9 @@ public class Appointment {
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
 
+	@Column(name = "appointment_fee", precision = 12, scale = 2)
+	private BigDecimal appointmentFee = BigDecimal.ZERO;
 
+	@Column(name = "payment_method", length = 30)
+	private String paymentMethod;
 }

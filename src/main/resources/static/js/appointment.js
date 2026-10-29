@@ -581,4 +581,95 @@ function refreshMedicineSerials() {
 
     // Also calculate when editing an existing appointment
     calculateBMI();
+
+    const feeInput = document.getElementById("appointmentFee");
+    const paymentInput = document.getElementById("paymentNow");
+    const previousDueInput = document.getElementById("previousOutstandingDue");
+    const estimatedDueInput = document.getElementById("estimatedDue");
+    const warning = document.getElementById("paymentWarning");
+
+    if (
+        !feeInput ||
+        !paymentInput ||
+        !previousDueInput ||
+        !estimatedDueInput ||
+        !warning
+    ) {
+        return;
+    }
+
+    // Read the previous outstanding due displayed by the server.
+    const previousDue = Number(
+        previousDueInput.value.replace(/,/g, "")
+    ) || 0;
+
+    function updatePaymentEstimate() {
+        const fee = Number(feeInput.value || 0);
+        const payment = Number(paymentInput.value || 0);
+
+        const totalDue = previousDue + fee;
+        const remaining = totalDue - payment;
+
+        estimatedDueInput.value = remaining.toFixed(2);
+
+        const invalid =
+            feeInput.value.trim() === "" ||
+            paymentInput.value.trim() === "" ||
+            !Number.isFinite(fee) ||
+            !Number.isFinite(payment) ||
+            fee < 0 ||
+            payment < 0 ||
+            payment > totalDue;
+
+        warning.classList.toggle("d-none", !invalid);
+        estimatedDueInput.classList.toggle("is-invalid", invalid);
+
+        // Prevent negative values and overpayment.
+        paymentInput.setCustomValidity(
+            payment > totalDue
+                ? "Payment cannot exceed the total outstanding due."
+                : ""
+        );
+
+        feeInput.setCustomValidity(
+            fee < 0
+                ? "Appointment fee cannot be negative."
+                : ""
+        );
+    }
+
+    feeInput.addEventListener("input", updatePaymentEstimate);
+    paymentInput.addEventListener("input", updatePaymentEstimate);
+
+    const form = feeInput.closest("form");
+
+    if (form) {
+        form.addEventListener("submit", function (event) {
+            updatePaymentEstimate();
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                form.reportValidity();
+            }
+
+            const fee = Number(feeInput.value || 0);
+            const payment = Number(paymentInput.value || 0);
+
+            if (
+                feeInput.value.trim() === "" ||
+                paymentInput.value.trim() === "" ||
+                !Number.isFinite(fee) ||
+                !Number.isFinite(payment) ||
+                fee < 0 ||
+                payment < 0 ||
+                payment > previousDue + fee
+            ) {
+                event.preventDefault();
+                warning.classList.remove("d-none");
+            }
+        });
+    }
+
+    // Calculate the initial estimate on page load.
+    updatePaymentEstimate();
 });

@@ -9,12 +9,14 @@ import com.niketon.aroggo.app.appointment.service.AppointmentService;
 import com.niketon.aroggo.app.patient.entity.Patient;
 import com.niketon.aroggo.app.patient.entity.PatientSearchEntity;
 import com.niketon.aroggo.app.patient.service.PatientService;
+import com.niketon.aroggo.app.payment.service.PatientFinancialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -28,6 +30,8 @@ public class PatientController {
 
     private final PatientService patientService;
     private final AppointmentService appointmentService;
+    private final PatientFinancialService patientFinancialService;
+
 
 
     @GetMapping("/list")
@@ -167,44 +171,6 @@ public class PatientController {
      * NEW APPOINTMENT
      * ============================================================
      */
-
-//    @GetMapping("/appointment/new/{patientCode}")
-//    public String newAppointment(
-//            @PathVariable String patientCode,
-//            Model model
-//    ) {
-//
-//        Patient patient =
-//                patientService.getPatientByCode(
-//                        patientCode
-//                );
-//
-//        PatientAppointmentForm form =
-//                new PatientAppointmentForm();
-//
-//        form.setPatient(patient);
-//
-//        form.getAppointment()
-//                .setAppointmentDate(
-//                        LocalDate.now()
-//                );
-//
-//        model.addAttribute(
-//                "form",
-//                form
-//        );
-//
-//        /*
-//         * New appointment = editable.
-//         */
-//        model.addAttribute(
-//                "editable",
-//                true
-//        );
-//
-//        return "patient/appointmentForm";
-//    }
-
 
     @GetMapping("/appointment/new/{patientCode}")
     public String newAppointment(
@@ -350,6 +316,8 @@ public class PatientController {
         model.addAttribute("form", form);
         model.addAttribute("editable", true);
         model.addAttribute("editing", false);
+        model.addAttribute("outstandingDue", patientFinancialService.getOutstandingDue(patientCode)
+        );
         return "patient/appointmentForm";
     }
 
@@ -375,10 +343,7 @@ public class PatientController {
     ) {
 
         Patient patient =
-                patientService.getPatientByCode(
-                        patientCode
-                );
-
+                patientService.getPatientByCode(patientCode);
 
         AppointmentId appointmentId =
                 new AppointmentId(
@@ -386,28 +351,26 @@ public class PatientController {
                         patientCode
                 );
 
-
         Appointment appointment =
-                appointmentService.getAppointment(
-                        appointmentId
-                );
+                appointmentService.getAppointment(appointmentId);
 
+
+        // ============================================================
+        // FORM INITIALIZATION
+        // ============================================================
 
         PatientAppointmentForm form =
                 new PatientAppointmentForm();
 
         form.setPatient(patient);
 
-
         AppointmentForm appointmentForm =
                 new AppointmentForm();
 
 
-        /*
-         * Appointment fields
-         */
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // ============================================================
+        // APPOINTMENT FIELDS
+        // ============================================================
 
         appointmentForm.setAppointmentDate(
                 appointment.getAppointmentDate()
@@ -444,16 +407,35 @@ public class PatientController {
         appointmentForm.setNotes(
                 appointment.getNotes()
         );
-        appointmentForm.setHeight(appointment.getHeight());
-        appointmentForm.setWeight(appointment.getWeight());
-        appointmentForm.setBmi(appointment.getBmi());
-        appointmentForm.setBloodPressure(appointment.getBloodPressure());
-        appointmentForm.setPulseRate(appointment.getPulseRate());
-        appointmentForm.setDiabetes(appointment.getDiabetes());
 
-        /*
-         * Medicines
-         */
+        appointmentForm.setHeight(
+                appointment.getHeight()
+        );
+
+        appointmentForm.setWeight(
+                appointment.getWeight()
+        );
+
+        appointmentForm.setBmi(
+                appointment.getBmi()
+        );
+
+        appointmentForm.setBloodPressure(
+                appointment.getBloodPressure()
+        );
+
+        appointmentForm.setPulseRate(
+                appointment.getPulseRate()
+        );
+
+        appointmentForm.setDiabetes(
+                appointment.getDiabetes()
+        );
+
+
+        // ============================================================
+        // MEDICINES
+        // ============================================================
 
         List<AppointmentMedicineForm> medicines =
                 appointmentService
@@ -480,20 +462,17 @@ public class PatientController {
                                     medicine.getDoses()
                             );
 
+                            medicineForm.setFrequency(
+                                    medicine.getFrequency()
+                            );
 
-							medicineForm.setFrequency(
-									medicine.getFrequency()
-							);
+                            medicineForm.setMeal(
+                                    medicine.getMeal()
+                            );
 
-
-							medicineForm.setMeal(
-									medicine.getMeal()
-							);
-
-
-							medicineForm.setMorning(
-									medicine.isMorning()
-							);
+                            medicineForm.setMorning(
+                                    medicine.isMorning()
+                            );
 
                             medicineForm.setNoon(
                                     medicine.isNoon()
@@ -508,26 +487,43 @@ public class PatientController {
                         })
                         .toList();
 
+        appointmentForm.setMedicines(medicines);
 
-        appointmentForm.setMedicines(
-                medicines
+
+        // ============================================================
+        // APPOINTMENT PAYMENT FIELDS
+        // ============================================================
+
+        BigDecimal appointmentFee =
+                appointment.getAppointmentFee() == null
+                        ? BigDecimal.ZERO
+                        : appointment.getAppointmentFee();
+
+        BigDecimal paymentPreviouslyRecorded =
+                patientFinancialService.getAppointmentPaymentAmount(
+                        patientCode,
+                        appointmentCode
+                );
+
+        appointmentForm.setAppointmentFee(appointmentFee);
+
+        appointmentForm.setPaymentMethod(
+                appointment.getPaymentMethod()
         );
 
-
-        form.setAppointment(
-                appointmentForm
+        appointmentForm.setPaymentNow(
+                paymentPreviouslyRecorded
         );
 
-
-        model.addAttribute(
-                "form",
-                form
-        );
+        form.setAppointment(appointmentForm);
 
 
-        /*
-         * Existing appointment = READ ONLY.
-         */
+        // ============================================================
+        // MODEL ATTRIBUTES
+        // ============================================================
+
+        model.addAttribute("form", form);
+
         boolean editable =
                 appointmentService.canEditAppointment(appointmentId);
 
@@ -535,6 +531,23 @@ public class PatientController {
         model.addAttribute("editing", true);
         model.addAttribute("appointmentCode", appointmentCode);
 
+
+        // ============================================================
+        // OUTSTANDING DUE EXCLUDING THIS APPOINTMENT
+        // ============================================================
+
+        BigDecimal currentDue =
+                patientFinancialService.getOutstandingDue(patientCode);
+
+        BigDecimal dueExcludingCurrentAppointment =
+                currentDue
+                        .subtract(appointmentFee)
+                        .add(paymentPreviouslyRecorded);
+
+        model.addAttribute(
+                "outstandingDue",
+                dueExcludingCurrentAppointment
+        );
 
         return "patient/appointmentForm";
     }

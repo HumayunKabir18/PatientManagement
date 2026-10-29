@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+
 <div th:fragment="sidebar">
 
     <aside class="sidebar main-card">
@@ -23,6 +24,7 @@
         <!-- MENU -->
         <ul class="sidebar-menu">
 
+            <!-- DASHBOARD -->
             <li>
                 <a th:href="@{/dashboard}">
                     <i class="bi bi-speedometer2"></i>
@@ -30,6 +32,7 @@
                 </a>
             </li>
 
+            <!-- PATIENTS -->
             <li>
                 <a th:href="@{/patients/list}">
                     <i class="bi bi-people-fill"></i>
@@ -37,6 +40,15 @@
                 </a>
             </li>
 
+            <!-- PAYMENTS -->
+            <li>
+                <a th:href="@{/payments/search}">
+                    <i class="bi bi-cash-stack"></i>
+                    <span class="menu-text">Payments</span>
+                </a>
+            </li>
+
+            <!-- PRESCRIBER -->
             <li>
                 <a th:href="@{/prescriber}">
                     <i class="bi bi-prescription2"></i>
@@ -45,12 +57,19 @@
             </li>
 
         </ul>
+
         <!-- TOGGLE BUTTON AT BOTTOM -->
         <div class="sidebar-toggle-wrapper">
-            <button id="sidebarToggleBtn" class="btn-toggle" aria-label="Toggle sidebar"  onclick="toggleSidebar()">
+            <button id="sidebarToggleBtn"
+                    class="btn-toggle"
+                    aria-label="Toggle sidebar"
+                    onclick="toggleSidebar()">
+
                 <i class="bi bi-chevron-left" id="toggleIcon"></i>
+
             </button>
         </div>
+
     </aside>
 
 </div>

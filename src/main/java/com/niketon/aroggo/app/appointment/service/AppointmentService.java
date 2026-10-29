@@ -1,4 +1,3 @@
-
 package com.niketon.aroggo.app.appointment.service;
 
 import com.niketon.aroggo.app.appointment.dto.AppointmentForm;
@@ -10,6 +9,7 @@ import com.niketon.aroggo.app.appointment.entity.AppointmentMedicineId;
 import com.niketon.aroggo.app.appointment.repository.AppointmentMedicineRepository;
 import com.niketon.aroggo.app.appointment.repository.AppointmentRepository;
 import com.niketon.aroggo.app.patient.entity.Patient;
+import com.niketon.aroggo.app.payment.service.PatientFinancialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,7 @@ public class AppointmentService {
 
 	private final AppointmentRepository appointmentRepository;
 	private final AppointmentMedicineRepository medicineRepository;
+	private final PatientFinancialService patientFinancialService;
 
 	/**
 	 * Creates a new appointment and saves its medicines.
@@ -63,6 +64,8 @@ public class AppointmentService {
 				.bloodPressure(form.getBloodPressure())
 				.diabetes(form.getDiabetes())
 				.pulseRate(form.getPulseRate())
+				.appointmentFee(form.getAppointmentFee())
+				.paymentMethod(form.getPaymentMethod())
 				.createdAt(LocalDateTime.now())
 				.build();
 
@@ -70,6 +73,16 @@ public class AppointmentService {
 				appointmentRepository.save(appointment);
 
 		saveMedicines(savedAppointment, form);
+
+		patientFinancialService.recordAppointmentChargeAndPayment(
+				patient.getPatientCode(),
+				savedAppointment.getId().getAppointmentCode(),
+				form.getAppointmentFee(),
+				form.getPaymentNow(),
+				form.getPaymentMethod(),
+				null, // No authenticated operator identity yet
+				"Payment collected during appointment creation"
+		);
 
 		return savedAppointment;
 	}
@@ -154,6 +167,8 @@ public class AppointmentService {
 		appointment.setBloodPressure(form.getBloodPressure());
 		appointment.setDiabetes(form.getDiabetes());
 		appointment.setPulseRate(form.getPulseRate());
+		appointment.setAppointmentFee(form.getAppointmentFee());
+		appointment.setPaymentMethod(form.getPaymentMethod());
 
 		// Do not modify createdAt.
 		// The original record creation time must remain unchanged.
@@ -172,6 +187,16 @@ public class AppointmentService {
 
 		// Save the updated medicine list.
 		saveMedicines(updatedAppointment, form);
+
+		patientFinancialService.updateAppointmentFinancials(
+				patient.getPatientCode(),
+				appointmentCode,
+				form.getAppointmentFee(),
+				form.getPaymentNow(),
+				form.getPaymentMethod(),
+				null,
+				"Payment amount corrected during appointment edit"
+		);
 
 		return updatedAppointment;
 	}

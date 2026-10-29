@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master}">
+
+<body>
+<div layout:fragment="content">
+
+    <div class="container-fluid py-3">
+
+        <!-- Page heading -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h4 class="section-title mb-0">
+                <i class="bi bi-cash-stack me-2"></i>
+                Patient Payment
+            </h4>
+
+            <a th:href="@{/payments/search}"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Patient Search
+            </a>
+        </div>
+
+        <!-- Patient Information -->
+        <div class="main-card">
+
+            <h4 class="section-title mb-3">
+                <i class="bi bi-person-vcard me-2"></i>
+                Patient Information
+            </h4>
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted">Patient ID</label>
+                    <div class="fw-semibold"
+                         th:text="${patient.patientCode}">PAT001</div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted">Patient Name</label>
+                    <div class="fw-semibold"
+                         th:text="${patient.firstName + ' ' + (patient.lastName ?: '')}">
+                        Patient Name
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted">Mobile Number</label>
+                    <div class="fw-semibold"
+                         th:text="${patient.mobile ?: 'N/A'}">N/A</div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted">Blood Group</label>
+                    <div class="fw-semibold"
+                         th:text="${patient.bloodGroup ?: 'N/A'}">N/A</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Financial Summary -->
+        <div class="main-card">
+
+            <h4 class="section-title mb-4">
+                <i class="bi bi-wallet2 me-2"></i>
+                Financial Summary
+            </h4>
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <div class="text-muted mb-2">Total Charges</div>
+                        <h4 class="mb-0">
+                            ৳ <span th:text="${totalCharges}">0.00</span>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <div class="text-muted mb-2">Total Payments Received</div>
+                        <h4 class="mb-0 text-success">
+                            ৳ <span th:text="${totalPayments}">0.00</span>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <div class="text-muted mb-2">Outstanding Due</div>
+                        <h4 class="mb-0"
+                            th:classappend="${outstandingDue != null and outstandingDue.compareTo(T(java.math.BigDecimal).ZERO) > 0}
+                                ? 'text-danger' : 'text-success'">
+                            ৳ <span th:text="${outstandingDue}">0.00</span>
+                        </h4>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Success / Error Messages -->
+        <div th:if="${successMessage != null}"
+             class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            <span th:text="${successMessage}"></span>
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+
+        <div th:if="${errorMessage != null}"
+             class="alert alert-danger"
+             role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Receive Payment -->
+        <div class="main-card">
+
+            <h4 class="section-title mb-4">
+                <i class="bi bi-cash-coin me-2"></i>
+                Receive Payment
+            </h4>
+
+            <div th:if="${outstandingDue != null and outstandingDue.compareTo(T(java.math.BigDecimal).ZERO) <= 0}"
+                 class="alert alert-success">
+                <i class="bi bi-check-circle me-2"></i>
+                This patient currently has no outstanding due.
+                You can still record a payment if a new charge needs to be settled.
+            </div>
+
+            <form th:action="@{/payments/receive}"
+                  th:object="${paymentForm}"
+                  method="post"
+                  id="paymentForm">
+
+                <input type="hidden"
+                       name="patientCode"
+                       th:value="${patient.patientCode}">
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label for="amount" class="form-label">
+                            Payment Amount (৳) <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="number"
+                               id="amount"
+                               th:field="*{amount}"
+                               class="form-control"
+                               min="0.01"
+                               step="0.01"
+                               required
+                               placeholder="Enter amount">
+
+                        <div class="form-text">
+                            Enter the amount actually received from the patient.
+                        </div>
+
+                        <div class="text-danger small"
+                             th:if="${#fields.hasErrors('amount')}"
+                             th:errors="*{amount}"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="paymentMethod" class="form-label">
+                            Payment Method <span class="text-danger">*</span>
+                        </label>
+
+                        <select id="paymentMethod"
+                                th:field="*{paymentMethod}"
+                                class="form-select"
+                                required>
+                            <option value="">Select payment method</option>
+                            <option value="CASH">Cash</option>
+                            <option value="BKASH">bKash</option>
+                            <option value="NAGAD">Nagad</option>
+                            <option value="ROCKET">Rocket</option>
+                            <option value="BANK_TRANSFER">Bank Transfer</option>
+                            <option value="CARD">Card</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+
+                        <div class="text-danger small"
+                             th:if="${#fields.hasErrors('paymentMethod')}"
+                             th:errors="*{paymentMethod}"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="note" class="form-label">Note</label>
+
+                        <input type="text"
+                               id="note"
+                               th:field="*{note}"
+                               class="form-control"
+                               maxlength="250"
+                               placeholder="Optional payment note">
+                    </div>
+
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-end gap-2">
+
+                        <a th:href="@{/payments/search}"
+                           class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                        <button type="submit"
+                                id="submitPaymentBtn"
+                                class="btn btn-primary-custom">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Receive Payment
+                        </button>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- Appointment History -->
+        <div class="main-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-title mb-0">
+                    <i class="bi bi-calendar2-check me-2"></i>
+                    Appointment History
+                </h4>
+
+                <span class="badge-soft">
+                    Total: <span th:text="${#lists.size(appointments)}">0</span>
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                    <tr>
+                        <th>Appointment Code</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th class="text-end">Charge (৳)</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:if="${#lists.isEmpty(appointments)}">
+                        <td colspan="5"
+                            class="text-center text-muted py-4">
+                            No appointments found.
+                        </td>
+                    </tr>
+
+                    <tr th:each="appointment : ${appointments}">
+                        <td th:text="${appointment.id.appointmentCode}">APT001</td>
+                        <td th:text="${appointment.appointmentDate}">2026-10-25</td>
+                        <td th:text="${appointment.appointmentTime ?: 'N/A'}">10:00</td>
+                        <td th:text="${appointment.appointmentType ?: 'N/A'}">Consultation</td>
+                        <td class="text-end"
+                            th:text="${appointment.appointmentFee != null
+                                ? #numbers.formatDecimal(appointment.appointmentFee, 1, 2)
+                                : '0.00'}">
+                            0.00
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- Payment History -->
+        <div class="main-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-title mb-0">
+                    <i class="bi bi-receipt me-2"></i>
+                    Payment History
+                </h4>
+
+                <span class="badge-soft">
+                    Total: <span th:text="${#lists.size(payments)}">0</span>
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                    <tr>
+                        <th>Payment Code</th>
+                        <th>Date &amp; Time</th>
+                        <th>Related Appointment</th>
+                        <th>Payment Method</th>
+                        <th>Note</th>
+                        <th class="text-end">Amount (৳)</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:if="${#lists.isEmpty(payments)}">
+                        <td colspan="6"
+                            class="text-center text-muted py-4">
+                            No payments recorded for this patient.
+                        </td>
+                    </tr>
+
+                    <tr th:each="payment : ${payments}">
+                        <td th:text="${payment.paymentCode}">PAY-001</td>
+
+                        <td th:text="${payment.receivedAt != null
+                            ? #temporals.format(payment.receivedAt, 'dd-MM-yyyy HH:mm')
+                            : 'N/A'}">
+                            25-10-2026 10:00
+                        </td>
+
+                        <td th:text="${payment.appointmentCode ?: 'General payment'}">
+                            General payment
+                        </td>
+
+                        <td th:text="${payment.paymentMethod ?: 'N/A'}">CASH</td>
+
+                        <td th:text="${payment.note ?: '-'}">-</td>
+
+                        <td class="text-end fw-semibold"
+                            th:text="${#numbers.formatDecimal(payment.amount, 1, 2)}">
+                            0.00
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const form = document.getElementById("paymentForm");
+            const amountInput = document.getElementById("amount");
+            const submitButton = document.getElementById("submitPaymentBtn");
+
+            form.addEventListener("submit", function (event) {
+
+                const amount = Number(amountInput.value);
+
+                if (!Number.isFinite(amount) || amount <= 0) {
+                    event.preventDefault();
+                    alert("Please enter a payment amount greater than zero.");
+                    amountInput.focus();
+                    return;
+                }
+
+                // Prevent accidental double submission.
+                submitButton.disabled = true;
+                submitButton.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-1"></span> Processing...';
+            });
+
+        });
+    </script>
+
+</div>
+</body>
+</html>

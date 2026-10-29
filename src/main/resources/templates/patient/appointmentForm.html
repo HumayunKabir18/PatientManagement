@@ -159,6 +159,112 @@
             </div>
 
 
+            <!-- ================= PAYMENT SECTION ================= -->
+            <div class="main-card mb-4">
+
+                <div class="section-title">
+                    <i class="bi bi-cash-coin me-2"></i>
+                    Appointment Payment
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- Due before this appointment's fee is applied -->
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            Previous Outstanding Due (৳)
+                        </label>
+
+                        <input type="text"
+                               id="previousOutstandingDue"
+                               class="form-control"
+                               th:value="${#numbers.formatDecimal(outstandingDue, 1, 2)}"
+                               readonly>
+                    </div>
+
+                    <!-- Appointment fee -->
+                    <div class="col-md-4">
+                        <label for="appointmentFee" class="form-label">
+                            Appointment Fee (৳)
+                        </label>
+
+                        <input type="number"
+                               id="appointmentFee"
+                               class="form-control"
+                               th:field="*{appointment.appointmentFee}"
+                               min="0"
+                               step="0.01"
+                               required
+                               th:readonly="${!editable}">
+                    </div>
+
+                    <!-- Initial collection or corrected collection -->
+                    <div class="col-md-4">
+                        <label for="paymentNow" class="form-label">
+                            Amount Collected (৳)
+                        </label>
+
+                        <input type="number"
+                               id="paymentNow"
+                               class="form-control"
+                               th:field="*{appointment.paymentNow}"
+                               min="0"
+                               step="0.01"
+                               required
+                               th:readonly="${!editable}">
+
+                        <small class="text-secondary">
+                            On an edit screen, this is the existing recorded
+                            payment amount. Change it only to correct the record.
+                        </small>
+                    </div>
+
+                    <!-- Payment method -->
+                    <div class="col-md-4">
+                        <label for="paymentMethod" class="form-label">
+                            Payment Method
+                        </label>
+
+                        <select id="paymentMethod"
+                                class="form-select"
+                                th:field="*{appointment.paymentMethod}"
+                                th:disabled="${!editable}">
+
+                            <option value="CASH">Cash</option>
+                            <option value="BKASH">bKash</option>
+                            <option value="NAGAD">Nagad</option>
+                            <option value="BANK">Bank</option>
+                            <option value="OTHER">Other</option>
+
+                        </select>
+                    </div>
+
+                    <!-- Calculated remaining balance -->
+                    <div class="col-md-4">
+                        <label for="estimatedDue" class="form-label">
+                            Estimated Remaining Due (৳)
+                        </label>
+
+                        <input type="text"
+                               id="estimatedDue"
+                               class="form-control"
+                               readonly>
+                    </div>
+
+                    <div class="col-12">
+                        <div id="paymentWarning"
+                             class="alert alert-warning d-none"
+                             role="alert">
+                            The payment exceeds the available outstanding balance
+                            or one of the entered amounts is invalid.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- =============== END PAYMENT SECTION =============== -->
+
+
             <!-- ===================================================== -->
             <!-- APPOINTMENT SECTION                                   -->
             <!-- ===================================================== -->
