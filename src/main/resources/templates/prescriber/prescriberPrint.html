@@ -173,21 +173,27 @@
             <div class="advice-content"
                  th:if="${form.chiefComplaint != null
                          and !form.chiefComplaint.isBlank()}">
-                <strong>প্রধান কারণঃ- <span th:text="${form.chiefComplaint}"></span></strong>
+                প্রধান কারণঃ- <span th:text="${form.chiefComplaint}"></span>
             </div>
 
             <!-- Blood Pressure -->
             <div class="advice-content"
                  th:if="${form.bloodPressure != null
                          and !form.bloodPressure.isBlank()}">
-                <strong>ব্লাড প্রেশারঃ-  <span th:text="${form.bloodPressure}"></span></strong>
+                ব্লাড প্রেশারঃ-  <span th:text="${form.bloodPressure}"></span>
+            </div>
+
+            <div class="advice-content"
+                 th:if="${form.pulseRate != null
+                         and !form.pulseRate.isBlank()}">
+                পালস রেটঃ-  <span th:text="${form.pulseRate}"></span>
             </div>
 
             <!-- Blood Pressure -->
             <div class="advice-content"
                  th:if="${form.diabetes != null
                          and !form.diabetes.isBlank()}">
-                <strong>বডায়াবেটিসঃ-  <span th:text="${form.diabetes}"></span></strong>
+                বডায়াবেটিসঃ-  <span th:text="${form.diabetes}"></span>
             </div>
 
         </div>

@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="row g-4">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Patient Name</label>
                         <input type="text"
                                class="form-control"
@@ -58,7 +58,7 @@
                                required>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Age</label>
                         <input type="text"
                                class="form-control"
@@ -66,7 +66,7 @@
                                placeholder="e.g. 35 years">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Blood Group</label>
                         <select class="form-select" th:field="*{bloodGroup}">
                             <option value="">Select Blood Group</option>
@@ -80,6 +80,9 @@
                             <option value="AB-">AB-</option>
                         </select>
                     </div>
+
+                    <div class="col-md-3"></div>
+
                 </div>
             </div>
 
@@ -91,52 +94,24 @@
                 </div>
 
                 <div class="row g-4">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Date</label>
                         <input type="date"
                                class="form-control"
                                th:field="*{appointmentDate}">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Time</label>
                         <input type="time"
                                class="form-control"
                                th:field="*{appointmentTime}">
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">Appointment Type</label>
-                        <select class="form-select" th:field="*{appointmentType}">
-                            <option value="">Select</option>
-                            <option value="NEW">New Patient</option>
-                            <option value="FOLLOW_UP">Follow-up</option>
-                            <option value="EMERGENCY">Emergency</option>
-                            <option value="ROUTINE_CHECKUP">Routine Check-up</option>
-                            <option value="CONSULTATION">Consultation</option>
-                            <option value="TELE-MEDICINE">Tele-medicine</option>
-                            <option value="HOME-VISIT">Home Visit</option>
-                        </select>
-                    </div>
-
                     <div class="col-md-6">
-                        <label class="form-label">Chief Complaint</label>
-                        <textarea class="form-control"
-                                  rows="3"
-                                  th:field="*{chiefComplaint}"
-                                  placeholder="Patient's main complaint"></textarea>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Symptoms</label>
-                        <textarea class="form-control"
-                                  rows="3"
-                                  th:field="*{symptoms}"
-                                  placeholder="Describe symptoms"></textarea>
                     </div>
                 </div>
 
-                <!-- VITALS -->
                 <div class="row g-3 mt-2">
                     <div class="col-md-2">
                         <label class="form-label">Height</label>
@@ -182,11 +157,11 @@
 
                 <div class="row g-4 mt-2">
                     <div class="col-md-6">
-                        <label class="form-label">Diagnosis</label>
+                        <label class="form-label">Chief Complaint</label>
                         <textarea class="form-control"
                                   rows="3"
-                                  th:field="*{diagnosis}"
-                                  placeholder="Doctor's diagnosis"></textarea>
+                                  th:field="*{chiefComplaint}"
+                                  placeholder="Patient's main complaint"></textarea>
                     </div>
 
                     <div class="col-md-6">
@@ -197,21 +172,10 @@
                                   id="prescriberDoctorAdvice"
                                   placeholder="Doctor's advice"></textarea>
                     </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Follow-up Date</label>
-                        <input type="date"
-                               class="form-control"
-                               th:field="*{followUpDate}">
-                    </div>
-
-                    <div class="col-md-8">
-                        <label class="form-label">Additional Notes</label>
-                        <textarea class="form-control"
-                                  rows="2"
-                                  th:field="*{notes}"></textarea>
-                    </div>
                 </div>
+                    <!-- VITALS -->
+
+
             </div>
 
             <!-- MEDICINES -->
