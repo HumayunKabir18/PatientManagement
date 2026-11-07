@@ -193,7 +193,7 @@
                                class="form-control"
                                th:field="*{appointment.appointmentFee}"
                                min="0"
-                               step="0.01"
+                               step="10"
                                required
                                th:readonly="${!editable}">
                     </div>
@@ -209,7 +209,7 @@
                                class="form-control"
                                th:field="*{appointment.paymentNow}"
                                min="0"
-                               step="0.01"
+                               step="10"
                                required
                                th:readonly="${!editable}">
 

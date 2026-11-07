@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -338,5 +339,109 @@ public class PatientFinancialService {
 	@Transactional(readOnly = true)
 	public BigDecimal getTotalPayments(String patientCode) {
 		return paymentRepository.sumPaymentsByPatientCode(patientCode);
+	}
+
+	@Transactional(readOnly = true)
+	public BigDecimal getAppointmentChargeAmount(
+			String patientCode,
+			String appointmentCode
+	) {
+		return chargeRepository
+				.findByPatientCodeAndAppointmentCode(
+						patientCode,
+						appointmentCode
+				)
+				.map(PatientCharge::getAmount)
+				.orElse(BigDecimal.ZERO);
+	}
+
+
+	@Transactional
+	public PatientPayment receiveAppointmentPayment(
+			String patientCode,
+			String appointmentCode,
+			BigDecimal amount,
+			String paymentMethod,
+			String receivedBy,
+			String note
+	) {
+		if (amount == null
+				|| amount.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException(
+					"Payment amount must be greater than zero."
+			);
+		}
+
+		PatientCharge charge = chargeRepository
+				.findByPatientCodeAndAppointmentCode(
+						patientCode,
+						appointmentCode
+				)
+				.orElseThrow(() ->
+						new IllegalArgumentException(
+								"Appointment charge was not found."
+						)
+				);
+
+		PatientPayment existingPayment = paymentRepository
+				.findByPatientCodeAndAppointmentCode(
+						patientCode,
+						appointmentCode
+				)
+				.orElse(null);
+
+		BigDecimal alreadyCollected =
+				existingPayment == null
+						? BigDecimal.ZERO
+						: existingPayment.getAmount();
+
+		BigDecimal appointmentDue =
+				charge.getAmount().subtract(alreadyCollected);
+
+		if (appointmentDue.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException(
+					"This appointment has no remaining due."
+			);
+		}
+
+		if (amount.compareTo(appointmentDue) > 0) {
+			throw new IllegalArgumentException(
+					"Payment cannot exceed this appointment's due: "
+							+ appointmentDue.toPlainString()
+			);
+		}
+
+		// Also prevent collecting more than the patient's
+		// overall outstanding balance.
+		BigDecimal overallDue = getOutstandingDue(patientCode);
+
+		if (amount.compareTo(overallDue) > 0) {
+			throw new IllegalArgumentException(
+					"Payment cannot exceed the patient's outstanding due: "
+							+ overallDue.toPlainString()
+			);
+		}
+
+		PatientPayment payment;
+
+		if (existingPayment == null) {
+			payment = new PatientPayment();
+			payment.setPaymentCode(generatePaymentCode());
+			payment.setPatientCode(patientCode);
+			payment.setAppointmentCode(appointmentCode);
+			payment.setAmount(amount);
+		} else {
+			// This matches the current database design:
+			// one payment record per appointment.
+			payment = existingPayment;
+			payment.setAmount(alreadyCollected.add(amount));
+		}
+
+		payment.setPaymentMethod(paymentMethod);
+		payment.setReceivedBy(receivedBy);
+		payment.setReceivedAt(LocalDateTime.now());
+		payment.setNote(note);
+
+		return paymentRepository.save(payment);
 	}
 }

@@ -582,94 +582,139 @@ function refreshMedicineSerials() {
     // Also calculate when editing an existing appointment
     calculateBMI();
 
-    const feeInput = document.getElementById("appointmentFee");
-    const paymentInput = document.getElementById("paymentNow");
-    const previousDueInput = document.getElementById("previousOutstandingDue");
-    const estimatedDueInput = document.getElementById("estimatedDue");
-    const warning = document.getElementById("paymentWarning");
 
-    if (
-        !feeInput ||
-        !paymentInput ||
-        !previousDueInput ||
-        !estimatedDueInput ||
-        !warning
-    ) {
-        return;
-    }
+    function initializeAppointmentPayment() {
+        const feeInput = document.getElementById("appointmentFee");
+        const paymentInput = document.getElementById("paymentNow");
+        const previousDueInput = document.getElementById("previousOutstandingDue");
+        const estimatedDueInput = document.getElementById("estimatedDue");
+        const warning = document.getElementById("paymentWarning");
 
-    // Read the previous outstanding due displayed by the server.
-    const previousDue = Number(
-        previousDueInput.value.replace(/,/g, "")
-    ) || 0;
+        if (
+            !feeInput ||
+            !paymentInput ||
+            !previousDueInput ||
+            !estimatedDueInput ||
+            !warning
+        ) {
+            return;
+        }
 
-    function updatePaymentEstimate() {
-        const fee = Number(feeInput.value || 0);
-        const payment = Number(paymentInput.value || 0);
+        // Read previous outstanding due (integer)
+        const previousDue = Math.round(
+            Number(previousDueInput.value.replace(/,/g, ""))
+        ) || 0;
 
-        const totalDue = previousDue + fee;
-        const remaining = totalDue - payment;
+        // Initially payment is readonly
+        paymentInput.readOnly = true;
 
-        estimatedDueInput.value = remaining.toFixed(2);
+        function updatePaymentEstimate() {
+            const feeValue = feeInput.value.trim();
+            const paymentValue = paymentInput.value.trim();
 
-        const invalid =
-            feeInput.value.trim() === "" ||
-            paymentInput.value.trim() === "" ||
-            !Number.isFinite(fee) ||
-            !Number.isFinite(payment) ||
-            fee < 0 ||
-            payment < 0 ||
-            payment > totalDue;
+            const fee = Number(feeValue);
+            let payment = Number(paymentValue);
 
-        warning.classList.toggle("d-none", !invalid);
-        estimatedDueInput.classList.toggle("is-invalid", invalid);
+            // Validate appointment fee
+            const validFee =
+                feeValue !== "" &&
+                Number.isFinite(fee) &&
+                fee >= 0 &&
+                Number.isInteger(fee);
 
-        // Prevent negative values and overpayment.
-        paymentInput.setCustomValidity(
-            payment > totalDue
-                ? "Payment cannot exceed the total outstanding due."
-                : ""
-        );
+            // Lock payment until appointment fee is valid
+            paymentInput.readOnly = !validFee;
 
-        feeInput.setCustomValidity(
-            fee < 0
-                ? "Appointment fee cannot be negative."
-                : ""
-        );
-    }
-
-    feeInput.addEventListener("input", updatePaymentEstimate);
-    paymentInput.addEventListener("input", updatePaymentEstimate);
-
-    const form = feeInput.closest("form");
-
-    if (form) {
-        form.addEventListener("submit", function (event) {
-            updatePaymentEstimate();
-
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                form.reportValidity();
-            }
-
-            const fee = Number(feeInput.value || 0);
-            const payment = Number(paymentInput.value || 0);
-
-            if (
-                feeInput.value.trim() === "" ||
-                paymentInput.value.trim() === "" ||
-                !Number.isFinite(fee) ||
-                !Number.isFinite(payment) ||
-                fee < 0 ||
-                payment < 0 ||
-                payment > previousDue + fee
-            ) {
-                event.preventDefault();
+            if (!validFee) {
+                paymentInput.value = "";
+                estimatedDueInput.value = "";
                 warning.classList.remove("d-none");
+                estimatedDueInput.classList.add("is-invalid");
+
+                feeInput.setCustomValidity(
+                    "Appointment fee must be a valid non-negative integer."
+                );
+
+                paymentInput.setCustomValidity("");
+                return;
             }
-        });
+
+            feeInput.setCustomValidity("");
+
+            // Validate payment
+            if (paymentValue !== "") {
+                if (!Number.isFinite(payment) || payment < 0) {
+                    payment = 0;
+                    paymentInput.value = "0";
+                } else if (payment > fee) {
+                    payment = fee;
+                    paymentInput.value = fee.toString();
+                } else if (!Number.isInteger(payment)) {
+                    payment = Math.round(payment);
+                    paymentInput.value = payment.toString();
+                }
+            }
+
+            // Calculate estimated due
+            if (paymentInput.value.trim() !== "") {
+                const finalPayment = Number(paymentInput.value);
+
+                const estimatedDue =
+                    previousDue + fee - finalPayment;
+
+                estimatedDueInput.value = estimatedDue.toString();
+
+                const invalid =
+                    !Number.isFinite(finalPayment) ||
+                    finalPayment < 0 ||
+                    finalPayment > fee ||
+                    !Number.isInteger(finalPayment);
+
+                warning.classList.toggle("d-none", !invalid);
+                estimatedDueInput.classList.toggle("is-invalid", invalid);
+
+                paymentInput.setCustomValidity(
+                    invalid
+                        ? "Payment must be a non-negative integer and cannot exceed appointment fee."
+                        : ""
+                );
+            } else {
+                estimatedDueInput.value = "";
+                warning.classList.remove("d-none");
+                estimatedDueInput.classList.add("is-invalid");
+
+                paymentInput.setCustomValidity(
+                    "Please enter payment amount."
+                );
+            }
+        }
+
+        // Appointment fee change
+        feeInput.addEventListener("input", updatePaymentEstimate);
+
+        // Payment change
+        paymentInput.addEventListener("input", updatePaymentEstimate);
+
+        // Form submission validation
+        const form = feeInput.closest("form");
+
+        if (form) {
+            form.addEventListener("submit", function (event) {
+                updatePaymentEstimate();
+
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    form.reportValidity();
+                    warning.classList.remove("d-none");
+                }
+            });
+        }
+
+        // Initial validation and calculation
+        updatePaymentEstimate();
     }
 
-    // Calculate the initial estimate on page load.
-    updatePaymentEstimate();
+// Initialize
+    initializeAppointmentPayment();
+
 });
